@@ -1,8 +1,0 @@
-{
-  "status": "not_configured",
-  "source": "CoinGlass",
-  "symbol": "BTC",
-  "updatedAt": "2026-05-19T23:00:56.976Z",
-  "message": "Add a CG_API_KEY repository secret to enable live exchange balance updates.",
-  "exchanges": []
-}
