@@ -17,6 +17,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./exchange-balances.css" />
   </head>
   <body>
     <div class="page-shell">
@@ -180,6 +181,50 @@
             <p class="stat-label">Session Open</p>
             <p class="stat-value" id="stat-open">$--</p>
           </article>
+        </section>
+
+        <section class="panel exchange-panel" aria-label="Bitcoin exchange balances">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Exchange Balances</p>
+              <h3>BTC reserves by major exchange</h3>
+            </div>
+            <p class="panel-caption" id="exchange-balance-status">Loading exchange balances</p>
+          </div>
+
+          <div class="exchange-summary">
+            <div class="mini-stat">
+              <span class="mini-stat-label">Tracked Balance</span>
+              <span class="mini-stat-value" id="exchange-balance-total">-- BTC</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">Tracked Venues</span>
+              <span class="mini-stat-value" id="exchange-count">--</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-stat-label">Last Refresh</span>
+              <span class="mini-stat-value" id="exchange-balance-updated">--</span>
+            </div>
+          </div>
+
+          <div class="exchange-table-wrap">
+            <table class="exchange-table">
+              <thead>
+                <tr>
+                  <th scope="col">Exchange</th>
+                  <th scope="col">BTC Balance</th>
+                  <th scope="col">24h</th>
+                  <th scope="col">7d</th>
+                  <th scope="col">30d</th>
+                </tr>
+              </thead>
+              <tbody id="exchange-balances-body">
+                <tr>
+                  <td colspan="5">Waiting for exchange balance feed.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </section>
       </main>
     </div>
