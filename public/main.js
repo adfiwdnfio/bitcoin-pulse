@@ -8,6 +8,8 @@
   const PRODUCT_ID = "BTC-USD";
   const API_BASE = `https://api.exchange.coinbase.com/products/${PRODUCT_ID}`;
   const FEED_URL = "wss://ws-feed.exchange.coinbase.com";
+  const EXCHANGE_TICKERS_URL =
+    "https://api.coingecko.com/api/v3/coins/bitcoin/tickers?order=volume_desc&include_exchange_logo=false&page=1";
   const CHART_WIDTH = 720;
   const CHART_HEIGHT = 280;
   const CHART_PADDING = 24;
@@ -55,7 +57,7 @@
     volume30d: null,
     lastTradeSize: null,
     candles: [],
-    exchangeBalances: null,
+    exchangeActivity: null,
     lastUpdatedAt: null,
     reconnectDelayMs: 1000,
     reconnectTimer: null,
@@ -101,13 +103,14 @@
     state.candles = utils.normalizeCandles(candles).slice(-24);
   }
 
-  async function refreshExchangeBalances() {
-    const snapshot = await fetchJson(`./data/exchange-balances.json?ts=${Date.now()}`);
-    state.exchangeBalances = {
-      ...snapshot,
-      exchanges: utils.normalizeExchangeBalances(snapshot.exchanges || snapshot.data || []),
+  async function refreshExchangeActivity() {
+    const snapshot = await fetchJson(EXCHANGE_TICKERS_URL);
+    state.exchangeActivity = {
+      source: "CoinGecko",
+      updatedAt: new Date().toISOString(),
+      exchanges: utils.normalizeExchangeActivity(snapshot.tickers || []),
     };
-    renderExchangeBalances();
+    renderExchangeActivity();
   }
 
   function setStatus(label, tone) {
@@ -258,60 +261,48 @@
     elements.trendBias.textContent = closes[closes.length - 1] >= closes[0] ? "Bullish slope" : "Pullback";
   }
 
-  function formatSignedPercent(value) {
-    if (!Number.isFinite(value)) {
-      return "--";
-    }
-
-    return `${value >= 0 ? "+" : ""}${utils.formatPercent(value)}`;
-  }
-
   function escapeHtml(value) {
     const wrapper = document.createElement("span");
     wrapper.textContent = String(value);
     return wrapper.innerHTML;
   }
 
-  function renderExchangeBalances() {
-    const snapshot = state.exchangeBalances;
+  function renderExchangeActivity() {
+    const snapshot = state.exchangeActivity;
 
-    if (!snapshot || snapshot.status !== "ok") {
-      elements.exchangeBalanceStatus.textContent =
-        snapshot?.message || "Configure CoinGlass API key to enable balance data";
-      elements.exchangeBalanceTotal.textContent = "-- BTC";
+    if (!snapshot || snapshot.error) {
+      elements.exchangeBalanceStatus.textContent = snapshot?.message || "Loading CoinGecko exchange market data";
+      elements.exchangeBalanceTotal.textContent = "$--";
       elements.exchangeCount.textContent = "--";
       elements.exchangeBalanceUpdated.textContent = "--";
       elements.exchangeBalancesBody.innerHTML =
-        '<tr><td class="exchange-empty" colspan="5">Exchange balance feed is not configured yet.</td></tr>';
+        '<tr><td class="exchange-empty" colspan="5">Exchange market feed is not available right now.</td></tr>';
       return;
     }
 
-    const summary = utils.calculateExchangeBalanceSummary(snapshot.exchanges);
-    elements.exchangeBalanceStatus.textContent = `Source: ${snapshot.source || "CoinGlass"}`;
-    elements.exchangeBalanceTotal.textContent = `${utils.formatCompactNumber(summary.totalBtc)} BTC`;
+    const summary = utils.calculateExchangeActivitySummary(snapshot.exchanges);
+    elements.exchangeBalanceStatus.textContent = `Source: ${snapshot.source}`;
+    elements.exchangeBalanceTotal.textContent = utils.formatCurrency(summary.totalVolumeUsd, 0);
     elements.exchangeCount.textContent = utils.formatInteger(summary.exchangeCount);
-    elements.exchangeBalanceUpdated.textContent = snapshot.updatedAt
-      ? utils.formatRelativeTime(new Date(snapshot.updatedAt))
+    elements.exchangeBalanceUpdated.textContent = summary.latestUpdate
+      ? utils.formatRelativeTime(summary.latestUpdate)
       : "--";
 
     if (!snapshot.exchanges.length) {
       elements.exchangeBalancesBody.innerHTML =
-        '<tr><td class="exchange-empty" colspan="5">No exchange balances returned.</td></tr>';
+        '<tr><td class="exchange-empty" colspan="5">No exchange market data returned.</td></tr>';
       return;
     }
 
     elements.exchangeBalancesBody.innerHTML = snapshot.exchanges
       .slice(0, 8)
       .map((exchange) => {
-        const dailyClass = utils.getChangeDirection(exchange.change24hPercent);
-        const weeklyClass = utils.getChangeDirection(exchange.change7dPercent);
-        const monthlyClass = utils.getChangeDirection(exchange.change30dPercent);
         return `<tr>
           <td><span class="exchange-name">${escapeHtml(exchange.name)}</span></td>
-          <td>${utils.formatCompactNumber(exchange.balanceBtc)} BTC</td>
-          <td class="${dailyClass === "up" ? "change-positive" : dailyClass === "down" ? "change-negative" : ""}">${formatSignedPercent(exchange.change24hPercent)}</td>
-          <td class="${weeklyClass === "up" ? "change-positive" : weeklyClass === "down" ? "change-negative" : ""}">${formatSignedPercent(exchange.change7dPercent)}</td>
-          <td class="${monthlyClass === "up" ? "change-positive" : monthlyClass === "down" ? "change-negative" : ""}">${formatSignedPercent(exchange.change30dPercent)}</td>
+          <td>${escapeHtml(exchange.pair)}</td>
+          <td>${utils.formatCurrency(exchange.priceUsd)}</td>
+          <td>${utils.formatCurrency(exchange.volumeUsd, 0)}</td>
+          <td>${utils.formatPercent(exchange.spreadPercent)}</td>
         </tr>`;
       })
       .join("");
@@ -321,7 +312,7 @@
     renderPrice();
     renderStats();
     renderChart();
-    renderExchangeBalances();
+    renderExchangeActivity();
   }
 
   function scheduleReconnect() {
@@ -407,14 +398,15 @@
   }
 
   hydrate();
-  refreshExchangeBalances().catch((error) => {
+  refreshExchangeActivity().catch((error) => {
     console.error(error);
-    state.exchangeBalances = {
-      status: "error",
-      message: "Could not load exchange balance feed",
+    state.exchangeActivity = {
+      error: true,
+      message: "Could not load CoinGecko exchange market data",
+      source: "CoinGecko",
       exchanges: [],
     };
-    renderExchangeBalances();
+    renderExchangeActivity();
   });
   connectFeed();
   window.setInterval(async () => {
@@ -435,7 +427,7 @@
   }, 300000);
   window.setInterval(async () => {
     try {
-      await refreshExchangeBalances();
+      await refreshExchangeActivity();
     } catch (error) {
       console.error(error);
     }
