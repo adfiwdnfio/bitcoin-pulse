@@ -4,11 +4,11 @@ const assert = require("node:assert/strict");
 const {
   buildSparklineData,
   calculateDailyChange,
-  calculateExchangeBalanceSummary,
+  calculateExchangeActivitySummary,
   calculateSatsPerDollar,
   getChangeDirection,
   normalizeCandles,
-  normalizeExchangeBalances,
+  normalizeExchangeActivity,
 } = require("../public/bitcoin-utils.js");
 
 test("daily change returns absolute and percent moves", () => {
@@ -47,28 +47,61 @@ test("sparkline data returns a line and area path", () => {
   assert.deepEqual(result.lastPoint, { x: 288, y: 12 });
 });
 
-test("exchange balances normalize and sort by BTC balance", () => {
-  const result = normalizeExchangeBalances([
-    { exchangeName: "Kraken", balance: "12000", change24hPercent: "-0.5" },
-    { exchange_name: "Binance", total_balance: "100000", change_7d: "1.2" },
-    { exchange: "Broken", balance: "not-a-number" },
+test("exchange activity aggregates and sorts by usd volume", () => {
+  const result = normalizeExchangeActivity([
+    {
+      base: "BTC",
+      target: "USD",
+      market: { name: "Coinbase Exchange", identifier: "gdax" },
+      converted_last: { usd: 100000 },
+      converted_volume: { usd: 250000000 },
+      bid_ask_spread_percentage: 0.01,
+      last_fetch_at: "2026-05-19T20:00:00Z",
+    },
+    {
+      base: "BTC",
+      target: "USDT",
+      market: { name: "Binance", identifier: "binance" },
+      converted_last: { usd: 100010 },
+      converted_volume: { usd: 500000000 },
+      bid_ask_spread_percentage: 0.02,
+      last_fetch_at: "2026-05-19T20:01:00Z",
+    },
+    {
+      base: "BTC",
+      target: "EUR",
+      market: { name: "Coinbase Exchange", identifier: "gdax" },
+      converted_last: { usd: 99900 },
+      converted_volume: { usd: 50000000 },
+      bid_ask_spread_percentage: 0.03,
+      last_fetch_at: "2026-05-19T20:02:00Z",
+    },
   ]);
 
   assert.deepEqual(
     result.map((entry) => entry.name),
-    ["Binance", "Kraken"],
+    ["Binance", "Coinbase Exchange"],
   );
-  assert.equal(result[0].balanceBtc, 100000);
-  assert.equal(result[0].change7dPercent, 1.2);
-  assert.equal(result[1].change24hPercent, -0.5);
+  assert.equal(result[0].volumeUsd, 500000000);
+  assert.equal(result[0].pair, "BTC/USDT");
+  assert.equal(result[1].volumeUsd, 300000000);
 });
 
-test("exchange balance summary totals normalized exchange rows", () => {
-  const result = calculateExchangeBalanceSummary([
-    { name: "A", balanceBtc: 10 },
-    { name: "B", balance_btc: "25.5" },
+test("exchange activity summary totals normalized exchange volume", () => {
+  const result = calculateExchangeActivitySummary([
+    {
+      market: { name: "A" },
+      converted_volume: { usd: 10 },
+      last_fetch_at: "2026-05-19T20:00:00Z",
+    },
+    {
+      market: { name: "B" },
+      converted_volume: { usd: 25.5 },
+      last_fetch_at: "2026-05-19T20:05:00Z",
+    },
   ]);
 
   assert.equal(result.exchangeCount, 2);
-  assert.equal(result.totalBtc, 35.5);
+  assert.equal(result.totalVolumeUsd, 35.5);
+  assert.equal(result.latestUpdate.toISOString(), "2026-05-19T20:05:00.000Z");
 });
