@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="Live bitcoin tracker with real-time BTC-USD pricing, 24-hour stats, and a streaming market feed."
+    />
+    <meta name="theme-color" content="#f7931a" />
+    <title>Bitcoin Pulse | Live BTC Tracker</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <div class="background-orb background-orb-left"></div>
+      <div class="background-orb background-orb-right"></div>
+
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">₿</div>
+          <div>
+            <p class="eyebrow">Bitcoin Tracker</p>
+            <h1>Bitcoin Pulse</h1>
+          </div>
+        </div>
+
+        <div class="topbar-meta">
+          <div class="status-pill" id="live-status" data-tone="loading">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span id="live-status-label">Connecting to live feed</span>
+          </div>
+          <p class="meta-copy">Deploy as a static site. Live data streams directly from the browser.</p>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="hero-card">
+          <div class="hero-copy">
+            <p class="eyebrow">BTC / USD</p>
+            <h2>Track bitcoin in real time with a market screen built for the orange coin.</h2>
+            <p class="hero-text">
+              This dashboard streams live price updates, refreshes market stats automatically, and
+              runs entirely client-side so it can live on any static host.
+            </p>
+          </div>
+
+          <div class="hero-metrics">
+            <p class="metric-label">Spot Price</p>
+            <div class="price-line">
+              <span class="price-value" id="current-price">$--</span>
+              <span class="price-badge" id="price-change" data-direction="flat">--</span>
+            </div>
+            <div class="price-subline">
+              <span id="price-equivalent">1 BTC = -- USD</span>
+              <span id="last-updated">Awaiting market data</span>
+            </div>
+            <div class="signal-strip">
+              <div class="signal-item">
+                <span class="signal-name">Sats per $1</span>
+                <span class="signal-value" id="sats-per-dollar">--</span>
+              </div>
+              <div class="signal-item">
+                <span class="signal-name">24h Range</span>
+                <span class="signal-value" id="daily-range">--</span>
+              </div>
+              <div class="signal-item">
+                <span class="signal-name">Last Trade</span>
+                <span class="signal-value" id="last-trade-size">--</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="content-grid">
+          <article class="panel chart-panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Intraday Trend</p>
+                <h3>24 hour price path</h3>
+              </div>
+              <p class="panel-caption">Hourly closes with live spot overlay</p>
+            </div>
+
+            <div class="chart-frame">
+              <svg id="price-sparkline" viewBox="0 0 720 280" role="img" aria-label="Bitcoin price chart">
+                <defs>
+                  <linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#f7931a" stop-opacity="0.55"></stop>
+                    <stop offset="100%" stop-color="#f7931a" stop-opacity="0"></stop>
+                  </linearGradient>
+                </defs>
+                <path id="sparkline-area" class="sparkline-area" d=""></path>
+                <path id="sparkline-path" class="sparkline-path" d=""></path>
+                <circle id="sparkline-dot" class="sparkline-dot" cx="0" cy="0" r="0"></circle>
+              </svg>
+            </div>
+
+            <div class="chart-footer">
+              <div class="mini-stat">
+                <span class="mini-stat-label">24h High</span>
+                <span class="mini-stat-value" id="chart-high">$--</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-stat-label">24h Low</span>
+                <span class="mini-stat-value" id="chart-low">$--</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-stat-label">Trend Bias</span>
+                <span class="mini-stat-value" id="trend-bias">Neutral</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel pulse-panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Market Pulse</p>
+                <h3>Live readout</h3>
+              </div>
+            </div>
+
+            <div class="pulse-stack">
+              <div class="pulse-callout">
+                <span class="pulse-label">Feed State</span>
+                <strong id="feed-state">Starting</strong>
+              </div>
+              <div class="pulse-callout">
+                <span class="pulse-label">Momentum</span>
+                <strong id="momentum-state">Calculating</strong>
+              </div>
+              <div class="pulse-callout">
+                <span class="pulse-label">Range Position</span>
+                <strong id="range-position">Calculating</strong>
+              </div>
+            </div>
+
+            <ul class="insight-list">
+              <li>
+                <span class="insight-label">Open vs now</span>
+                <span class="insight-value" id="open-comparison">--</span>
+              </li>
+              <li>
+                <span class="insight-label">Distance to high</span>
+                <span class="insight-value" id="distance-to-high">--</span>
+              </li>
+              <li>
+                <span class="insight-label">Distance to low</span>
+                <span class="insight-value" id="distance-to-low">--</span>
+              </li>
+              <li>
+                <span class="insight-label">30 day volume</span>
+                <span class="insight-value" id="volume-30d">--</span>
+              </li>
+            </ul>
+          </article>
+        </section>
+
+        <section class="stats-grid" aria-label="Bitcoin market stats">
+          <article class="stat-card accent-card">
+            <p class="stat-label">24h High</p>
+            <p class="stat-value" id="stat-high">$--</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">24h Low</p>
+            <p class="stat-value" id="stat-low">$--</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">24h Volume</p>
+            <p class="stat-value" id="stat-volume">--</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">Session Open</p>
+            <p class="stat-value" id="stat-open">$--</p>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="./bitcoin-utils.js"></script>
+    <script src="./main.js"></script>
+  </body>
+</html>
