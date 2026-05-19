@@ -78,6 +78,85 @@
     return value > 0 ? "up" : "down";
   }
 
+  function firstFiniteNumber(...values) {
+    for (const value of values) {
+      const parsed = Number(value);
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+    }
+
+    return null;
+  }
+
+  function normalizeExchangeBalances(exchanges) {
+    if (!Array.isArray(exchanges)) {
+      return [];
+    }
+
+    return exchanges
+      .map((entry) => ({
+        name:
+          entry.name ||
+          entry.exchangeName ||
+          entry.exchange_name ||
+          entry.exchange ||
+          entry.exchange_name_en ||
+          "Unknown",
+        balanceBtc: firstFiniteNumber(
+          entry.balanceBtc,
+          entry.balance_btc,
+          entry.balance,
+          entry.totalBalance,
+          entry.total_balance,
+          entry.amount,
+        ),
+        balanceUsd: firstFiniteNumber(
+          entry.balanceUsd,
+          entry.balance_usd,
+          entry.valueUsd,
+          entry.value_usd,
+          entry.usdValue,
+        ),
+        change24hPercent: firstFiniteNumber(
+          entry.change24hPercent,
+          entry.change_24h_percent,
+          entry.changePercent24h,
+          entry.changeRate24h,
+          entry.change_24h,
+          entry.change1d,
+        ),
+        change7dPercent: firstFiniteNumber(
+          entry.change7dPercent,
+          entry.change_7d_percent,
+          entry.changePercent7d,
+          entry.changeRate7d,
+          entry.change_7d,
+          entry.change7d,
+        ),
+        change30dPercent: firstFiniteNumber(
+          entry.change30dPercent,
+          entry.change_30d_percent,
+          entry.changePercent30d,
+          entry.changeRate30d,
+          entry.change_30d,
+          entry.change30d,
+        ),
+      }))
+      .filter((entry) => Number.isFinite(entry.balanceBtc) && entry.balanceBtc > 0)
+      .sort((a, b) => b.balanceBtc - a.balanceBtc);
+  }
+
+  function calculateExchangeBalanceSummary(exchanges) {
+    const normalized = normalizeExchangeBalances(exchanges);
+    const totalBtc = normalized.reduce((total, exchange) => total + exchange.balanceBtc, 0);
+
+    return {
+      exchangeCount: normalized.length,
+      totalBtc,
+    };
+  }
+
   function normalizeCandles(candles) {
     if (!Array.isArray(candles)) {
       return [];
@@ -166,6 +245,7 @@
   const api = {
     buildSparklineData,
     calculateDailyChange,
+    calculateExchangeBalanceSummary,
     calculateSatsPerDollar,
     formatCompactNumber,
     formatCurrency,
@@ -174,6 +254,7 @@
     formatPercent,
     formatRelativeTime,
     getChangeDirection,
+    normalizeExchangeBalances,
     normalizeCandles,
   };
 
