@@ -1,0 +1,70 @@
+.exchange-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.exchange-summary {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 14px;
+}
+
+.exchange-table-wrap {
+  overflow-x: auto;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.exchange-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  font-size: 0.96rem;
+}
+
+.exchange-table th,
+.exchange-table td {
+  padding: 14px 16px;
+  text-align: right;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.exchange-table th:first-child,
+.exchange-table td:first-child {
+  text-align: left;
+}
+
+.exchange-table th {
+  color: var(--soft);
+  font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.exchange-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.exchange-name {
+  font-weight: 700;
+}
+
+.change-positive {
+  color: #88f1c7;
+}
+
+.change-negative {
+  color: #ff9f95;
+}
+
+.exchange-empty {
+  color: var(--muted);
+  text-align: left;
+}
+
+@media (max-width: 760px) {
+  .exchange-summary {
+    grid-template-columns: 1fr;
+  }
+}
