@@ -9,7 +9,8 @@
   const API_BASE = `https://api.exchange.coinbase.com/products/${PRODUCT_ID}`;
   const FEED_URL = "wss://ws-feed.exchange.coinbase.com";
   const EXCHANGE_TICKERS_URL =
-    "https://api.coingecko.com/api/v3/coins/bitcoin/tickers?order=volume_desc&include_exchange_logo=false&page=1";
+    "https://api.coingecko.com/api/v3/coins/bitcoin/tickers?order=volume_desc&include_exchange_logo=false";
+  const EXCHANGE_TICKER_PAGES = 3;
   const CHART_WIDTH = 720;
   const CHART_HEIGHT = 280;
   const CHART_PADDING = 24;
@@ -104,11 +105,17 @@
   }
 
   async function refreshExchangeActivity() {
-    const snapshot = await fetchJson(EXCHANGE_TICKERS_URL);
+    const pages = await Promise.all(
+      Array.from({ length: EXCHANGE_TICKER_PAGES }, (_, pageIndex) =>
+        fetchJson(`${EXCHANGE_TICKERS_URL}&page=${pageIndex + 1}`),
+      ),
+    );
+    const tickers = pages.flatMap((page) => page.tickers || []);
+
     state.exchangeActivity = {
       source: "CoinGecko",
       updatedAt: new Date().toISOString(),
-      exchanges: utils.normalizeExchangeActivity(snapshot.tickers || []),
+      exchanges: utils.normalizeExchangeActivity(tickers),
     };
     renderExchangeActivity();
   }
@@ -271,8 +278,8 @@
     const snapshot = state.exchangeActivity;
 
     if (!snapshot || snapshot.error) {
-      elements.exchangeBalanceStatus.textContent = snapshot?.message || "Loading CoinGecko exchange market data";
-      elements.exchangeBalanceTotal.textContent = "$--";
+      elements.exchangeBalanceStatus.textContent = snapshot?.message || "Loading CoinGecko exchange coin balances";
+      elements.exchangeBalanceTotal.textContent = "-- BTC";
       elements.exchangeCount.textContent = "--";
       elements.exchangeBalanceUpdated.textContent = "--";
       elements.exchangeBalancesBody.innerHTML =
@@ -282,7 +289,9 @@
 
     const summary = utils.calculateExchangeActivitySummary(snapshot.exchanges);
     elements.exchangeBalanceStatus.textContent = `Source: ${snapshot.source}`;
-    elements.exchangeBalanceTotal.textContent = utils.formatCurrency(summary.totalVolumeUsd, 0);
+    elements.exchangeBalanceTotal.textContent = Number.isFinite(summary.totalVolumeBtc)
+      ? `${utils.formatCompactNumber(summary.totalVolumeBtc)} BTC`
+      : "-- BTC";
     elements.exchangeCount.textContent = utils.formatInteger(summary.exchangeCount);
     elements.exchangeBalanceUpdated.textContent = summary.latestUpdate
       ? utils.formatRelativeTime(summary.latestUpdate)
@@ -301,7 +310,7 @@
           <td><span class="exchange-name">${escapeHtml(exchange.name)}</span></td>
           <td>${escapeHtml(exchange.pair)}</td>
           <td>${utils.formatCurrency(exchange.priceUsd)}</td>
-          <td>${utils.formatCurrency(exchange.volumeUsd, 0)}</td>
+          <td>${Number.isFinite(exchange.volumeBtc) ? `${utils.formatCompactNumber(exchange.volumeBtc)} BTC` : "--"}</td>
           <td>${utils.formatPercent(exchange.spreadPercent)}</td>
         </tr>`;
       })
@@ -402,7 +411,7 @@
     console.error(error);
     state.exchangeActivity = {
       error: true,
-      message: "Could not load CoinGecko exchange market data",
+      message: "Could not load CoinGecko exchange coin balances",
       source: "CoinGecko",
       exchanges: [],
     };
@@ -424,14 +433,14 @@
     } catch (error) {
       console.error(error);
     }
-  }, 300000);
+  }, 60000);
   window.setInterval(async () => {
     try {
       await refreshExchangeActivity();
     } catch (error) {
       console.error(error);
     }
-  }, 300000);
+  }, 60000);
   window.setInterval(() => {
     if (state.lastUpdatedAt) {
       renderPrice();

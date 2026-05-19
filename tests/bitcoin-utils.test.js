@@ -47,13 +47,14 @@ test("sparkline data returns a line and area path", () => {
   assert.deepEqual(result.lastPoint, { x: 288, y: 12 });
 });
 
-test("exchange activity aggregates and sorts by usd volume", () => {
+test("exchange activity aggregates and sorts by btc volume", () => {
   const result = normalizeExchangeActivity([
     {
       base: "BTC",
       target: "USD",
       market: { name: "Coinbase Exchange", identifier: "gdax" },
       converted_last: { usd: 100000 },
+      volume: 2500,
       converted_volume: { usd: 250000000 },
       bid_ask_spread_percentage: 0.01,
       last_fetch_at: "2026-05-19T20:00:00Z",
@@ -63,6 +64,7 @@ test("exchange activity aggregates and sorts by usd volume", () => {
       target: "USDT",
       market: { name: "Binance", identifier: "binance" },
       converted_last: { usd: 100010 },
+      volume: 2000,
       converted_volume: { usd: 500000000 },
       bid_ask_spread_percentage: 0.02,
       last_fetch_at: "2026-05-19T20:01:00Z",
@@ -72,6 +74,7 @@ test("exchange activity aggregates and sorts by usd volume", () => {
       target: "EUR",
       market: { name: "Coinbase Exchange", identifier: "gdax" },
       converted_last: { usd: 99900 },
+      volume: 500,
       converted_volume: { usd: 50000000 },
       bid_ask_spread_percentage: 0.03,
       last_fetch_at: "2026-05-19T20:02:00Z",
@@ -80,22 +83,24 @@ test("exchange activity aggregates and sorts by usd volume", () => {
 
   assert.deepEqual(
     result.map((entry) => entry.name),
-    ["Binance", "Coinbase Exchange"],
+    ["Coinbase Exchange", "Binance"],
   );
-  assert.equal(result[0].volumeUsd, 500000000);
-  assert.equal(result[0].pair, "BTC/USDT");
-  assert.equal(result[1].volumeUsd, 300000000);
+  assert.equal(result[0].volumeBtc, 3000);
+  assert.equal(result[0].pair, "BTC/USD");
+  assert.equal(result[1].volumeBtc, 2000);
 });
 
 test("exchange activity summary totals normalized exchange volume", () => {
   const result = calculateExchangeActivitySummary([
     {
       market: { name: "A" },
+      volume: 1,
       converted_volume: { usd: 10 },
       last_fetch_at: "2026-05-19T20:00:00Z",
     },
     {
       market: { name: "B" },
+      volume: 2.5,
       converted_volume: { usd: 25.5 },
       last_fetch_at: "2026-05-19T20:05:00Z",
     },
@@ -103,5 +108,6 @@ test("exchange activity summary totals normalized exchange volume", () => {
 
   assert.equal(result.exchangeCount, 2);
   assert.equal(result.totalVolumeUsd, 35.5);
+  assert.equal(result.totalVolumeBtc, 3.5);
   assert.equal(result.latestUpdate.toISOString(), "2026-05-19T20:05:00.000Z");
 });
