@@ -89,71 +89,79 @@
     return null;
   }
 
-  function normalizeExchangeBalances(exchanges) {
-    if (!Array.isArray(exchanges)) {
+  function normalizeExchangeActivity(tickers) {
+    if (!Array.isArray(tickers)) {
       return [];
     }
 
-    return exchanges
-      .map((entry) => ({
-        name:
-          entry.name ||
-          entry.exchangeName ||
-          entry.exchange_name ||
-          entry.exchange ||
-          entry.exchange_name_en ||
-          "Unknown",
-        balanceBtc: firstFiniteNumber(
-          entry.balanceBtc,
-          entry.balance_btc,
-          entry.balance,
-          entry.totalBalance,
-          entry.total_balance,
-          entry.amount,
-        ),
-        balanceUsd: firstFiniteNumber(
-          entry.balanceUsd,
-          entry.balance_usd,
-          entry.valueUsd,
-          entry.value_usd,
-          entry.usdValue,
-        ),
-        change24hPercent: firstFiniteNumber(
-          entry.change24hPercent,
-          entry.change_24h_percent,
-          entry.changePercent24h,
-          entry.changeRate24h,
-          entry.change_24h,
-          entry.change1d,
-        ),
-        change7dPercent: firstFiniteNumber(
-          entry.change7dPercent,
-          entry.change_7d_percent,
-          entry.changePercent7d,
-          entry.changeRate7d,
-          entry.change_7d,
-          entry.change7d,
-        ),
-        change30dPercent: firstFiniteNumber(
-          entry.change30dPercent,
-          entry.change_30d_percent,
-          entry.changePercent30d,
-          entry.changeRate30d,
-          entry.change_30d,
-          entry.change30d,
-        ),
-      }))
-      .filter((entry) => Number.isFinite(entry.balanceBtc) && entry.balanceBtc > 0)
-      .sort((a, b) => b.balanceBtc - a.balanceBtc);
+    const exchanges = new Map();
+
+    for (const ticker of tickers) {
+      if (ticker.is_anomaly || ticker.is_stale || !ticker.market?.name) {
+        continue;
+      }
+
+      if (ticker.coin_id && ticker.coin_id !== "bitcoin") {
+        continue;
+      }
+
+      if (ticker.base && !["BTC", "XBT"].includes(String(ticker.base).toUpperCase())) {
+        continue;
+      }
+
+      const volumeUsd = firstFiniteNumber(ticker.converted_volume?.usd, ticker.volume_usd);
+      if (!Number.isFinite(volumeUsd) || volumeUsd <= 0) {
+        continue;
+      }
+
+      const key = ticker.market.identifier || ticker.market.name;
+      const existing = exchanges.get(key) || {
+        name: ticker.market.name,
+        pair: "--",
+        priceUsd: null,
+        spreadPercent: null,
+        volumeUsd: 0,
+        tickerCount: 0,
+        updatedAt: null,
+      };
+
+      existing.volumeUsd += volumeUsd;
+      existing.tickerCount += 1;
+
+      if (!existing.topTickerVolume || volumeUsd > existing.topTickerVolume) {
+        existing.topTickerVolume = volumeUsd;
+        existing.pair = `${ticker.base || "BTC"}/${ticker.target || "USD"}`;
+        existing.priceUsd = firstFiniteNumber(ticker.converted_last?.usd, ticker.last);
+        existing.spreadPercent = firstFiniteNumber(ticker.bid_ask_spread_percentage);
+      }
+
+      const updatedAt = ticker.last_fetch_at || ticker.last_traded_at || ticker.timestamp;
+      if (updatedAt && (!existing.updatedAt || new Date(updatedAt) > new Date(existing.updatedAt))) {
+        existing.updatedAt = updatedAt;
+      }
+
+      exchanges.set(key, existing);
+    }
+
+    return Array.from(exchanges.values())
+      .map(({ topTickerVolume, ...exchange }) => exchange)
+      .sort((a, b) => b.volumeUsd - a.volumeUsd);
   }
 
-  function calculateExchangeBalanceSummary(exchanges) {
-    const normalized = normalizeExchangeBalances(exchanges);
-    const totalBtc = normalized.reduce((total, exchange) => total + exchange.balanceBtc, 0);
+  function calculateExchangeActivitySummary(exchanges) {
+    const normalized = Array.isArray(exchanges) && exchanges.every((exchange) => "volumeUsd" in exchange)
+      ? exchanges
+      : normalizeExchangeActivity(exchanges);
+    const totalVolumeUsd = normalized.reduce((total, exchange) => total + exchange.volumeUsd, 0);
+    const latestUpdate = normalized
+      .map((exchange) => new Date(exchange.updatedAt))
+      .filter((date) => !Number.isNaN(date.valueOf()))
+      .sort((a, b) => b - a)[0];
 
     return {
       exchangeCount: normalized.length,
-      totalBtc,
+      latestUpdate: latestUpdate || null,
+      totalVolumeUsd,
     };
   }
 
@@ -245,7 +253,7 @@
   const api = {
     buildSparklineData,
     calculateDailyChange,
-    calculateExchangeBalanceSummary,
+    calculateExchangeActivitySummary,
     calculateSatsPerDollar,
     formatCompactNumber,
     formatCurrency,
@@ -254,7 +262,7 @@
     formatPercent,
     formatRelativeTime,
     getChangeDirection,
-    normalizeExchangeBalances,
+    normalizeExchangeActivity,
     normalizeCandles,
   };
 
