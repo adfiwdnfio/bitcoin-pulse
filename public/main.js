@@ -36,6 +36,11 @@
     statLow: document.getElementById("stat-low"),
     statVolume: document.getElementById("stat-volume"),
     statOpen: document.getElementById("stat-open"),
+    exchangeBalanceStatus: document.getElementById("exchange-balance-status"),
+    exchangeBalanceTotal: document.getElementById("exchange-balance-total"),
+    exchangeCount: document.getElementById("exchange-count"),
+    exchangeBalanceUpdated: document.getElementById("exchange-balance-updated"),
+    exchangeBalancesBody: document.getElementById("exchange-balances-body"),
     sparklinePath: document.getElementById("sparkline-path"),
     sparklineArea: document.getElementById("sparkline-area"),
     sparklineDot: document.getElementById("sparkline-dot"),
@@ -50,6 +55,7 @@
     volume30d: null,
     lastTradeSize: null,
     candles: [],
+    exchangeBalances: null,
     lastUpdatedAt: null,
     reconnectDelayMs: 1000,
     reconnectTimer: null,
@@ -93,6 +99,15 @@
   async function refreshCandles() {
     const candles = await fetchJson(`${API_BASE}/candles?granularity=3600`);
     state.candles = utils.normalizeCandles(candles).slice(-24);
+  }
+
+  async function refreshExchangeBalances() {
+    const snapshot = await fetchJson(`./data/exchange-balances.json?ts=${Date.now()}`);
+    state.exchangeBalances = {
+      ...snapshot,
+      exchanges: utils.normalizeExchangeBalances(snapshot.exchanges || snapshot.data || []),
+    };
+    renderExchangeBalances();
   }
 
   function setStatus(label, tone) {
@@ -243,10 +258,70 @@
     elements.trendBias.textContent = closes[closes.length - 1] >= closes[0] ? "Bullish slope" : "Pullback";
   }
 
+  function formatSignedPercent(value) {
+    if (!Number.isFinite(value)) {
+      return "--";
+    }
+
+    return `${value >= 0 ? "+" : ""}${utils.formatPercent(value)}`;
+  }
+
+  function escapeHtml(value) {
+    const wrapper = document.createElement("span");
+    wrapper.textContent = String(value);
+    return wrapper.innerHTML;
+  }
+
+  function renderExchangeBalances() {
+    const snapshot = state.exchangeBalances;
+
+    if (!snapshot || snapshot.status !== "ok") {
+      elements.exchangeBalanceStatus.textContent =
+        snapshot?.message || "Configure CoinGlass API key to enable balance data";
+      elements.exchangeBalanceTotal.textContent = "-- BTC";
+      elements.exchangeCount.textContent = "--";
+      elements.exchangeBalanceUpdated.textContent = "--";
+      elements.exchangeBalancesBody.innerHTML =
+        '<tr><td class="exchange-empty" colspan="5">Exchange balance feed is not configured yet.</td></tr>';
+      return;
+    }
+
+    const summary = utils.calculateExchangeBalanceSummary(snapshot.exchanges);
+    elements.exchangeBalanceStatus.textContent = `Source: ${snapshot.source || "CoinGlass"}`;
+    elements.exchangeBalanceTotal.textContent = `${utils.formatCompactNumber(summary.totalBtc)} BTC`;
+    elements.exchangeCount.textContent = utils.formatInteger(summary.exchangeCount);
+    elements.exchangeBalanceUpdated.textContent = snapshot.updatedAt
+      ? utils.formatRelativeTime(new Date(snapshot.updatedAt))
+      : "--";
+
+    if (!snapshot.exchanges.length) {
+      elements.exchangeBalancesBody.innerHTML =
+        '<tr><td class="exchange-empty" colspan="5">No exchange balances returned.</td></tr>';
+      return;
+    }
+
+    elements.exchangeBalancesBody.innerHTML = snapshot.exchanges
+      .slice(0, 8)
+      .map((exchange) => {
+        const dailyClass = utils.getChangeDirection(exchange.change24hPercent);
+        const weeklyClass = utils.getChangeDirection(exchange.change7dPercent);
+        const monthlyClass = utils.getChangeDirection(exchange.change30dPercent);
+        return `<tr>
+          <td><span class="exchange-name">${escapeHtml(exchange.name)}</span></td>
+          <td>${utils.formatCompactNumber(exchange.balanceBtc)} BTC</td>
+          <td class="${dailyClass === "up" ? "change-positive" : dailyClass === "down" ? "change-negative" : ""}">${formatSignedPercent(exchange.change24hPercent)}</td>
+          <td class="${weeklyClass === "up" ? "change-positive" : weeklyClass === "down" ? "change-negative" : ""}">${formatSignedPercent(exchange.change7dPercent)}</td>
+          <td class="${monthlyClass === "up" ? "change-positive" : monthlyClass === "down" ? "change-negative" : ""}">${formatSignedPercent(exchange.change30dPercent)}</td>
+        </tr>`;
+      })
+      .join("");
+  }
+
   function render() {
     renderPrice();
     renderStats();
     renderChart();
+    renderExchangeBalances();
   }
 
   function scheduleReconnect() {
@@ -332,6 +407,15 @@
   }
 
   hydrate();
+  refreshExchangeBalances().catch((error) => {
+    console.error(error);
+    state.exchangeBalances = {
+      status: "error",
+      message: "Could not load exchange balance feed",
+      exchanges: [],
+    };
+    renderExchangeBalances();
+  });
   connectFeed();
   window.setInterval(async () => {
     try {
@@ -345,6 +429,13 @@
     try {
       await refreshCandles();
       renderChart();
+    } catch (error) {
+      console.error(error);
+    }
+  }, 300000);
+  window.setInterval(async () => {
+    try {
+      await refreshExchangeBalances();
     } catch (error) {
       console.error(error);
     }
