@@ -109,8 +109,9 @@
         continue;
       }
 
+      const volumeBtc = firstFiniteNumber(ticker.volume);
       const volumeUsd = firstFiniteNumber(ticker.converted_volume?.usd, ticker.volume_usd);
-      if (!Number.isFinite(volumeUsd) || volumeUsd <= 0) {
+      if ((!Number.isFinite(volumeBtc) || volumeBtc <= 0) && (!Number.isFinite(volumeUsd) || volumeUsd <= 0)) {
         continue;
       }
 
@@ -121,15 +122,22 @@
         priceUsd: null,
         spreadPercent: null,
         volumeUsd: 0,
+        volumeBtc: 0,
         tickerCount: 0,
         updatedAt: null,
       };
 
-      existing.volumeUsd += volumeUsd;
+      if (Number.isFinite(volumeUsd) && volumeUsd > 0) {
+        existing.volumeUsd += volumeUsd;
+      }
+      if (Number.isFinite(volumeBtc) && volumeBtc > 0) {
+        existing.volumeBtc += volumeBtc;
+      }
       existing.tickerCount += 1;
 
-      if (!existing.topTickerVolume || volumeUsd > existing.topTickerVolume) {
-        existing.topTickerVolume = volumeUsd;
+      const rankVolume = Number.isFinite(volumeBtc) && volumeBtc > 0 ? volumeBtc : volumeUsd;
+      if (!existing.topTickerVolume || rankVolume > existing.topTickerVolume) {
+        existing.topTickerVolume = rankVolume;
         existing.pair = `${ticker.base || "BTC"}/${ticker.target || "USD"}`;
         existing.priceUsd = firstFiniteNumber(ticker.converted_last?.usd, ticker.last);
         existing.spreadPercent = firstFiniteNumber(ticker.bid_ask_spread_percentage);
@@ -145,7 +153,7 @@
 
     return Array.from(exchanges.values())
       .map(({ topTickerVolume, ...exchange }) => exchange)
-      .sort((a, b) => b.volumeUsd - a.volumeUsd);
+      .sort((a, b) => (b.volumeBtc || 0) - (a.volumeBtc || 0));
   }
 
   function calculateExchangeActivitySummary(exchanges) {
@@ -153,6 +161,7 @@
       ? exchanges
       : normalizeExchangeActivity(exchanges);
     const totalVolumeUsd = normalized.reduce((total, exchange) => total + exchange.volumeUsd, 0);
+    const totalVolumeBtc = normalized.reduce((total, exchange) => total + (exchange.volumeBtc || 0), 0);
     const latestUpdate = normalized
       .map((exchange) => new Date(exchange.updatedAt))
       .filter((date) => !Number.isNaN(date.valueOf()))
@@ -162,6 +171,7 @@
       exchangeCount: normalized.length,
       latestUpdate: latestUpdate || null,
       totalVolumeUsd,
+      totalVolumeBtc,
     };
   }
 

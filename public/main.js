@@ -272,7 +272,7 @@
 
     if (!snapshot || snapshot.error) {
       elements.exchangeBalanceStatus.textContent = snapshot?.message || "Loading CoinGecko exchange market data";
-      elements.exchangeBalanceTotal.textContent = "$--";
+      elements.exchangeBalanceTotal.textContent = "-- BTC";
       elements.exchangeCount.textContent = "--";
       elements.exchangeBalanceUpdated.textContent = "--";
       elements.exchangeBalancesBody.innerHTML =
@@ -282,7 +282,9 @@
 
     const summary = utils.calculateExchangeActivitySummary(snapshot.exchanges);
     elements.exchangeBalanceStatus.textContent = `Source: ${snapshot.source}`;
-    elements.exchangeBalanceTotal.textContent = utils.formatCurrency(summary.totalVolumeUsd, 0);
+    elements.exchangeBalanceTotal.textContent = Number.isFinite(summary.totalVolumeBtc)
+      ? `${utils.formatCompactNumber(summary.totalVolumeBtc)} BTC`
+      : "-- BTC";
     elements.exchangeCount.textContent = utils.formatInteger(summary.exchangeCount);
     elements.exchangeBalanceUpdated.textContent = summary.latestUpdate
       ? utils.formatRelativeTime(summary.latestUpdate)
@@ -301,7 +303,7 @@
           <td><span class="exchange-name">${escapeHtml(exchange.name)}</span></td>
           <td>${escapeHtml(exchange.pair)}</td>
           <td>${utils.formatCurrency(exchange.priceUsd)}</td>
-          <td>${utils.formatCurrency(exchange.volumeUsd, 0)}</td>
+          <td>${Number.isFinite(exchange.volumeBtc) ? `${utils.formatCompactNumber(exchange.volumeBtc)} BTC` : "--"}</td>
           <td>${utils.formatPercent(exchange.spreadPercent)}</td>
         </tr>`;
       })
