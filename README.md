@@ -42,3 +42,17 @@ Your live URL will be:
 ```text
 https://<your-github-username>.github.io/<repo-name>/
 ```
+
+## Exchange Balance Feed
+
+The exchange balance section reads `public/data/exchange-balances.json`.
+
+To enable live BTC exchange reserve data:
+
+1. Create or sign in to a CoinGlass account.
+2. Get a CoinGlass API key with access to `/api/exchange/balance/list`.
+3. In GitHub, open this repo's `Settings` -> `Secrets and variables` -> `Actions`.
+4. Add a repository secret named `CG_API_KEY`.
+5. Run the `Update Exchange Balances` workflow once, or wait for the hourly schedule.
+
+The API key stays in GitHub Actions and is never exposed in the public website.
