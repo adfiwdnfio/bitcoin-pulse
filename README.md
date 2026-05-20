@@ -1,10 +1,23 @@
-# Bitcoin Pulse
+# BTC Analytics
 
-Static bitcoin tracker with live `BTC-USD` updates, a 24-hour sparkline, and market stats pulled directly from Coinbase in the browser.
+Static Bitcoin analytics dashboard deployed with GitHub Pages.
 
-## Run locally
+## Live Data
 
-From the project root:
+The site runs fully in the browser and uses free public sources only:
+
+- Kraken, Coinbase, Bitstamp, Gemini, CoinGecko, and Blockchain.info for BTC price fallbacks.
+- mempool.space for block height, fees, mempool data, address lookup, and recent transactions.
+- alternative.me for the Fear and Greed Index.
+- Public exchange endpoints for live BTC volume and price activity.
+
+No API keys, backend server, or always-on Mac are required.
+
+## Important Exchange Balance Note
+
+Exact exchange wallet balances require proprietary wallet labeling from paid providers. This no-key version does not fake those numbers. It tracks live exchange activity, BTC volume, price, and an explicitly labeled liquid-supply estimate using free public APIs.
+
+## Local Preview
 
 ```bash
 python3 -m http.server 4173 -d public
@@ -12,43 +25,6 @@ python3 -m http.server 4173 -d public
 
 Then open `http://localhost:4173`.
 
-## Deploy without keeping your Mac on
+## Deploy
 
-This app is fully static. There is no backend to keep running.
-
-Deploy the `public/` folder to any static host, for example:
-
-- Cloudflare Pages
-- Netlify
-- Vercel
-- GitHub Pages
-
-Once it is deployed, the host serves the HTML/CSS/JS and each visitor's browser connects to the live bitcoin APIs directly. Your Mac does not need to stay on.
-
-## GitHub Pages
-
-This repo includes a GitHub Pages workflow in `.github/workflows/deploy-pages.yml`.
-
-To publish:
-
-1. Create a new GitHub repository.
-2. Upload this project to that repo and push to the `main` branch.
-3. In GitHub, open `Settings` -> `Pages`.
-4. Under `Build and deployment`, set `Source` to `GitHub Actions`.
-5. Wait for the `Deploy GitHub Pages` workflow to finish.
-
-Your live URL will be:
-
-```text
-https://<your-github-username>.github.io/<repo-name>/
-```
-
-## Exchange Activity Feed
-
-The exchange activity section uses CoinGecko's keyless public API from the browser:
-
-```text
-https://api.coingecko.com/api/v3/coins/bitcoin/tickers
-```
-
-It shows major BTC markets by exchange, including top pair, latest price, 24-hour volume, and spread. No API key, GitHub secret, or paid data plan is required.
+GitHub Pages deploys the static `public/` folder through `.github/workflows/deploy-pages.yml`.
