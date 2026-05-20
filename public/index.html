@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>BTC Analytics | Live Bitcoin Dashboard</title>
   <meta name="description" content="Live Bitcoin analytics dashboard using free public APIs. No API keys, backend, or always-on Mac required.">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
@@ -11,12 +11,15 @@
     :root {
       --btc: #f7931a;
       --btc-soft: rgba(247, 147, 26, 0.16);
+      --btc-glow: rgba(247, 147, 26, 0.34);
+      --purple: #8b5cf6;
+      --purple-soft: rgba(139, 92, 246, 0.14);
       --ink: #fff7e8;
       --muted: #b8aa95;
       --faint: #7e705f;
-      --bg: #090705;
-      --panel: rgba(28, 18, 9, 0.88);
-      --panel-2: rgba(41, 26, 12, 0.82);
+      --bg: #050403;
+      --panel: rgba(20, 13, 8, 0.9);
+      --panel-2: rgba(31, 20, 13, 0.84);
       --line: rgba(247, 147, 26, 0.18);
       --green: #22c55e;
       --red: #ef4444;
@@ -26,17 +29,28 @@
 
     * { box-sizing: border-box; }
 
-    html { scroll-behavior: smooth; }
+    html {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
 
     body {
       margin: 0;
       color: var(--ink);
       background:
-        radial-gradient(circle at 20% 0%, rgba(247, 147, 26, 0.18), transparent 30rem),
-        radial-gradient(circle at 85% 10%, rgba(255, 197, 86, 0.08), transparent 26rem),
-        linear-gradient(145deg, #080604 0%, #140c05 48%, #050403 100%);
+        radial-gradient(circle at 18% -4%, rgba(247, 147, 26, 0.25), transparent 28rem),
+        radial-gradient(circle at 92% 10%, rgba(139, 92, 246, 0.18), transparent 28rem),
+        radial-gradient(circle at 50% 120%, rgba(247, 147, 26, 0.12), transparent 32rem),
+        linear-gradient(145deg, #020202 0%, #100804 42%, #050304 100%);
       font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       min-height: 100vh;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      overscroll-behavior-x: none;
     }
 
     body::before {
@@ -53,10 +67,16 @@
 
     a { color: inherit; }
 
+    a, button, input {
+      -webkit-tap-highlight-color: rgba(247, 147, 26, 0.18);
+    }
+
     .shell {
       width: min(1180px, calc(100% - 28px));
+      max-width: 1180px;
       margin: 0 auto;
       padding: 22px 0 54px;
+      overflow: clip;
     }
 
     .topbar {
@@ -72,6 +92,9 @@
       background: rgba(12, 8, 4, 0.78);
       backdrop-filter: blur(18px);
       box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
     }
 
     .brand {
@@ -79,6 +102,8 @@
       align-items: center;
       gap: 12px;
       min-width: 190px;
+      flex: 0 0 auto;
+      cursor: pointer;
     }
 
     .coin {
@@ -91,7 +116,7 @@
       font-weight: 900;
       color: #1a0e03;
       background: linear-gradient(135deg, #ffe0a3, var(--btc) 55%, #ad5a04);
-      box-shadow: 0 0 36px rgba(247, 147, 26, 0.42);
+      box-shadow: 0 0 36px var(--btc-glow);
     }
 
     .brand-title {
@@ -110,9 +135,13 @@
 
     .nav {
       display: flex;
+      flex: 1 1 auto;
       gap: 6px;
       overflow-x: auto;
       padding: 2px;
+      min-width: 0;
+      max-width: 100%;
+      justify-content: flex-end;
       scrollbar-width: none;
     }
 
@@ -126,6 +155,7 @@
       padding: 10px 12px;
       border-radius: 999px;
       font-size: 13px;
+      min-width: 0;
       transition: 180ms ease;
     }
 
@@ -141,14 +171,18 @@
       gap: 18px;
       align-items: stretch;
       padding: 34px 0 18px;
+      min-width: 0;
     }
 
     .card {
       border: 1px solid var(--line);
       border-radius: 28px;
-      background: linear-gradient(180deg, var(--panel), rgba(13, 8, 4, 0.84));
+      background:
+        linear-gradient(180deg, var(--panel), rgba(9, 7, 6, 0.86)),
+        radial-gradient(circle at 0 0, var(--btc-soft), transparent 24rem);
       box-shadow: var(--shadow);
       overflow: hidden;
+      min-width: 0;
     }
 
     .hero-main {
@@ -227,6 +261,8 @@
       background: rgba(255, 255, 255, 0.04);
       padding: 12px 16px;
       font-weight: 800;
+      text-decoration: none;
+      touch-action: manipulation;
       transition: 180ms ease;
     }
 
@@ -287,10 +323,16 @@
     .chart-wrap {
       flex: 1;
       min-height: 220px;
+      min-width: 0;
+      position: relative;
       border: 1px solid rgba(255,255,255,0.06);
       border-radius: 22px;
       padding: 14px;
       background: rgba(0,0,0,0.18);
+    }
+
+    canvas {
+      max-width: 100%;
     }
 
     .grid {
@@ -298,6 +340,10 @@
       grid-template-columns: repeat(12, 1fr);
       gap: 16px;
       margin-top: 16px;
+    }
+
+    .grid > * {
+      min-width: 0;
     }
 
     .span-3 { grid-column: span 3; }
@@ -395,7 +441,13 @@
 
     .table-card {
       padding: 8px;
+      max-width: 100%;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .table-card table {
+      min-width: 560px;
     }
 
     .callout {
@@ -424,6 +476,7 @@
       padding: 14px 14px;
       outline: none;
       font: inherit;
+      font-size: 16px;
     }
 
     input:focus { border-color: rgba(247, 147, 26, 0.6); }
@@ -457,20 +510,43 @@
     }
 
     @media (max-width: 900px) {
-      .topbar { align-items: flex-start; flex-direction: column; }
-      .brand { min-width: 0; }
+      .topbar { align-items: flex-start; flex-direction: column; gap: 10px; }
+      .brand { min-width: 0; width: 100%; }
+      .nav {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        justify-content: stretch;
+        overflow: visible;
+      }
+      .nav a {
+        text-align: center;
+        padding: 10px 8px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
       .hero { grid-template-columns: 1fr; }
       .span-3, .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
       .section-head { align-items: flex-start; flex-direction: column; }
       .price-tile, .hero-main { min-height: auto; }
+      .hero-actions .btn { flex: 1 1 100%; text-align: center; }
     }
 
     @media (max-width: 520px) {
-      .shell { width: min(100% - 18px, 1180px); padding-top: 10px; }
+      .shell { width: min(100% - 14px, 1180px); padding-top: 10px; }
       .topbar { top: 6px; border-radius: 20px; }
+      .nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .nav a { font-size: 11px; padding: 9px 6px; }
+      h1 { font-size: clamp(38px, 14vw, 54px); }
       .hero-main, .price-tile, .metric { padding: 18px; }
+      .price-now { flex-direction: column; }
+      .change { align-self: flex-start; }
+      .chart-wrap { min-height: 240px; }
       th, td { padding: 12px 8px; font-size: 13px; }
       .hide-sm { display: none; }
+      .form { flex-direction: column; }
+      .form .btn { width: 100%; }
+      .table-card { margin-left: -2px; margin-right: -2px; }
     }
   </style>
 </head>
@@ -478,7 +554,7 @@
   <div class="shell">
     <header class="topbar">
       <div class="brand" onclick="location.hash='top'">
-        <div class="coin">B</div>
+        <div class="coin">₿</div>
         <div>
           <div class="brand-title">BTC Analytics</div>
           <div class="brand-sub">Live Bitcoin</div>
@@ -486,6 +562,7 @@
       </div>
       <nav class="nav" aria-label="Sections">
         <a href="#market">Market</a>
+        <a href="#signals">Signals</a>
         <a href="#exchanges">Exchanges</a>
         <a href="#network">Network</a>
         <a href="#transactions">Transactions</a>
@@ -506,8 +583,8 @@
           </p>
           <div class="hero-actions">
             <button class="btn primary" onclick="refreshAll()">Refresh live data</button>
+            <a class="btn" href="#signals">View quick signals</a>
             <a class="btn" href="#address">Analyze an address</a>
-            <a class="btn" href="#exchanges">View exchange activity</a>
           </div>
         </article>
 
@@ -549,6 +626,38 @@
         </div>
       </section>
 
+      <section id="signals">
+        <div class="section-head">
+          <div>
+            <h2>Bitcoin quick signals.</h2>
+            <p class="section-copy">Fast phone-friendly numbers for stacking, sending, and reading network pressure at a glance.</p>
+          </div>
+          <div class="last-updated" id="signals-updated">Waiting for live signals</div>
+        </div>
+        <div class="grid">
+          <div class="card metric span-3">
+            <div class="kicker">Sats per dollar</div>
+            <div class="metric-value mono" id="sats-dollar">...</div>
+            <div class="metric-note">How many sats $1 buys at live spot.</div>
+          </div>
+          <div class="card metric span-3">
+            <div class="kicker">Typical fast send</div>
+            <div class="metric-value mono" id="typical-fee">...</div>
+            <div class="metric-note">Estimated 141 vB single-send fee.</div>
+          </div>
+          <div class="card metric span-3">
+            <div class="kicker">Daily issuance</div>
+            <div class="metric-value mono" id="daily-issuance">...</div>
+            <div class="metric-note">Estimated BTC mined per day.</div>
+          </div>
+          <div class="card metric span-3">
+            <div class="kicker">Difficulty change</div>
+            <div class="metric-value mono" id="difficulty-change">...</div>
+            <div class="metric-note" id="difficulty-progress">mempool.space estimate.</div>
+          </div>
+        </div>
+      </section>
+
       <section id="exchanges">
         <div class="section-head">
           <div>
@@ -573,6 +682,11 @@
             <div class="metric-note">Public APIs are polled every 30 seconds.</div>
           </div>
           <div class="card metric span-4">
+            <div class="kicker">Exchange spread</div>
+            <div class="metric-value mono" id="exchange-spread">...</div>
+            <div class="metric-note">High/low price difference across live public feeds.</div>
+          </div>
+          <div class="card metric span-12">
             <div class="kicker">No-key reserve proxy</div>
             <div class="metric-value mono" id="liquid-supply">...</div>
             <div class="metric-note">Estimated liquid float, clearly marked as an estimate.</div>
@@ -760,6 +874,7 @@
 
     function fmtUSD(value, digits = 0) {
       if (!Number.isFinite(value)) return "--";
+      if (Math.abs(value) < 1000) return "$" + fmtNumber(value, digits);
       return "$" + fmtCompact(value);
     }
 
@@ -844,14 +959,21 @@
       return Math.min(supply, MAX_SUPPLY);
     }
 
+    function currentSubsidy(height) {
+      if (!Number.isFinite(height)) return null;
+      const epoch = Math.floor(height / 210000);
+      return 50 / Math.pow(2, epoch);
+    }
+
     async function fetchNetwork() {
-      const [heightText, fees, mempool] = await Promise.all([
+      const [heightText, fees, mempool, difficulty] = await Promise.all([
         safe(() => fetchText("https://mempool.space/api/blocks/tip/height"), null),
         safe(() => fetchJSON("https://mempool.space/api/v1/fees/recommended"), null),
-        safe(() => fetchJSON("https://mempool.space/api/mempool"), null)
+        safe(() => fetchJSON("https://mempool.space/api/mempool"), null),
+        safe(() => fetchJSON("https://mempool.space/api/v1/difficulty-adjustment"), null)
       ]);
       const height = heightText ? Number(String(heightText).trim()) : null;
-      return { height, fees, mempool };
+      return { height, fees, mempool, difficulty };
     }
 
     async function fetchFearGreed() {
@@ -1045,13 +1167,57 @@
       const left = next - height;
       const days = Math.round((left * 10) / 60 / 24);
       const liquid = Math.max(supply - 3700000 - 13200000, 0);
+      const dailyIssuance = currentSubsidy(height) * 144;
 
       setText("supply-circulating", fmtNumber(supply, 4));
       setText("supply-left", fmtNumber(MAX_SUPPLY - supply, 4));
       setText("next-halving", "~" + fmtNumber(days, 0) + " days");
       setText("blocks-left", fmtNumber(left, 0));
       setText("liquid-supply", fmtBTC(liquid, 0));
+      setText("daily-issuance", fmtBTC(dailyIssuance, 2));
       if (state.price) setText("market-cap", fmtUSD(state.price * supply, 0));
+    }
+
+    function updatePriceSignals() {
+      if (!state.price) return;
+      setText("sats-dollar", fmtNumber(100000000 / state.price, 0) + " sats");
+      if (state.supply) setText("market-cap", fmtUSD(state.price * state.supply, 0));
+    }
+
+    function updateFeeSignal(fees) {
+      const fastFee = fees && Number(fees.fastestFee);
+      if (!Number.isFinite(fastFee)) return;
+      const typicalVbytes = 141;
+      const sats = fastFee * typicalVbytes;
+      const usd = state.price ? (sats / 1e8) * state.price : null;
+      setText("typical-fee", fmtNumber(sats, 0) + " sats" + (Number.isFinite(usd) ? " / " + fmtUSD(usd, 2) : ""));
+    }
+
+    function renderDifficulty(difficulty) {
+      if (!difficulty) return;
+      const change = Number(difficulty.difficultyChange);
+      const progress = Number(difficulty.progressPercent);
+      const value = $("difficulty-change");
+      if (Number.isFinite(change) && value) {
+        value.textContent = (change >= 0 ? "+" : "") + change.toFixed(2) + "%";
+        value.style.color = change >= 0 ? "var(--green)" : "var(--red)";
+      }
+      if (Number.isFinite(progress)) {
+        setText("difficulty-progress", fmtNumber(progress, 1) + "% through this difficulty epoch.");
+      }
+    }
+
+    function renderExchangeSpread(rows) {
+      const prices = rows.map((row) => Number(row.price)).filter(Number.isFinite);
+      if (prices.length < 2) {
+        setText("exchange-spread", "--");
+        return;
+      }
+      const high = Math.max(...prices);
+      const low = Math.min(...prices);
+      const spread = high - low;
+      const pct = state.price ? (spread / state.price) * 100 : null;
+      setText("exchange-spread", fmtUSD(spread, 2) + (Number.isFinite(pct) ? " / " + pct.toFixed(2) + "%" : ""));
     }
 
     async function refreshAll() {
@@ -1072,6 +1238,7 @@
         state.lastPriceSource = price.source;
         setText("price", "$" + fmtNumber(price.price, 2));
         setText("price-source", "Source: " + price.source + " - updates every 30 seconds");
+        updatePriceSignals();
         const change = $("price-change");
         if (Number.isFinite(price.change)) {
           change.textContent = (price.change >= 0 ? "+" : "") + price.change.toFixed(2) + "%";
@@ -1093,11 +1260,14 @@
           setText("fee-fastest", network.fees.fastestFee + " sat/vB");
           setText("fee-half", network.fees.halfHourFee + " sat/vB");
           setText("fee-hour", network.fees.hourFee + " sat/vB");
+          updateFeeSignal(network.fees);
         }
         if (network.mempool) {
           setText("mempool-count", fmtNumber(network.mempool.count || 0, 0));
         }
+        renderDifficulty(network.difficulty);
         setText("network-updated", "Updated " + new Date().toLocaleTimeString());
+        setText("signals-updated", "Updated " + new Date().toLocaleTimeString());
       }
 
       if (fear) {
@@ -1113,6 +1283,7 @@
       setText("exchange-count", state.exchanges.length + "/" + exchangeFeeds.length);
       setText("exchange-updated", "Updated " + new Date().toLocaleTimeString());
       renderExchangeTable(state.exchanges);
+      renderExchangeSpread(state.exchanges);
       drawExchangeChart(state.exchanges);
 
       renderTransactions(txs || []);
