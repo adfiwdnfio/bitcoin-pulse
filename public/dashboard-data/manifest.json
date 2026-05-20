@@ -1,0 +1,14 @@
+{
+  "version": "2026-05-19-perplexity",
+  "encoding": "gzip+base64",
+  "parts": [
+    "dashboard-data/part0.txt",
+    "dashboard-data/part1.txt",
+    "dashboard-data/part2.txt",
+    "dashboard-data/part3.txt",
+    "dashboard-data/part4.txt",
+    "dashboard-data/part5.txt",
+    "dashboard-data/part6.txt",
+    "dashboard-data/part7.txt"
+  ]
+}
