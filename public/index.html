@@ -2188,6 +2188,387 @@ body {
   }
 }
 
+/* ============================================
+   Market Pulse: Sentiment, News, Mining
+   ============================================ */
+
+.market-pulse-page {
+  --pulse-panel: rgba(12, 8, 6, 0.82);
+  --pulse-line: rgba(255, 183, 77, 0.13);
+}
+
+.pulse-status-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: -18px 0 22px;
+  color: var(--text-faint);
+  font-size: var(--text-xs);
+}
+
+.pulse-section {
+  position: relative;
+  margin-bottom: 28px;
+  padding: clamp(18px, 3vw, 26px);
+  border: 1px solid var(--pulse-line);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(247, 147, 26, 0.13), transparent 28%),
+    radial-gradient(circle at 90% 8%, rgba(139, 92, 246, 0.10), transparent 30%),
+    linear-gradient(145deg, rgba(16, 10, 7, 0.92), rgba(8, 6, 8, 0.88));
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.30);
+  overflow: hidden;
+}
+
+.pulse-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, rgba(255,255,255,0.035), transparent),
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 18px);
+  opacity: 0.45;
+}
+
+.pulse-section > * {
+  position: relative;
+  z-index: 1;
+}
+
+.pulse-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.pulse-section-header h2 {
+  margin: 2px 0 0;
+  font-size: clamp(1.25rem, 3vw, 1.9rem);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+.pulse-section-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--btc-orange);
+  text-decoration: none;
+  font-size: var(--text-xs);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.pulse-two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.28fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.pulse-gauge-card {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  align-items: center;
+  gap: 18px;
+  min-height: 100%;
+  padding: clamp(18px, 3vw, 24px);
+  border: 1px solid rgba(255, 183, 77, 0.14);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 25% 22%, rgba(247, 147, 26, 0.16), transparent 38%),
+    rgba(0, 0, 0, 0.24);
+}
+
+.pulse-gauge-ring {
+  --gauge: 0;
+  --gauge-color: var(--btc-orange);
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background:
+    conic-gradient(var(--gauge-color) calc(var(--gauge) * 1%), rgba(255,255,255,0.055) 0),
+    radial-gradient(circle, rgba(247,147,26,0.16), transparent 72%);
+  box-shadow: 0 0 55px rgba(247, 147, 26, 0.12);
+}
+
+.pulse-gauge-inner {
+  width: 132px;
+  height: 132px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  border-radius: 50%;
+  background: #090605;
+  border: 1px solid rgba(255, 183, 77, 0.14);
+}
+
+.pulse-gauge-value {
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.08em;
+}
+
+.pulse-gauge-label {
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.pulse-gauge-copy h2 {
+  margin: 8px 0 10px;
+  font-size: clamp(1.45rem, 3vw, 2.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+}
+
+.pulse-gauge-copy p {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+}
+
+.pulse-meta-line {
+  margin-top: 14px;
+  color: var(--text-faint);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.news-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.news-feed-list {
+  max-height: 560px;
+  overflow: auto;
+  display: grid;
+  gap: 12px;
+  padding-right: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.news-card {
+  display: block;
+  padding: 16px;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid rgba(255, 183, 77, 0.12);
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.24);
+  transition: transform var(--duration-normal), border-color var(--duration-normal), background var(--duration-normal);
+}
+
+.news-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(247, 147, 26, 0.36);
+  background: rgba(247, 147, 26, 0.06);
+}
+
+.news-card-featured {
+  min-height: 100%;
+  padding: clamp(20px, 3vw, 28px);
+  background:
+    radial-gradient(circle at 16% 10%, rgba(247,147,26,0.16), transparent 36%),
+    radial-gradient(circle at 90% 0%, rgba(139,92,246,0.12), transparent 38%),
+    rgba(0, 0, 0, 0.28);
+}
+
+.news-card-topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  color: var(--text-faint);
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.news-card h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.news-card-featured h3 {
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+}
+
+.news-card p {
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.62;
+}
+
+.news-read-more {
+  margin-top: 16px;
+  color: var(--btc-orange);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.news-empty {
+  padding: 24px;
+  color: var(--text-faint);
+  border: 1px dashed rgba(255,183,77,0.18);
+  border-radius: 18px;
+  text-align: center;
+  font-size: var(--text-sm);
+}
+
+.pulse-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.pulse-metric-tile {
+  padding: 16px;
+  border: 1px solid rgba(255, 183, 77, 0.12);
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.24);
+}
+
+.pulse-metric-tile.positive {
+  border-color: rgba(0, 212, 170, 0.22);
+  background: rgba(0, 212, 170, 0.055);
+}
+
+.pulse-metric-tile.negative {
+  border-color: rgba(255, 71, 87, 0.20);
+  background: rgba(255, 71, 87, 0.045);
+}
+
+.pulse-metric-label {
+  color: var(--text-faint);
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.pulse-metric-value {
+  margin-top: 8px;
+  color: var(--text-primary);
+  font-size: clamp(1.25rem, 2.4vw, 1.85rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.055em;
+}
+
+.pulse-metric-subtext {
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}
+
+.mining-explainer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.mining-explainer-grid > div {
+  padding: 16px;
+  border: 1px solid rgba(255,183,77,0.10);
+  border-radius: 18px;
+  background: rgba(255,255,255,0.025);
+}
+
+.mining-explainer-grid strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--btc-orange);
+  font-size: var(--text-sm);
+}
+
+.mining-explainer-grid p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+@media (max-width: 1080px) {
+  .pulse-two-column,
+  .news-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .pulse-metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .pulse-section {
+    border-radius: 22px;
+    padding: 16px;
+  }
+
+  .pulse-section-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pulse-gauge-card {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .pulse-gauge-ring {
+    width: 156px;
+    height: 156px;
+  }
+
+  .pulse-gauge-inner {
+    width: 116px;
+    height: 116px;
+  }
+
+  .pulse-gauge-value {
+    font-size: 2.45rem;
+  }
+
+  .news-feed-list {
+    max-height: 480px;
+    padding-right: 0;
+  }
+
+  .pulse-metric-grid,
+  .mining-explainer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 </style>
 
 <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
@@ -2475,6 +2856,13 @@ globalThis.features = [
     description: 'Live MVRV Z-Score, Power Law, Rainbow Chart, RSI, Fear & Greed, and Pi Cycle Top indicators.',
     icon: 'line-chart',
   },
+  {
+    id: 'market-pulse',
+    hash: '#market-pulse',
+    title: 'Market Pulse',
+    description: 'Track live Fear & Greed sentiment, top Bitcoin headlines, mining difficulty, and network hashrate.',
+    icon: 'newspaper',
+  },
 ];
 
 })();
@@ -2692,7 +3080,16 @@ globalThis.tryFetch = async function tryFetch(url, timeoutMs = 8000, options = {
     if (!res.ok) return null;
     const ct = res.headers.get('content-type') || '';
     if (ct.includes('json')) return await res.json();
-    return await res.text();
+    const text = await res.text();
+    const trimmed = text.trim();
+    if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+      try {
+        return JSON.parse(trimmed);
+      } catch {
+        return text;
+      }
+    }
+    return text;
   } catch {
     return null;
   }
@@ -3407,6 +3804,209 @@ globalThis.fetchBinanceTicker = async function fetchBinanceTicker() {
     };
   }
   return null;
+}
+
+/* ------------------------------------------
+   Market pulse data: Fear & Greed, news, mining
+   All no-key public feeds with cache/fallback behavior.
+   ------------------------------------------ */
+function decodeHtmlText(value) {
+  const text = String(value || '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (typeof document !== 'undefined') {
+    const el = document.createElement('textarea');
+    el.innerHTML = text;
+    return el.value;
+  }
+  return text
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#x27;/g, "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>');
+}
+
+function normalizeFearGreedRow(row) {
+  if (!row) return null;
+  const value = parseInt(row.value, 10);
+  const timestamp = parseInt(row.timestamp, 10);
+  if (!Number.isFinite(value) || !Number.isFinite(timestamp)) return null;
+  return {
+    value,
+    label: row.value_classification || 'Unknown',
+    timestamp: timestamp * 1000,
+    date: new Date(timestamp * 1000).toISOString(),
+    timeUntilUpdate: row.time_until_update ? parseInt(row.time_until_update, 10) : null,
+  };
+}
+
+globalThis.fetchFearGreedHistory = async function fetchFearGreedHistory(limit = 365) {
+  const safeLimit = limit === 0 ? 0 : Math.max(1, Math.min(1825, Math.ceil(Number(limit) || 365)));
+  const cacheKey = 'fear-greed-history:' + safeLimit;
+  const cached = cacheGet(cacheKey, 300000);
+  if (cached) return cached;
+
+  const response = await tryFetch('https://api.alternative.me/fng/?limit=' + safeLimit, 12000);
+  const rows = response && Array.isArray(response.data)
+    ? response.data.map(normalizeFearGreedRow).filter(Boolean)
+    : [];
+  if (!rows.length) return cached || null;
+
+  const latest = rows[0];
+  const history = rows.slice().reverse();
+  const result = {
+    current: latest,
+    history,
+    source: 'Alternative.me Fear & Greed Index',
+    sourceUrl: 'https://alternative.me/crypto/fear-and-greed-index/',
+    fetchedAt: new Date().toISOString(),
+  };
+  cacheSet(cacheKey, result);
+  return result;
+}
+
+function splitNewsTitle(rawTitle) {
+  const title = decodeHtmlText(rawTitle);
+  const separator = title.lastIndexOf(' - ');
+  if (separator > 12 && separator < title.length - 3) {
+    return {
+      title: title.slice(0, separator).trim(),
+      source: title.slice(separator + 3).trim(),
+    };
+  }
+  return { title, source: 'Bitcoin news' };
+}
+
+function isBitcoinNewsTitle(title) {
+  const lower = String(title || '').toLowerCase();
+  if (!lower.includes('bitcoin') && !/\bbtc\b/.test(lower)) return false;
+  if (lower.includes('bitcoin cash') || /\bbch\b/.test(lower)) return false;
+  return true;
+}
+
+function normalizeRssNewsItem(item, index) {
+  const split = splitNewsTitle(item && item.title);
+  if (!split.title || !isBitcoinNewsTitle(split.title)) return null;
+  return {
+    id: item.guid || item.link || 'rss-' + index,
+    title: split.title,
+    source: split.source || 'Google News',
+    url: item.link || '#',
+    publishedAt: item.pubDate ? new Date(item.pubDate).toISOString() : null,
+    description: decodeHtmlText(item.description || item.content || ''),
+    image: item.thumbnail || (item.enclosure && item.enclosure.link) || null,
+  };
+}
+
+function normalizeHackerNewsItem(item, index) {
+  const title = decodeHtmlText(item && item.title);
+  if (!title || !isBitcoinNewsTitle(title)) return null;
+  return {
+    id: item.objectID || 'hn-' + index,
+    title,
+    source: 'Hacker News',
+    url: item.url || ('https://news.ycombinator.com/item?id=' + item.objectID),
+    publishedAt: item.created_at || null,
+    description: (item.points || 0) + ' points · ' + (item.num_comments || 0) + ' comments',
+    image: null,
+  };
+}
+
+globalThis.fetchBitcoinNews = async function fetchBitcoinNews() {
+  const cached = cacheGet('bitcoin-news-feed', 300000);
+  if (cached) return cached;
+
+  const googleNewsRss = 'https://news.google.com/rss/search?q=Bitcoin%20when%3A2d&hl=en-US&gl=US&ceid=US%3Aen';
+  const rssBridgeUrl = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(googleNewsRss);
+  const rss = await tryFetch(rssBridgeUrl, 12000);
+  let items = rss && rss.status === 'ok' && Array.isArray(rss.items)
+    ? rss.items.map(normalizeRssNewsItem).filter(Boolean)
+    : [];
+
+  if (!items.length) {
+    const hn = await tryFetch('https://hn.algolia.com/api/v1/search_by_date?query=bitcoin&tags=story&hitsPerPage=12', 10000);
+    items = hn && Array.isArray(hn.hits)
+      ? hn.hits.map(normalizeHackerNewsItem).filter(Boolean)
+      : [];
+  }
+
+  const seen = new Set();
+  items = items
+    .filter(item => {
+      const key = item.title.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .sort((a, b) => new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0))
+    .slice(0, 12);
+
+  if (!items.length) return cached || null;
+
+  const result = {
+    items,
+    source: items[0].source === 'Hacker News' ? 'Hacker News Algolia' : 'Google News RSS via rss2json',
+    sourceUrl: 'https://news.google.com/search?q=Bitcoin',
+    fetchedAt: new Date().toISOString(),
+  };
+  cacheSet('bitcoin-news-feed', result);
+  return result;
+}
+
+globalThis.fetchMiningStats = async function fetchMiningStats(range = '1m') {
+  const allowed = ['3d', '1w', '1m', '3m', '6m', '1y'];
+  const safeRange = allowed.includes(range) ? range : '1m';
+  const cacheKey = 'mining-stats:' + safeRange;
+  const cached = cacheGet(cacheKey, 60000);
+  if (cached) return cached;
+
+  const [hashrateData, difficultyAdjustment, blockHeightText] = await Promise.all([
+    tryFetch('https://mempool.space/api/v1/mining/hashrate/' + safeRange, 12000),
+    tryFetch('https://mempool.space/api/v1/difficulty-adjustment', 10000),
+    tryFetch('https://mempool.space/api/blocks/tip/height', 8000),
+  ]);
+
+  if (!hashrateData || !Array.isArray(hashrateData.hashrates)) return cached || null;
+
+  const hashrates = hashrateData.hashrates
+    .map(point => ({
+      timestamp: Number(point.timestamp) * 1000,
+      hashrate: Number(point.avgHashrate) / 1e18,
+    }))
+    .filter(point => Number.isFinite(point.timestamp) && Number.isFinite(point.hashrate))
+    .sort((a, b) => a.timestamp - b.timestamp);
+
+  const difficulty = Array.isArray(hashrateData.difficulty)
+    ? hashrateData.difficulty.map(point => ({
+        timestamp: Number(point.time) * 1000,
+        height: Number(point.height),
+        difficulty: Number(point.difficulty),
+        adjustment: (Number(point.adjustment) - 1) * 100,
+      })).filter(point => Number.isFinite(point.timestamp) && Number.isFinite(point.difficulty))
+    : [];
+
+  const blockHeight = blockHeightText !== null
+    ? parseInt(String(blockHeightText).trim(), 10)
+    : null;
+
+  const result = {
+    range: safeRange,
+    currentHashrate: Number(hashrateData.currentHashrate) / 1e18,
+    currentDifficulty: Number(hashrateData.currentDifficulty),
+    hashrates,
+    difficulty,
+    difficultyAdjustment: difficultyAdjustment && typeof difficultyAdjustment === 'object' ? difficultyAdjustment : null,
+    blockHeight: Number.isFinite(blockHeight) ? blockHeight : null,
+    source: 'mempool.space mining API',
+    sourceUrl: 'https://mempool.space/docs/api/rest',
+    fetchedAt: new Date().toISOString(),
+  };
+  cacheSet(cacheKey, result);
+  return result;
 }
 
 /* ------------------------------------------
@@ -4734,6 +5334,7 @@ const navItems = [
   { section: 'Charts & Indicators' },
   { id: 'valuation', label: 'Valuation', icon: 'line-chart' },
   { id: 'charts', label: 'Charts', icon: 'line-chart' },
+  { id: 'market-pulse', label: 'Market Pulse', icon: 'newspaper' },
   { section: 'Analytics Tools' },
   { id: 'available-supply', label: 'Available Supply', icon: 'database' },
   { id: 'ownership', label: 'Ownership Distribution', icon: 'pie-chart' },
@@ -4759,6 +5360,7 @@ const icons = {
   'triangle': '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20.5 10 3l11 17.5z"/><path d="m3 20.5 7-17.5"/></svg>',
   'database': '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>',
   'line-chart': '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>',
+  'newspaper': '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v18z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h5"/><path d="M8 9h2"/></svg>',
   'hourglass': '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>',
   'skull': '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 20v2h8v-2"/><path d="m12.5 17-.5-1-.5 1h1z"/><path d="M17 20H7a5 5 0 0 1-1-9.9V10a6 6 0 0 1 12 0v.1A5 5 0 0 1 17 20z"/></svg>',
   'crystal-ball': '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="11" r="8"/><path d="M7 20h10"/><path d="M9 18h6"/><path d="m9 9 2 2 4-4"/></svg>',
@@ -4853,6 +5455,7 @@ const featureIcons = {
   'bar-chart-2': h('svg', { width: 28, height: 28, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5 }, h('line', { x1: 18, y1: 20, x2: 18, y2: 10 }), h('line', { x1: 12, y1: 20, x2: 12, y2: 4 }), h('line', { x1: 6, y1: 20, x2: 6, y2: 14 })),
   'battery-charging': h('svg', { width: 28, height: 28, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5 }, h('path', { d: 'M15 7h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2' }), h('path', { d: 'M6 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h1' }), h('path', { d: 'm11 7-3 5h4l-3 5' }), h('line', { x1: 22, y1: 11, x2: 22, y2: 13 })),
   'triangle': h('svg', { width: 28, height: 28, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5 }, h('path', { d: 'M10.5 20.5 10 3l11 17.5z' }), h('path', { d: 'm3 20.5 7-17.5' })),
+  'newspaper': h('svg', { width: 28, height: 28, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5 }, h('path', { d: 'M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v18z' }), h('path', { d: 'M14 2v6h6' }), h('path', { d: 'M8 13h8' }), h('path', { d: 'M8 17h5' }), h('path', { d: 'M8 9h2' })),
 };
 
 globalThis.HomePage = function HomePage({ onNavigate }) {
@@ -5156,6 +5759,8 @@ globalThis.DashboardPage = function DashboardPage({ onNavigate }) {
   const computedMarketCap = marketCap || ((price && circSupply) ? price * circSupply : null);
 
   const hashrate = nd.hashrate || null;
+  const fearGreed = nd.fearGreed || null;
+  const nextDifficulty = nd.difficulty || null;
   const halvingDays = supplyStats.blocksRemaining !== null ? halvingCountdown.days : null;
 
   return h('div', { className: 'page-enter' },
@@ -5208,6 +5813,16 @@ globalThis.DashboardPage = function DashboardPage({ onNavigate }) {
       h(KPICard, {
         label: 'Network Hashrate',
         value: hashrate ? formatHashrate(hashrate) : '—',
+      }),
+      h(KPICard, {
+        label: 'Fear & Greed',
+        value: fearGreed ? fearGreed.value + ' / 100' : 'Loading...',
+        deltaLabel: fearGreed ? fearGreed.label : undefined,
+      }),
+      h(KPICard, {
+        label: 'Difficulty Adjust.',
+        value: nextDifficulty && Number.isFinite(nextDifficulty.difficultyChange) ? formatPercent(nextDifficulty.difficultyChange, 2) : 'Loading...',
+        deltaLabel: nextDifficulty && Number.isFinite(nextDifficulty.remainingBlocks) ? formatNumber(nextDifficulty.remainingBlocks, 0) + ' blocks' : undefined,
       }),
       h(KPICard, {
         label: 'Strategy Holdings',
@@ -10736,6 +11351,381 @@ globalThis.ChartsPage = function ChartsPage() {
 
 })();
 
+/* ===== pages/market-pulse.js ===== */
+(() => {
+/* ============================================
+   Market Pulse - Sentiment, News, Mining
+   Live public feeds: Alternative.me, Google News, mempool.space
+   ============================================ */
+
+const React = window.React;
+const { createElement: h, useState, useMemo } = React;
+
+const SENTIMENT_RANGES = [
+  { id: '1w', label: '1W', days: 7, description: 'Past week' },
+  { id: '1m', label: '1M', days: 30, description: 'Past month' },
+  { id: '3m', label: '3M', days: 90, description: 'Past 3 months' },
+  { id: '6m', label: '6M', days: 180, description: 'Past 6 months' },
+  { id: '1y', label: '1Y', days: 365, description: 'Past year' },
+  { id: 'max', label: 'MAX', days: 0, description: 'All available Alternative.me history' },
+];
+
+const MINING_RANGES = [
+  { id: '3d', label: '3D', description: 'Past 3 days' },
+  { id: '1w', label: '1W', description: 'Past week' },
+  { id: '1m', label: '1M', description: 'Past month' },
+  { id: '3m', label: '3M', description: 'Past 3 months' },
+  { id: '6m', label: '6M', description: 'Past 6 months' },
+  { id: '1y', label: '1Y', description: 'Past year' },
+];
+
+function rangeToFearGreedLimit(range) {
+  const found = SENTIMENT_RANGES.find(item => item.id === range);
+  if (!found) return 365;
+  return found.id === 'max' ? 0 : Math.max(10, found.days + 1);
+}
+
+function formatDifficulty(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return '—';
+  return formatNumber(n / 1e12, 2) + ' T';
+}
+
+function formatDuration(ms) {
+  const totalSeconds = Math.max(0, Math.floor(Number(ms) / 1000));
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  if (days > 0) return days + 'd ' + hours + 'h';
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  return hours + 'h ' + minutes + 'm';
+}
+
+function sentimentColor(value) {
+  if (value >= 75) return '#ff4757';
+  if (value >= 55) return '#ffa502';
+  if (value >= 45) return '#ffd166';
+  if (value >= 25) return '#f7931a';
+  return '#00d4aa';
+}
+
+function sentimentHint(value) {
+  if (value >= 75) return 'Extreme greed usually means the market is very hot and risk is elevated.';
+  if (value >= 55) return 'Greed means momentum is positive, but sentiment may be getting crowded.';
+  if (value >= 45) return 'Neutral means sentiment is balanced between fear and greed.';
+  if (value >= 25) return 'Fear means investors are cautious; historically this can create better risk/reward.';
+  return 'Extreme fear means sentiment is washed out, but price can still stay volatile.';
+}
+
+function pulseChartOptions({ min = 0, max = 100, mode = 'number' } = {}) {
+  return {
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) {
+            if (mode === 'percent') return ctx.dataset.label + ': ' + formatPercent(ctx.raw, 2);
+            if (mode === 'hashrate') return ctx.dataset.label + ': ' + formatHashrate(ctx.raw);
+            if (mode === 'difficulty') return ctx.dataset.label + ': ' + ctx.raw.toFixed(2) + ' T';
+            return ctx.dataset.label + ': ' + ctx.raw;
+          },
+        },
+      },
+    },
+    scales: {
+      y: {
+        min,
+        max,
+        grid: { color: 'rgba(255,183,77,0.055)', drawBorder: false },
+        ticks: {
+          color: '#806f62',
+          font: { family: 'Inter', size: 11 },
+          callback: function(value) {
+            if (mode === 'hashrate') return value + ' EH/s';
+            if (mode === 'difficulty') return value + 'T';
+            if (mode === 'percent') return value + '%';
+            return value;
+          },
+        },
+        border: { display: false },
+      },
+      x: {
+        grid: { display: false },
+        ticks: { color: '#806f62', font: { family: 'Inter', size: 10 }, maxTicksLimit: 6 },
+        border: { display: false },
+      },
+    },
+  };
+}
+
+function SentimentGauge({ current }) {
+  const value = current ? current.value : 0;
+  const color = sentimentColor(value);
+  return h('div', { className: 'pulse-gauge-card' },
+    h('div', { className: 'pulse-gauge-ring', style: { '--gauge': value, '--gauge-color': color } },
+      h('div', { className: 'pulse-gauge-inner' },
+        h('div', { className: 'pulse-gauge-value tabular-nums', style: { color } }, current ? value : '...'),
+        h('div', { className: 'pulse-gauge-label' }, current ? current.label : 'Loading')
+      )
+    ),
+    h('div', { className: 'pulse-gauge-copy' },
+      h('div', { className: 'charts-eyebrow' }, 'Fear & Greed Index'),
+      h('h2', null, current ? current.label : 'Loading sentiment'),
+      h('p', null, current ? sentimentHint(value) : 'Pulling the latest daily Bitcoin sentiment reading.'),
+      current && current.timeUntilUpdate !== null && h('div', { className: 'pulse-meta-line' },
+        'Next Alternative.me update in about ', formatDuration(current.timeUntilUpdate * 1000)
+      )
+    )
+  );
+}
+
+function NewsCard({ article, featured = false }) {
+  return h('a', {
+    className: 'news-card' + (featured ? ' news-card-featured' : ''),
+    href: article.url,
+    target: '_blank',
+    rel: 'noopener noreferrer',
+  },
+    h('div', { className: 'news-card-topline' },
+      h('span', null, article.source || 'Bitcoin news'),
+      h('span', null, article.publishedAt ? formatRelativeDate(article.publishedAt) : 'Live')
+    ),
+    h('h3', null, article.title),
+    article.description && h('p', null, article.description),
+    h('div', { className: 'news-read-more' }, 'Read article →')
+  );
+}
+
+function MetricTile({ label, value, subtext, tone }) {
+  return h('div', { className: 'pulse-metric-tile' + (tone ? ' ' + tone : '') },
+    h('div', { className: 'pulse-metric-label' }, label),
+    h('div', { className: 'pulse-metric-value tabular-nums' }, value),
+    subtext && h('div', { className: 'pulse-metric-subtext' }, subtext)
+  );
+}
+
+globalThis.MarketPulsePage = function MarketPulsePage() {
+  const [sentimentRange, setSentimentRange] = useState('1m');
+  const [miningRange, setMiningRange] = useState('1m');
+
+  const { data, lastUpdated, loading } = useLiveData(async () => {
+    const [sentiment, news, mining] = await Promise.all([
+      fetchFearGreedHistory(rangeToFearGreedLimit(sentimentRange)),
+      fetchBitcoinNews(),
+      fetchMiningStats(miningRange),
+    ]);
+    return { sentiment, news, mining };
+  }, 180000, [sentimentRange, miningRange]);
+
+  const sentiment = data && data.sentiment;
+  const news = data && data.news;
+  const mining = data && data.mining;
+
+  const sentimentHistory = useMemo(() => {
+    const history = sentiment && sentiment.history ? sentiment.history : [];
+    return downsampleSeries(history.map(point => [point.timestamp, point.value]), 260);
+  }, [sentiment]);
+
+  const hashratePoints = useMemo(() => {
+    const points = mining && mining.hashrates ? mining.hashrates.map(point => [point.timestamp, point.hashrate]) : [];
+    return downsampleSeries(points, miningRange === '1y' ? 220 : 180);
+  }, [mining, miningRange]);
+
+  const difficultyPoints = useMemo(() => {
+    const points = mining && mining.difficulty ? mining.difficulty.map(point => [point.timestamp, point.difficulty / 1e12, point.adjustment]) : [];
+    return downsampleSeries(points, 80);
+  }, [mining]);
+
+  const latestHashratePoint = hashratePoints[hashratePoints.length - 1];
+  const previousHashratePoint = hashratePoints.length > 2 ? hashratePoints[hashratePoints.length - 2] : null;
+  const hashrateChange = latestHashratePoint && previousHashratePoint
+    ? ((latestHashratePoint[1] - previousHashratePoint[1]) / previousHashratePoint[1]) * 100
+    : null;
+  const adjustment = mining && mining.difficultyAdjustment;
+  const adjustmentTone = adjustment && adjustment.difficultyChange >= 0 ? 'positive' : 'negative';
+
+  const featuredArticle = news && news.items && news.items[0];
+  const otherArticles = news && news.items ? news.items.slice(1) : [];
+
+  return h('div', { className: 'page-enter charts-page market-pulse-page' },
+    h(PageHeader, {
+      title: 'Market Pulse',
+      description: 'Live Bitcoin sentiment, top headlines, mining difficulty, and hashrate context in one place.',
+      badge: 'Live feeds',
+    }),
+    h('div', { className: 'pulse-status-row' },
+      h(LastUpdated, { lastUpdated, live: !loading }),
+      h('span', null, 'Sources: Alternative.me, Google News RSS, mempool.space')
+    ),
+
+    h('section', { className: 'pulse-section' },
+      h('div', { className: 'pulse-section-header' },
+        h('div', null,
+          h('span', { className: 'charts-eyebrow' }, 'Sentiment'),
+          h('h2', null, 'Fear & Greed Index')
+        ),
+        h(ChartRangeControls, { value: sentimentRange, onChange: setSentimentRange, ranges: SENTIMENT_RANGES, label: 'Fear and Greed timeframe' })
+      ),
+      h('div', { className: 'pulse-two-column' },
+        h(SentimentGauge, { current: sentiment && sentiment.current }),
+        h('div', { className: 'charts-panel' },
+          h('div', { className: 'charts-panel-header' },
+            h('div', { className: 'charts-panel-heading' },
+              h('div', { className: 'charts-panel-title' }, 'Sentiment History'),
+              h('div', { className: 'charts-panel-subtitle' }, 'Daily index values; lower means fear, higher means greed.')
+            ),
+            sentiment && sentiment.current && h('span', {
+              className: 'charts-badge',
+              style: { color: sentimentColor(sentiment.current.value), borderColor: sentimentColor(sentiment.current.value), background: sentimentColor(sentiment.current.value) + '20' },
+            }, sentiment.current.value + '/100')
+          ),
+          h('div', { className: 'charts-panel-body' },
+            h(LineChart, {
+              labels: sentimentHistory.map(point => formatChartDateLabel(point[0], sentimentRange === 'max' ? '5y' : sentimentRange)),
+              datasets: [{
+                label: 'Fear & Greed',
+                data: sentimentHistory.map(point => point[1]),
+                borderColor: sentiment && sentiment.current ? sentimentColor(sentiment.current.value) : chartColors.orange,
+                backgroundColor: 'rgba(247,147,26,0.12)',
+              }],
+              options: pulseChartOptions({ min: 0, max: 100 }),
+              height: 270,
+              fill: true,
+            })
+          )
+        )
+      )
+    ),
+
+    h('section', { className: 'pulse-section' },
+      h('div', { className: 'pulse-section-header' },
+        h('div', null,
+          h('span', { className: 'charts-eyebrow' }, 'Headlines'),
+          h('h2', null, 'Top Bitcoin News Feed')
+        ),
+        h('a', {
+          href: news && news.sourceUrl ? news.sourceUrl : 'https://news.google.com/search?q=Bitcoin',
+          target: '_blank',
+          rel: 'noopener noreferrer',
+          className: 'pulse-section-link',
+        }, 'Open source feed →')
+      ),
+      h('div', { className: 'news-layout' },
+        featuredArticle
+          ? h(NewsCard, { article: featuredArticle, featured: true })
+          : h('div', { className: 'news-card news-card-featured' },
+              h('div', { className: 'news-card-topline' }, h('span', null, 'Loading'), h('span', null, 'Live')),
+              h('h3', null, 'Loading Bitcoin headlines...'),
+              h('p', null, 'The feed refreshes automatically from public no-key sources.')
+            ),
+        h('div', { className: 'news-feed-list' },
+          otherArticles.length
+            ? otherArticles.map(article => h(NewsCard, { key: article.id, article }))
+            : h('div', { className: 'news-empty' }, 'More headlines will appear here once the feed responds.')
+        )
+      )
+    ),
+
+    h('section', { className: 'pulse-section' },
+      h('div', { className: 'pulse-section-header' },
+        h('div', null,
+          h('span', { className: 'charts-eyebrow' }, 'Mining security'),
+          h('h2', null, 'Difficulty & Hashrate')
+        ),
+        h(ChartRangeControls, { value: miningRange, onChange: setMiningRange, ranges: MINING_RANGES, label: 'Mining timeframe' })
+      ),
+      h('div', { className: 'pulse-metric-grid' },
+        h(MetricTile, {
+          label: 'Current Hashrate',
+          value: mining && Number.isFinite(mining.currentHashrate) ? formatHashrate(mining.currentHashrate) : 'Loading...',
+          subtext: hashrateChange !== null ? (hashrateChange >= 0 ? '+' : '') + formatPercent(hashrateChange, 2) + ' vs prior point' : 'Estimated network compute',
+          tone: hashrateChange !== null && hashrateChange >= 0 ? 'positive' : 'negative',
+        }),
+        h(MetricTile, {
+          label: 'Current Difficulty',
+          value: mining ? formatDifficulty(mining.currentDifficulty) : 'Loading...',
+          subtext: 'Retargets every 2,016 blocks',
+        }),
+        h(MetricTile, {
+          label: 'Next Adjustment',
+          value: adjustment && Number.isFinite(adjustment.difficultyChange) ? formatPercent(adjustment.difficultyChange, 2) : 'Loading...',
+          subtext: adjustment ? formatNumber(adjustment.remainingBlocks, 0) + ' blocks · ' + formatDuration(adjustment.remainingTime) : 'Live mempool.space estimate',
+          tone: adjustmentTone,
+        }),
+        h(MetricTile, {
+          label: 'Block Height',
+          value: mining && mining.blockHeight ? formatNumber(mining.blockHeight, 0) : 'Loading...',
+          subtext: 'Latest chain tip',
+        })
+      ),
+      h('div', { className: 'pulse-two-column' },
+        h('div', { className: 'charts-panel' },
+          h('div', { className: 'charts-panel-header' },
+            h('div', { className: 'charts-panel-heading' },
+              h('div', { className: 'charts-panel-title' }, 'Network Hashrate'),
+              h('div', { className: 'charts-panel-subtitle' }, 'Estimated exahashes per second securing Bitcoin.')
+            )
+          ),
+          h('div', { className: 'charts-panel-body' },
+            h(LineChart, {
+              labels: hashratePoints.map(point => formatChartDateLabel(point[0], miningRange === '3d' ? '1w' : miningRange)),
+              datasets: [{
+                label: 'Hashrate',
+                data: hashratePoints.map(point => point[1]),
+                borderColor: chartColors.orange,
+                backgroundColor: 'rgba(247,147,26,0.12)',
+              }],
+              options: pulseChartOptions({ mode: 'hashrate' }),
+              height: 260,
+              fill: true,
+            })
+          )
+        ),
+        h('div', { className: 'charts-panel' },
+          h('div', { className: 'charts-panel-header' },
+            h('div', { className: 'charts-panel-heading' },
+              h('div', { className: 'charts-panel-title' }, 'Difficulty Retargets'),
+              h('div', { className: 'charts-panel-subtitle' }, 'Difficulty in trillions at recent retargets.')
+            )
+          ),
+          h('div', { className: 'charts-panel-body' },
+            h(BarChart, {
+              labels: difficultyPoints.map(point => formatChartDateLabel(point[0], miningRange === '3d' ? '1m' : miningRange)),
+              datasets: [{
+                label: 'Difficulty',
+                data: difficultyPoints.map(point => point[1]),
+                backgroundColor: difficultyPoints.map(point => point[2] >= 0 ? 'rgba(0,212,170,0.70)' : 'rgba(255,71,87,0.70)'),
+                borderColor: 'transparent',
+              }],
+              options: pulseChartOptions({ mode: 'difficulty' }),
+              height: 260,
+            })
+          )
+        )
+      ),
+      h('div', { className: 'mining-explainer-grid' },
+        h('div', null,
+          h('strong', null, 'Hashrate'),
+          h('p', null, 'Hashrate estimates how much computing power miners are pointing at Bitcoin. Higher hashrate generally means more security and more competition for block rewards.')
+        ),
+        h('div', null,
+          h('strong', null, 'Difficulty'),
+          h('p', null, 'Difficulty is Bitcoin’s automatic throttle. Every 2,016 blocks, the network adjusts it so blocks keep arriving near the 10-minute target.')
+        ),
+        h('div', null,
+          h('strong', null, 'Retarget signal'),
+          h('p', null, 'A positive next adjustment means blocks have been coming faster than expected. A negative adjustment means blocks have been slower.')
+        )
+      )
+    ),
+
+    h('div', { className: 'charts-source-note' },
+      'Data sources: Fear & Greed from Alternative.me, headlines from Google News RSS through rss2json with Hacker News fallback, and mining difficulty/hashrate from mempool.space public API. Sentiment updates daily; news refreshes every few minutes; mining estimates refresh near real time from public mempool data.'
+    )
+  );
+}
+
+})();
+
 /* ===== pages/halving-countdown.js ===== */
 (() => {
 /* ============================================
@@ -10906,6 +11896,7 @@ const routes = {
   'available-supply': { component: AvailableSupplyPage, title: 'Available Supply' },
   valuation: { component: ValuationPage, title: 'Bitcoin Valuation' },
   charts: { component: ChartsPage, title: 'Charts' },
+  'market-pulse': { component: MarketPulsePage, title: 'Market Pulse' },
   'halving-countdown': { component: HalvingCountdownPage, title: 'Halving Countdown' },
 };
 
