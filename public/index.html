@@ -5116,13 +5116,117 @@ function normalizeFearGreedRow(row) {
   };
 }
 
+function clampNumber(value, min, max) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return min;
+  return Math.max(min, Math.min(max, n));
+}
+
+function classifyFearGreedValue(value) {
+  if (value >= 75) return 'Extreme Greed';
+  if (value >= 55) return 'Greed';
+  if (value >= 45) return 'Neutral';
+  if (value >= 25) return 'Fear';
+  return 'Extreme Fear';
+}
+
+function findMarketPointAtOrBefore(series, targetTs) {
+  if (!Array.isArray(series) || !series.length) return null;
+  for (let i = series.length - 1; i >= 0; i -= 1) {
+    const point = series[i];
+    if (Array.isArray(point) && Number(point[0]) <= targetTs && Number.isFinite(Number(point[1]))) {
+      return point;
+    }
+  }
+  return null;
+}
+
+function pctChangeBetweenPoints(latest, past) {
+  const latestValue = Array.isArray(latest) ? Number(latest[1]) : null;
+  const pastValue = Array.isArray(past) ? Number(past[1]) : null;
+  if (!Number.isFinite(latestValue) || !Number.isFinite(pastValue) || pastValue <= 0) return null;
+  return ((latestValue - pastValue) / pastValue) * 100;
+}
+
+function calculateVolumeRatio(volumes) {
+  if (!Array.isArray(volumes) || volumes.length < 5) return null;
+  const finite = volumes.map(point => Number(point[1])).filter(value => Number.isFinite(value) && value > 0);
+  if (finite.length < 5) return null;
+  const latest = finite[finite.length - 1];
+  const recent = finite.slice(-30);
+  const average = recent.reduce((sum, value) => sum + value, 0) / recent.length;
+  return average > 0 ? latest / average : null;
+}
+
+function calculateLiveSentimentScore({ official, priceResult, marketChart, dominance }) {
+  const prices = marketChart && Array.isArray(marketChart.prices) ? marketChart.prices : [];
+  const latestPoint = prices.length ? prices[prices.length - 1] : null;
+  const latestTs = latestPoint ? Number(latestPoint[0]) : Date.now();
+  const change24h = Number.isFinite(Number(priceResult?.change24h))
+    ? Number(priceResult.change24h)
+    : pctChangeBetweenPoints(latestPoint, findMarketPointAtOrBefore(prices, latestTs - 86400000));
+  const change7d = pctChangeBetweenPoints(latestPoint, findMarketPointAtOrBefore(prices, latestTs - 7 * 86400000));
+  const change30d = pctChangeBetweenPoints(latestPoint, findMarketPointAtOrBefore(prices, latestTs - 30 * 86400000));
+  const volumeRatio = calculateVolumeRatio(marketChart?.volumes);
+  const dominanceValue = Number(dominance?.dominance);
+
+  const components = [];
+  const addComponent = (label, value, weight, detail) => {
+    if (!Number.isFinite(value) || weight <= 0) return;
+    components.push({ label, value: clampNumber(value, 0, 100), weight, detail });
+  };
+
+  if (official && Number.isFinite(official.value)) {
+    addComponent('Official daily index', official.value, 0.30, official.label);
+  }
+  if (Number.isFinite(change24h)) {
+    addComponent('24h price momentum', 50 + change24h * 6, 0.28, (change24h >= 0 ? '+' : '') + change24h.toFixed(2) + '%');
+  }
+  if (Number.isFinite(change7d)) {
+    addComponent('7d price momentum', 50 + change7d * 3, 0.20, (change7d >= 0 ? '+' : '') + change7d.toFixed(2) + '%');
+  }
+  if (Number.isFinite(change30d)) {
+    addComponent('30d trend', 50 + change30d * 1.2, 0.10, (change30d >= 0 ? '+' : '') + change30d.toFixed(2) + '%');
+  }
+  if (Number.isFinite(volumeRatio)) {
+    addComponent('Live volume pressure', 50 + Math.log(volumeRatio) * 28, 0.07, volumeRatio.toFixed(2) + 'x recent average');
+  }
+  if (Number.isFinite(dominanceValue)) {
+    addComponent('BTC dominance context', 50 + (dominanceValue - 50) * 1.15, 0.05, dominanceValue.toFixed(2) + '% BTC dominance');
+  }
+
+  if (!components.length) return null;
+  const totalWeight = components.reduce((sum, item) => sum + item.weight, 0);
+  const score = Math.round(components.reduce((sum, item) => sum + item.value * item.weight, 0) / totalWeight);
+
+  return {
+    value: clampNumber(score, 0, 100),
+    label: classifyFearGreedValue(score),
+    timestamp: Date.now(),
+    date: new Date().toISOString(),
+    source: 'Bitcoin Pulse live sentiment proxy',
+    methodology: 'Blends Alternative.me daily index with live BTC price momentum, volume pressure, and BTC dominance context.',
+    components,
+    change24h,
+    change7d,
+    change30d,
+    volumeRatio,
+    dominance: Number.isFinite(dominanceValue) ? dominanceValue : null,
+  };
+}
+
 globalThis.fetchFearGreedHistory = async function fetchFearGreedHistory(limit = 365) {
   const safeLimit = limit === 0 ? 0 : Math.max(1, Math.min(1825, Math.ceil(Number(limit) || 365)));
   const cacheKey = 'fear-greed-history:' + safeLimit;
-  const cached = cacheGet(cacheKey, 300000);
+  const cached = cacheGet(cacheKey, 60000);
   if (cached) return cached;
 
-  const response = await tryFetch('https://api.alternative.me/fng/?limit=' + safeLimit, 12000);
+  const [response, priceResult, marketChart, dominance] = await Promise.all([
+    tryFetch('https://api.alternative.me/fng/?limit=' + safeLimit, 12000),
+    fetchBTCPrice(),
+    fetchMarketChart(30),
+    fetchBitcoinDominanceSnapshot(),
+  ]);
   const rows = response && Array.isArray(response.data)
     ? response.data.map(normalizeFearGreedRow).filter(Boolean)
     : [];
@@ -5130,11 +5234,23 @@ globalThis.fetchFearGreedHistory = async function fetchFearGreedHistory(limit = 
 
   const latest = rows[0];
   const history = rows.slice().reverse();
+  const live = calculateLiveSentimentScore({ official: latest, priceResult, marketChart, dominance });
+  const liveHistory = live
+    ? [
+        ...history.filter(point => point.timestamp < latest.timestamp),
+        latest,
+        { ...live, label: live.label + ' (live)' },
+      ]
+    : history;
   const result = {
     current: latest,
+    live,
+    liveHistory,
     history,
     source: 'Alternative.me Fear & Greed Index',
     sourceUrl: 'https://alternative.me/crypto/fear-and-greed-index/',
+    liveSource: 'Bitcoin Pulse live sentiment proxy',
+    marketSource: marketChart?.source || priceResult?.source || 'public BTC feeds',
     fetchedAt: new Date().toISOString(),
   };
   cacheSet(cacheKey, result);
@@ -14391,8 +14507,7 @@ async function tryFetch(url, timeoutMs = 8000) {
 }
 
 async function fetchFearGreed(limit = 30) {
-  const data = await tryFetch('https://api.alternative.me/fng/?limit=' + limit, 10000);
-  return data && Array.isArray(data.data) ? data.data : [];
+  return await fetchFearGreedHistory(limit);
 }
 
 function getFearGreedLimit(range) {
@@ -14818,11 +14933,14 @@ globalThis.ChartsPage = function ChartsPage() {
     return { ...window, drawdown: calcDrawdown(window.values) };
   }, [liveData?.marketByRange, chartRanges.drawdown, rawLongPrices, btcPrice]);
 
-  const fearGreedData = liveData?.fearGreedData || [];
-  const fgCurrent = fearGreedData.length ? parseInt(fearGreedData[0].value, 10) : 50;
-  const fgLabel = fearGreedData.length ? fearGreedData[0].value_classification : 'Neutral';
+  const fearGreedData = liveData?.fearGreedData || null;
+  const fgCurrentRow = fearGreedData?.live || fearGreedData?.current || null;
+  const fgCurrent = fgCurrentRow ? parseInt(fgCurrentRow.value, 10) : 50;
+  const fgLabel = fgCurrentRow ? fgCurrentRow.label : 'Neutral';
   const fgWindow = useMemo(() => {
-    const rows = [...fearGreedData].reverse().map(row => [parseInt(row.timestamp, 10) * 1000, parseInt(row.value, 10)]);
+    const rows = (fearGreedData?.liveHistory || fearGreedData?.history || [])
+      .map(row => [Number(row.timestamp), parseInt(row.value, 10)])
+      .filter(point => Number.isFinite(point[0]) && Number.isFinite(point[1]));
     const visible = downsampleSeries(trimSeriesToDays(rows, getRangeDays(chartRanges.fearGreed)), 220);
     return {
       labels: visible.map(point => formatChartDateLabel(point[0], chartRanges.fearGreed)),
@@ -14914,8 +15032,8 @@ globalThis.ChartsPage = function ChartsPage() {
 
     h('div', { className: 'charts-grid charts-grid-refined' },
       h(ChartPanel, {
-        title: 'Fear & Greed Index',
-        subtitle: 'Daily market sentiment from alternative.me',
+        title: 'Live Fear & Greed Sentiment',
+        subtitle: 'Alternative.me daily index plus a live BTC momentum and dominance proxy',
         badge: fgLabel,
         badgeColor: fgCurrent <= 25 ? '#ff4757' : fgCurrent <= 45 ? '#ff8c00' : fgCurrent <= 55 ? '#ffd43b' : fgCurrent <= 75 ? '#b7ff45' : '#00d4aa',
         range: chartRanges.fearGreed,
@@ -15190,7 +15308,7 @@ globalThis.ChartsPage = function ChartsPage() {
     ),
 
     h('div', { className: 'charts-source-note' },
-      'Data sources: Fear & Greed Index from alternative.me. BTC price and market history from CoinGecko with Kraken/Bitstamp fallbacks, plus Coinbase WebSocket live ticks. MVRV score/Z-score are public-data estimates using a moving cost-basis proxy because realized cap requires paid/on-chain datasets. Rainbow, Power Law, and Pi Cycle are model charts calculated locally from public price history. Source feed currently: ' + marketSource + '.'
+      'Data sources: official Fear & Greed Index from alternative.me updates daily; Bitcoin Pulse appends a live sentiment proxy from BTC momentum, volume, and dominance. BTC price and market history come from CoinGecko with Kraken/Bitstamp fallbacks, plus Coinbase WebSocket live ticks. MVRV score/Z-score are public-data estimates using a moving cost-basis proxy because realized cap requires paid/on-chain datasets. Rainbow, Power Law, and Pi Cycle are model charts calculated locally from public price history. Source feed currently: ' + marketSource + '.'
     ),
   );
 }
@@ -15303,9 +15421,10 @@ function pulseChartOptions({ min = 0, max = 100, mode = 'number' } = {}) {
   };
 }
 
-function SentimentGauge({ current }) {
+function SentimentGauge({ current, official }) {
   const value = current ? current.value : 0;
   const color = sentimentColor(value);
+  const isLiveProxy = current && current.source && current.source.toLowerCase().includes('live');
   return h('div', { className: 'pulse-gauge-card' },
     h('div', { className: 'pulse-gauge-ring', style: { '--gauge': value, '--gauge-color': color } },
       h('div', { className: 'pulse-gauge-inner' },
@@ -15314,11 +15433,16 @@ function SentimentGauge({ current }) {
       )
     ),
     h('div', { className: 'pulse-gauge-copy' },
-      h('div', { className: 'charts-eyebrow' }, 'Fear & Greed Index'),
+      h('div', { className: 'charts-eyebrow' }, isLiveProxy ? 'Bitcoin Pulse Live Sentiment' : 'Fear & Greed Index'),
       h('h2', null, current ? current.label : 'Loading sentiment'),
-      h('p', null, current ? sentimentHint(value) : 'Pulling the latest daily Bitcoin sentiment reading.'),
-      current && current.timeUntilUpdate !== null && h('div', { className: 'pulse-meta-line' },
-        'Next Alternative.me update in about ', formatDuration(current.timeUntilUpdate * 1000)
+      h('p', null, current
+        ? (isLiveProxy
+            ? 'This live score blends the official daily Fear & Greed reading with current BTC price momentum, volume pressure, and dominance context.'
+            : sentimentHint(value))
+        : 'Pulling the latest Bitcoin sentiment reading.'),
+      official && h('div', { className: 'pulse-meta-line' },
+        'Official Alternative.me daily index: ', official.value, '/100 ', official.label,
+        official.timeUntilUpdate !== null ? ' · next official update in about ' + formatDuration(official.timeUntilUpdate * 1000) : ''
       )
     )
   );
@@ -15360,14 +15484,16 @@ globalThis.MarketPulsePage = function MarketPulsePage() {
       fetchMiningStats(miningRange),
     ]);
     return { sentiment, news, mining };
-  }, 180000, [sentimentRange, miningRange]);
+  }, 60000, [sentimentRange, miningRange]);
 
   const sentiment = data && data.sentiment;
+  const liveSentiment = sentiment && sentiment.live ? sentiment.live : (sentiment && sentiment.current);
+  const officialSentiment = sentiment && sentiment.current;
   const news = data && data.news;
   const mining = data && data.mining;
 
   const sentimentHistory = useMemo(() => {
-    const history = sentiment && sentiment.history ? sentiment.history : [];
+    const history = sentiment && sentiment.liveHistory ? sentiment.liveHistory : (sentiment && sentiment.history ? sentiment.history : []);
     return downsampleSeries(history.map(point => [point.timestamp, point.value]), 260);
   }, [sentiment]);
 
@@ -15400,37 +15526,37 @@ globalThis.MarketPulsePage = function MarketPulsePage() {
     }),
     h('div', { className: 'pulse-status-row' },
       h(LastUpdated, { lastUpdated, live: !loading }),
-      h('span', null, 'Sources: Alternative.me, Google News RSS, mempool.space')
+      h('span', null, 'Sources: Alternative.me daily index, live BTC market feeds, Google News RSS, mempool.space')
     ),
 
     h('section', { className: 'pulse-section' },
       h('div', { className: 'pulse-section-header' },
         h('div', null,
           h('span', { className: 'charts-eyebrow' }, 'Sentiment'),
-          h('h2', null, 'Fear & Greed Index')
+          h('h2', null, 'Live Fear & Greed Sentiment')
         ),
         h(ChartRangeControls, { value: sentimentRange, onChange: setSentimentRange, ranges: SENTIMENT_RANGES, label: 'Fear and Greed timeframe' })
       ),
       h('div', { className: 'pulse-two-column' },
-        h(SentimentGauge, { current: sentiment && sentiment.current }),
+        h(SentimentGauge, { current: liveSentiment, official: officialSentiment }),
         h('div', { className: 'charts-panel' },
           h('div', { className: 'charts-panel-header' },
             h('div', { className: 'charts-panel-heading' },
               h('div', { className: 'charts-panel-title' }, 'Sentiment History'),
-              h('div', { className: 'charts-panel-subtitle' }, 'Daily index values; lower means fear, higher means greed.')
+              h('div', { className: 'charts-panel-subtitle' }, 'Alternative.me daily history plus a live intraday Bitcoin Pulse sentiment point.')
             ),
-            sentiment && sentiment.current && h('span', {
+            liveSentiment && h('span', {
               className: 'charts-badge',
-              style: { color: sentimentColor(sentiment.current.value), borderColor: sentimentColor(sentiment.current.value), background: sentimentColor(sentiment.current.value) + '20' },
-            }, sentiment.current.value + '/100')
+              style: { color: sentimentColor(liveSentiment.value), borderColor: sentimentColor(liveSentiment.value), background: sentimentColor(liveSentiment.value) + '20' },
+            }, liveSentiment.value + '/100 live')
           ),
           h('div', { className: 'charts-panel-body' },
             h(LineChart, {
               labels: sentimentHistory.map(point => formatChartDateLabel(point[0], sentimentRange === 'max' ? '5y' : sentimentRange)),
               datasets: [{
-                label: 'Fear & Greed',
+                label: 'Fear & Greed / Live Sentiment',
                 data: sentimentHistory.map(point => point[1]),
-                borderColor: sentiment && sentiment.current ? sentimentColor(sentiment.current.value) : chartColors.orange,
+                borderColor: liveSentiment ? sentimentColor(liveSentiment.value) : chartColors.orange,
                 backgroundColor: 'rgba(247,147,26,0.12)',
               }],
               options: pulseChartOptions({ min: 0, max: 100 }),
@@ -15565,7 +15691,7 @@ globalThis.MarketPulsePage = function MarketPulsePage() {
     ),
 
     h('div', { className: 'charts-source-note' },
-      'Data sources: Fear & Greed from Alternative.me, headlines from Google News RSS through rss2json with Hacker News fallback, and mining difficulty/hashrate from mempool.space public API. Sentiment updates daily; news refreshes every few minutes; mining estimates refresh near real time from public mempool data.'
+      'Data sources: official Fear & Greed from Alternative.me updates daily, while the Bitcoin Pulse live sentiment score refreshes about every minute from BTC price momentum, volume pressure, and BTC dominance. Headlines come from Google News RSS through rss2json with Hacker News fallback; mining difficulty/hashrate come from mempool.space public API.'
     )
   );
 }
