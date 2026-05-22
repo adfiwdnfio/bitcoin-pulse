@@ -3628,6 +3628,14 @@ body {
   border-color: rgba(247, 147, 26, 0.20);
 }
 
+.holder-category-card.individual {
+  border-color: rgba(255, 183, 77, 0.26);
+}
+
+.holder-category-card.exchange {
+  border-color: rgba(234, 88, 12, 0.24);
+}
+
 .country-holder-metric.fund,
 .holder-category-card.fund {
   border-color: rgba(139, 92, 246, 0.22);
@@ -3710,12 +3718,73 @@ body {
   font-size: var(--text-sm);
 }
 
+.holder-name-link {
+  display: block;
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.holder-name-link:hover {
+  color: var(--bitcoin-orange);
+}
+
 .country-holder-table td:nth-child(2) span {
+  display: block;
   color: var(--text-faint);
   font-size: var(--text-xs);
   font-weight: 850;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+.holder-row-note {
+  display: block;
+  max-width: 340px;
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 650;
+  line-height: 1.35;
+  white-space: normal;
+}
+
+.holder-source-cell {
+  min-width: 190px;
+}
+
+.holder-source-cell a,
+.holder-source-cell strong {
+  display: block;
+  color: #ffd79d;
+  font-size: var(--text-xs);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.holder-source-cell a:hover {
+  color: var(--bitcoin-orange);
+}
+
+.holder-source-cell span,
+.holder-source-cell small {
+  display: block;
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 750;
+  line-height: 1.3;
+  white-space: normal;
+}
+
+.country-holder-table .individual-row {
+  background: rgba(255, 183, 77, 0.065);
+}
+
+.country-holder-table .exchange-row {
+  background: rgba(234, 88, 12, 0.055);
 }
 
 .country-holder-table .government-row,
@@ -3759,6 +3828,18 @@ body {
   color: #cde0ff;
   border-color: rgba(59, 130, 246, 0.20);
   background: rgba(59, 130, 246, 0.07);
+}
+
+.holder-type-pill.individual {
+  color: #ffe2af;
+  border-color: rgba(255, 183, 77, 0.26);
+  background: rgba(255, 183, 77, 0.08);
+}
+
+.holder-type-pill.exchange {
+  color: #ffcaa8;
+  border-color: rgba(234, 88, 12, 0.24);
+  background: rgba(234, 88, 12, 0.08);
 }
 
 .country-holder-notes {
@@ -3889,7 +3970,7 @@ body {
 <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
 
 <!-- Favicon (inline Bitcoin Pulse SVG) -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='c' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23ffd18a'/%3E%3Cstop offset='52%25' stop-color='%23f7931a'/%3E%3Cstop offset='100%25' stop-color='%23ff6b00'/%3E%3C/linearGradient%3E%3CradialGradient id='g' cx='50%25' cy='50%25' r='54%25'%3E%3Cstop offset='0%25' stop-color='%23ffbd59' stop-opacity='.65'/%3E%3Cstop offset='58%25' stop-color='%23f7931a' stop-opacity='.3'/%3E%3Cstop offset='100%25' stop-color='%238b5cf6' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='18' fill='%23070504'/%3E%3Ccircle cx='32' cy='32' r='30' fill='url(%23g)'/%3E%3Ccircle cx='32' cy='32' r='26' fill='%23140b04'/%3E%3Ccircle cx='32' cy='32' r='21' fill='url(%23c)'/%3E%3Cpath d='M13 38c10 8 27 9 38-3' stroke='%238b5cf6' stroke-opacity='.7' stroke-width='2' stroke-linecap='round'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-size='31' font-family='Georgia, serif' font-weight='900' fill='%23180b02'%3E%E2%82%BF%3C/text%3E%3Ccircle cx='50' cy='24' r='3.2' fill='%23fff0c7' opacity='.92'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%2216%22%20y1%3D%227%22%20x2%3D%2248%22%20y2%3D%2257%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23ffd18a%22%2F%3E%3Cstop%20offset%3D%2242%25%22%20stop-color%3D%22%23f7931a%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23ff6b00%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Ctext%20x%3D%2232%22%20y%3D%2249%22%20text-anchor%3D%22middle%22%20font-size%3D%2254%22%20font-family%3D%22Arial%20Black%2C%20Helvetica%2C%20sans-serif%22%20font-weight%3D%22900%22%20fill%3D%22url(%23g)%22%20stroke%3D%22rgba(255%2C210%2C138%2C.28)%22%20stroke-width%3D%22.9%22%20paint-order%3D%22stroke%22%3E%E2%82%BF%3C%2Ftext%3E%3C%2Fsvg%3E">
 
 <style>
   /* Mobile menu button visibility */
@@ -4122,10 +4203,17 @@ globalThis.features = [
     icon: 'landmark',
   },
   {
+    id: 'market-cycles',
+    hash: '#market-cycles',
+    title: 'Bitcoin Market Cycles',
+    description: 'Overlay current and previous Bitcoin cycles from their halving dates with live BTC price merged into the current cycle.',
+    icon: 'line-chart',
+  },
+  {
     id: 'market-pulse',
     hash: '#market-pulse',
     title: 'Market Pulse',
-    description: 'Track live Fear & Greed sentiment, top Bitcoin headlines, mining difficulty, and network hashrate.',
+    description: 'Track the official Fear & Greed Index and top Bitcoin-only headlines from public no-key sources.',
     icon: 'newspaper',
   },
   {
@@ -4330,16 +4418,47 @@ globalThis.truncateTxId = function truncateTxId(txid) {
 
 // Global in-memory cache (survives across polling intervals)
 const _apiCache = {};
+const PERSISTED_CACHE_PREFIX = 'bitcoin-pulse-cache:';
+const PERSISTED_CACHE_KEYS = new Set([
+  'bitcoin-etf-flows',
+  'top-bitcoin-addresses-v1',
+  'exchangeReserveSnapshot',
+  'holder-cohort-snapshot-v1',
+  'bitcoin-market-cycles-v3',
+  'bitcoin-dominance-snapshot',
+  'global-assets-comparison-snapshot',
+  'countries-holders-snapshot',
+  'ownershipDistributionSnapshot',
+]);
+
+function canUsePersistentCache() {
+  return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+}
 
 function cacheSet(key, value) {
   _apiCache[key] = { value, ts: Date.now() };
+  if (!PERSISTED_CACHE_KEYS.has(key) || !canUsePersistentCache()) return;
+  try {
+    window.localStorage.setItem(PERSISTED_CACHE_PREFIX + key, JSON.stringify(_apiCache[key]));
+  } catch {
+    // Private browsing/storage pressure should not block live data updates.
+  }
 }
 
 function cacheGet(key, maxAgeMs = 300000) {
   const entry = _apiCache[key];
-  if (!entry) return null;
-  if (Date.now() - entry.ts > maxAgeMs) return null;
-  return entry.value;
+  if (entry && Date.now() - entry.ts <= maxAgeMs) return entry.value;
+  if (!PERSISTED_CACHE_KEYS.has(key) || !canUsePersistentCache()) return null;
+  try {
+    const raw = window.localStorage.getItem(PERSISTED_CACHE_PREFIX + key);
+    if (!raw) return null;
+    const persisted = JSON.parse(raw);
+    if (!persisted || Date.now() - persisted.ts > maxAgeMs) return null;
+    _apiCache[key] = persisted;
+    return persisted.value;
+  } catch {
+    return null;
+  }
 }
 
 // Shared fetch with timeout — returns null on failure (never throws)
@@ -4567,12 +4686,10 @@ globalThis.fetchNetworkData = async function fetchNetworkData() {
   }
 
   // Fear & Greed
-  const fgRes = await tryFetch('https://api.alternative.me/fng/', 8000);
+  const fgRes = await tryFetch('https://api.alternative.me/fng/?limit=1', 8000);
   if (fgRes && fgRes.data && fgRes.data[0]) {
-    results.fearGreed = {
-      value: parseInt(fgRes.data[0].value),
-      label: fgRes.data[0].value_classification,
-    };
+    const latestFearGreed = normalizeFearGreedRow(fgRes.data[0]);
+    if (latestFearGreed) results.fearGreed = latestFearGreed;
   }
 
   if (cached) {
@@ -4772,12 +4889,245 @@ globalThis.fetchMarketChart = async function fetchMarketChart(days = 1) {
   return cached || { prices: [], marketCaps: [], volumes: [], source: 'unavailable' };
 }
 
+/* ------------------------------------------
+   Bitcoin Market Cycles - halving-aligned price history
+   CoinGecko public API currently limits old history for no-key users,
+   so this merges CoinGecko's live 365d window with a no-key
+   Blockchain.com full-history fallback through Jina Reader.
+   ------------------------------------------ */
+globalThis.BITCOIN_HALVING_CYCLES = [
+  { id: '2012', label: '2012 cycle', halvingDate: '2012-11-28', color: 'rgba(148, 163, 184, 0.82)' },
+  { id: '2016', label: '2016 cycle', halvingDate: '2016-07-09', color: 'rgba(56, 189, 248, 0.82)' },
+  { id: '2020', label: '2020 cycle', halvingDate: '2020-05-11', color: 'rgba(168, 85, 247, 0.82)' },
+  { id: '2024', label: 'Current cycle', halvingDate: '2024-04-20', color: '#f7931a', current: true },
+];
+
+function dayKeyFromTimestamp(timestamp) {
+  const d = new Date(Number(timestamp));
+  if (Number.isNaN(d.getTime())) return null;
+  return d.toISOString().slice(0, 10);
+}
+
+function parseJinaJsonPayload(payload) {
+  if (!payload) return null;
+  if (typeof payload !== 'string') return payload;
+  const marker = 'Markdown Content:';
+  const markerIndex = payload.indexOf(marker);
+  let text = markerIndex >= 0 ? payload.slice(markerIndex + marker.length).trim() : payload.trim();
+  const firstJson = Math.min(
+    ...['{', '['].map(char => {
+      const index = text.indexOf(char);
+      return index >= 0 ? index : Infinity;
+    })
+  );
+  if (Number.isFinite(firstJson) && firstJson > 0) text = text.slice(firstJson).trim();
+  try {
+    return JSON.parse(text);
+  } catch {
+    const objectMatch = text.match(/(\{[\s\S]*\})/);
+    if (!objectMatch) return null;
+    try {
+      return JSON.parse(objectMatch[1]);
+    } catch {
+      return null;
+    }
+  }
+}
+
+function normalizePriceRows(rows) {
+  return (Array.isArray(rows) ? rows : [])
+    .map(point => {
+      if (Array.isArray(point)) {
+        return { ts: Number(point[0]), price: Number(point[1]) };
+      }
+      if (point && typeof point === 'object') {
+        const ts = Number(point.x || point.t || point.time || point.timestamp);
+        return { ts: ts < 1000000000000 ? ts * 1000 : ts, price: Number(point.y ?? point.price ?? point.value) };
+      }
+      return null;
+    })
+    .filter(point => point && Number.isFinite(point.ts) && Number.isFinite(point.price) && point.price > 0)
+    .sort((a, b) => a.ts - b.ts);
+}
+
+function mergePriceRows(baseRows, overrideRows) {
+  const byDay = new Map();
+  baseRows.forEach(point => {
+    const key = dayKeyFromTimestamp(point.ts);
+    if (key) byDay.set(key, point);
+  });
+  overrideRows.forEach(point => {
+    const key = dayKeyFromTimestamp(point.ts);
+    if (key) byDay.set(key, point);
+  });
+  return [...byDay.values()].sort((a, b) => a.ts - b.ts);
+}
+
+function pricePointAtOrBefore(rows, timestamp) {
+  for (let i = rows.length - 1; i >= 0; i -= 1) {
+    if (rows[i].ts <= timestamp) return rows[i];
+  }
+  return null;
+}
+
+function buildCycleSeries(priceRows, livePrice) {
+  const priceByDay = new Map();
+  priceRows.forEach(point => {
+    const key = dayKeyFromTimestamp(point.ts);
+    if (key) priceByDay.set(key, point.price);
+  });
+
+  const now = Date.now();
+  const cycleEndDates = new Map();
+  BITCOIN_HALVING_CYCLES.forEach((cycle, index) => {
+    const nextCycle = BITCOIN_HALVING_CYCLES[index + 1];
+    cycleEndDates.set(cycle.id, nextCycle ? Date.parse(nextCycle.halvingDate + 'T00:00:00Z') : now);
+  });
+
+  return BITCOIN_HALVING_CYCLES.map(cycle => {
+    const startTs = Date.parse(cycle.halvingDate + 'T00:00:00Z');
+    const endTs = Math.min(cycleEndDates.get(cycle.id), now);
+    const halvingPricePoint = pricePointAtOrBefore(priceRows, startTs + 2 * 86400000);
+    const points = [];
+    for (let ts = startTs; ts <= endTs; ts += 86400000) {
+      const key = dayKeyFromTimestamp(ts);
+      let price = priceByDay.get(key);
+      if (cycle.current && ts >= now - 86400000 && livePrice) price = livePrice;
+      if (Number.isFinite(price) && price > 0) {
+        const daysSinceHalving = Math.round((ts - startTs) / 86400000);
+        points.push({
+          day: daysSinceHalving,
+          ts,
+          date: new Date(ts).toISOString().slice(0, 10),
+          price,
+          indexed: halvingPricePoint && halvingPricePoint.price > 0 ? (price / halvingPricePoint.price) * 100 : null,
+        });
+      }
+    }
+    const latest = points[points.length - 1] || null;
+    const peak = points.reduce((best, point) => (!best || point.price > best.price ? point : best), null);
+    return {
+      ...cycle,
+      halvingPrice: halvingPricePoint ? halvingPricePoint.price : null,
+      daysElapsed: latest ? latest.day : 0,
+      latestPrice: latest ? latest.price : null,
+      peakPrice: peak ? peak.price : null,
+      peakDay: peak ? peak.day : null,
+      returnSinceHalving: latest && halvingPricePoint ? ((latest.price / halvingPricePoint.price) - 1) * 100 : null,
+      points,
+    };
+  });
+}
+
+globalThis.fetchBitcoinMarketCycles = async function fetchBitcoinMarketCycles() {
+  const cached = cacheGet('bitcoin-market-cycles-v3', 10 * 60 * 1000);
+  if (cached) return cached;
+
+  const [coinGecko, blockchainReader, priceResult] = await Promise.all([
+    tryFetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=max&interval=daily', 18000),
+    tryFetch('https://r.jina.ai/http://api.blockchain.info/charts/market-price?timespan=all&format=json&sampled=false', 18000),
+    fetchBTCPrice(),
+  ]);
+
+  const blockchainJson = parseJinaJsonPayload(blockchainReader);
+  const blockchainRows = normalizePriceRows(blockchainJson && blockchainJson.values ? blockchainJson.values : []);
+  const geckoRows = normalizePriceRows(coinGecko && Array.isArray(coinGecko.prices) ? coinGecko.prices : []);
+  const mergedRows = mergePriceRows(blockchainRows, geckoRows);
+  if (!mergedRows.length) return cached || null;
+
+  const livePrice = priceResult && Number.isFinite(priceResult.price) ? priceResult.price : null;
+  const cycles = buildCycleSeries(mergedRows, livePrice);
+  const currentCycle = cycles.find(cycle => cycle.current) || cycles[cycles.length - 1];
+  const result = {
+    cycles,
+    currentCycle,
+    source: geckoRows.length ? 'CoinGecko daily max history' : 'Blockchain.com full-history fallback',
+    sourceUrl: geckoRows.length ? 'https://www.coingecko.com/en/api' : 'https://www.blockchain.com/explorer/charts/market-price',
+    note: geckoRows.length
+      ? 'Primary source is CoinGecko free no-key /coins/bitcoin/market_chart with days=max and interval=daily; Blockchain.com is retained only as a resilience fallback for missing historical days.'
+      : 'CoinGecko max history was unavailable, so the chart is using Blockchain.com daily market-price history through Jina Reader as a fallback.',
+    fetchedAt: new Date().toISOString(),
+  };
+  cacheSet('bitcoin-market-cycles-v3', result);
+  return result;
+}
+
 const BITINFO_DISTRIBUTION_READER_URL = 'https://r.jina.ai/https://www.bitinfocharts.com/bitcoin-distribution-history.html';
+const BITINFO_TOP_ADDRESSES_READER_URL = 'https://r.jina.ai/http://bitinfocharts.com/top-100-richest-bitcoin-addresses.html';
 
 function parseBitInfoNumber(value) {
   if (value === null || value === undefined) return null;
   const match = String(value).replace(/,/g, '').match(/-?\d+(?:\.\d+)?/);
   return match ? parseFloat(match[0]) : null;
+}
+
+function parseTopAddressBlock(block) {
+  const rankMatch = block.match(/^\s*(\d{1,3})\[/);
+  const urlMatch = block.match(/\]\(https:\/\/bitinfocharts\.com\/bitcoin\/address\/([^)]+)\)/);
+  const balanceMatch = block.match(/Balance:([\d,]+(?:\.\d+)?) BTC\s*\(\$([\d,]+(?:\.\d+)?)\)/);
+  const percentMatch = block.match(/\)\s*([\d.]+)%/);
+  if (!rankMatch || !urlMatch || !balanceMatch || !percentMatch) return null;
+  const walletMatch = block.match(/wallet:\s*([^\]\n]+)/);
+  const change7dMatch = block.match(/7d:([+-]?[\d,]+(?:\.\d+)?) BTC/);
+  const change30dMatch = block.match(/30d:([+-]?[\d,]+(?:\.\d+)?) BTC/);
+  const lastInMatches = [...block.matchAll(/(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})/g)].map(match => match[1]);
+  const address = decodeURIComponent(urlMatch[1]).replace(/\s+/g, '');
+  return {
+    rank: parseInt(rankMatch[1], 10),
+    address,
+    label: walletMatch ? walletMatch[1].trim() : 'Unlabeled address',
+    balance: parseBitInfoNumber(balanceMatch[1]) || 0,
+    usdValue: parseBitInfoNumber(balanceMatch[2]) || null,
+    supplyPercent: parseBitInfoNumber(percentMatch[1]) || 0,
+    change7d: change7dMatch ? parseBitInfoNumber(change7dMatch[1]) : null,
+    change30d: change30dMatch ? parseBitInfoNumber(change30dMatch[1]) : null,
+    lastActivity: lastInMatches.length ? lastInMatches[lastInMatches.length - 1] + ' UTC' : null,
+    sourceUrl: 'https://bitinfocharts.com/bitcoin/address/' + encodeURIComponent(address),
+  };
+}
+
+function parseTopBitcoinAddressRows(markdown) {
+  if (typeof markdown !== 'string') return [];
+  const start = markdown.indexOf('Top 100 Richest Bitcoin Addresses');
+  const text = start >= 0 ? markdown.slice(start) : markdown;
+  const matches = [...text.matchAll(/(?:^|\n)(\d{1,3})\[[\s\S]*?(?=\n\d{1,3}\[|$)/g)];
+  return matches
+    .map(match => parseTopAddressBlock(match[0]))
+    .filter(row => row && row.rank >= 1 && row.rank <= 100 && row.balance > 0)
+    .sort((a, b) => a.rank - b.rank)
+    .slice(0, 100);
+}
+
+globalThis.fetchTopBitcoinAddressesSnapshot = async function fetchTopBitcoinAddressesSnapshot() {
+  const cached = cacheGet('top-bitcoin-addresses-v1', 60 * 1000);
+  if (cached) return cached;
+
+  const [markdown, networkData, priceResult] = await Promise.all([
+    tryFetch(BITINFO_TOP_ADDRESSES_READER_URL, 16000),
+    fetchNetworkData(),
+    fetchBTCPrice(),
+  ]);
+  const addresses = parseTopBitcoinAddressRows(markdown);
+  if (!addresses.length) return cached || null;
+
+  const circulatingSupply = networkData && networkData.circulatingSupply ? networkData.circulatingSupply : MAX_BTC_SUPPLY;
+  const totalBtc = addresses.reduce((sum, row) => sum + row.balance, 0);
+  const supplyPercent = circulatingSupply ? (totalBtc / circulatingSupply) * 100 : addresses.reduce((sum, row) => sum + row.supplyPercent, 0);
+  const btcPrice = priceResult && Number.isFinite(priceResult.price) ? priceResult.price : null;
+  const result = {
+    addresses,
+    totalBtc,
+    supplyPercent,
+    circulatingSupply,
+    btcPrice,
+    totalUsd: btcPrice ? totalBtc * btcPrice : addresses.reduce((sum, row) => sum + (row.usdValue || 0), 0),
+    source: 'BitInfoCharts Top 100 Richest Bitcoin Addresses via Jina Reader',
+    sourceUrl: 'https://bitinfocharts.com/top-100-richest-bitcoin-addresses.html',
+    methodology: 'Address-level rich list. This is not entity-adjusted ownership; many top addresses are exchange, ETF, government, bridge, or custody wallets.',
+    fetchedAt: new Date().toISOString(),
+  };
+  cacheSet('top-bitcoin-addresses-v1', result);
+  return result;
 }
 
 function parseBitInfoRows(blockText) {
@@ -4912,7 +5262,8 @@ globalThis.fetchOwnershipDistributionSnapshot = async function fetchOwnershipDis
 }
 
 globalThis.fetchFearGreedSeries = async function fetchFearGreedSeries(limit = 30) {
-  const data = await tryFetch('https://api.alternative.me/fng/?limit=' + limit, 10000);
+  const safeLimit = limit === 0 ? 0 : Math.max(1, Math.min(1825, Math.ceil(Number(limit) || 30)));
+  const data = await tryFetch('https://api.alternative.me/fng/?limit=' + safeLimit, 10000);
   return (data && data.data) ? data.data : [];
 }
 
@@ -5079,7 +5430,7 @@ globalThis.fetchBinanceTicker = async function fetchBinanceTicker() {
 }
 
 /* ------------------------------------------
-   Market pulse data: Fear & Greed, news, mining
+   Market pulse data: Fear & Greed and Bitcoin-only news
    All no-key public feeds with cache/fallback behavior.
    ------------------------------------------ */
 function decodeHtmlText(value) {
@@ -5116,141 +5467,43 @@ function normalizeFearGreedRow(row) {
   };
 }
 
-function clampNumber(value, min, max) {
-  const n = Number(value);
-  if (!Number.isFinite(n)) return min;
-  return Math.max(min, Math.min(max, n));
-}
-
-function classifyFearGreedValue(value) {
-  if (value >= 75) return 'Extreme Greed';
-  if (value >= 55) return 'Greed';
-  if (value >= 45) return 'Neutral';
-  if (value >= 25) return 'Fear';
-  return 'Extreme Fear';
-}
-
-function findMarketPointAtOrBefore(series, targetTs) {
-  if (!Array.isArray(series) || !series.length) return null;
-  for (let i = series.length - 1; i >= 0; i -= 1) {
-    const point = series[i];
-    if (Array.isArray(point) && Number(point[0]) <= targetTs && Number.isFinite(Number(point[1]))) {
-      return point;
-    }
-  }
-  return null;
-}
-
-function pctChangeBetweenPoints(latest, past) {
-  const latestValue = Array.isArray(latest) ? Number(latest[1]) : null;
-  const pastValue = Array.isArray(past) ? Number(past[1]) : null;
-  if (!Number.isFinite(latestValue) || !Number.isFinite(pastValue) || pastValue <= 0) return null;
-  return ((latestValue - pastValue) / pastValue) * 100;
-}
-
-function calculateVolumeRatio(volumes) {
-  if (!Array.isArray(volumes) || volumes.length < 5) return null;
-  const finite = volumes.map(point => Number(point[1])).filter(value => Number.isFinite(value) && value > 0);
-  if (finite.length < 5) return null;
-  const latest = finite[finite.length - 1];
-  const recent = finite.slice(-30);
-  const average = recent.reduce((sum, value) => sum + value, 0) / recent.length;
-  return average > 0 ? latest / average : null;
-}
-
-function calculateLiveSentimentScore({ official, priceResult, marketChart, dominance }) {
-  const prices = marketChart && Array.isArray(marketChart.prices) ? marketChart.prices : [];
-  const latestPoint = prices.length ? prices[prices.length - 1] : null;
-  const latestTs = latestPoint ? Number(latestPoint[0]) : Date.now();
-  const change24h = Number.isFinite(Number(priceResult?.change24h))
-    ? Number(priceResult.change24h)
-    : pctChangeBetweenPoints(latestPoint, findMarketPointAtOrBefore(prices, latestTs - 86400000));
-  const change7d = pctChangeBetweenPoints(latestPoint, findMarketPointAtOrBefore(prices, latestTs - 7 * 86400000));
-  const change30d = pctChangeBetweenPoints(latestPoint, findMarketPointAtOrBefore(prices, latestTs - 30 * 86400000));
-  const volumeRatio = calculateVolumeRatio(marketChart?.volumes);
-  const dominanceValue = Number(dominance?.dominance);
-
-  const components = [];
-  const addComponent = (label, value, weight, detail) => {
-    if (!Number.isFinite(value) || weight <= 0) return;
-    components.push({ label, value: clampNumber(value, 0, 100), weight, detail });
-  };
-
-  if (official && Number.isFinite(official.value)) {
-    addComponent('Official daily index', official.value, 0.30, official.label);
-  }
-  if (Number.isFinite(change24h)) {
-    addComponent('24h price momentum', 50 + change24h * 6, 0.28, (change24h >= 0 ? '+' : '') + change24h.toFixed(2) + '%');
-  }
-  if (Number.isFinite(change7d)) {
-    addComponent('7d price momentum', 50 + change7d * 3, 0.20, (change7d >= 0 ? '+' : '') + change7d.toFixed(2) + '%');
-  }
-  if (Number.isFinite(change30d)) {
-    addComponent('30d trend', 50 + change30d * 1.2, 0.10, (change30d >= 0 ? '+' : '') + change30d.toFixed(2) + '%');
-  }
-  if (Number.isFinite(volumeRatio)) {
-    addComponent('Live volume pressure', 50 + Math.log(volumeRatio) * 28, 0.07, volumeRatio.toFixed(2) + 'x recent average');
-  }
-  if (Number.isFinite(dominanceValue)) {
-    addComponent('BTC dominance context', 50 + (dominanceValue - 50) * 1.15, 0.05, dominanceValue.toFixed(2) + '% BTC dominance');
-  }
-
-  if (!components.length) return null;
-  const totalWeight = components.reduce((sum, item) => sum + item.weight, 0);
-  const score = Math.round(components.reduce((sum, item) => sum + item.value * item.weight, 0) / totalWeight);
-
-  return {
-    value: clampNumber(score, 0, 100),
-    label: classifyFearGreedValue(score),
-    timestamp: Date.now(),
-    date: new Date().toISOString(),
-    source: 'Bitcoin Pulse live sentiment proxy',
-    methodology: 'Blends Alternative.me daily index with live BTC price momentum, volume pressure, and BTC dominance context.',
-    components,
-    change24h,
-    change7d,
-    change30d,
-    volumeRatio,
-    dominance: Number.isFinite(dominanceValue) ? dominanceValue : null,
-  };
-}
-
 globalThis.fetchFearGreedHistory = async function fetchFearGreedHistory(limit = 365) {
   const safeLimit = limit === 0 ? 0 : Math.max(1, Math.min(1825, Math.ceil(Number(limit) || 365)));
   const cacheKey = 'fear-greed-history:' + safeLimit;
   const cached = cacheGet(cacheKey, 60000);
   if (cached) return cached;
 
-  const [response, priceResult, marketChart, dominance] = await Promise.all([
+  const [latestResponse, historyResponse] = await Promise.all([
+    tryFetch('https://api.alternative.me/fng/?limit=1', 12000),
     tryFetch('https://api.alternative.me/fng/?limit=' + safeLimit, 12000),
-    fetchBTCPrice(),
-    fetchMarketChart(30),
-    fetchBitcoinDominanceSnapshot(),
   ]);
-  const rows = response && Array.isArray(response.data)
-    ? response.data.map(normalizeFearGreedRow).filter(Boolean)
+  const latestRows = latestResponse && Array.isArray(latestResponse.data)
+    ? latestResponse.data.map(normalizeFearGreedRow).filter(Boolean)
     : [];
-  if (!rows.length) return cached || null;
+  const rows = historyResponse && Array.isArray(historyResponse.data)
+    ? historyResponse.data.map(normalizeFearGreedRow).filter(Boolean)
+    : [];
+  const latest = latestRows[0] || rows[0] || null;
+  if (!latest && !rows.length) return cached || null;
 
-  const latest = rows[0];
-  const history = rows.slice().reverse();
-  const live = calculateLiveSentimentScore({ official: latest, priceResult, marketChart, dominance });
-  const liveHistory = live
-    ? [
-        ...history.filter(point => point.timestamp < latest.timestamp),
-        latest,
-        { ...live, label: live.label + ' (live)' },
-      ]
-    : history;
+  let history = rows.length ? rows.slice().reverse() : [latest];
+  if (latest) {
+    let mergedLatest = false;
+    history = history.map(point => {
+      if (point.timestamp !== latest.timestamp) return point;
+      mergedLatest = true;
+      return { ...point, ...latest };
+    });
+    if (!mergedLatest) history.push(latest);
+  }
   const result = {
     current: latest,
-    live,
-    liveHistory,
+    live: null,
+    liveHistory: history,
     history,
     source: 'Alternative.me Fear & Greed Index',
     sourceUrl: 'https://alternative.me/crypto/fear-and-greed-index/',
-    liveSource: 'Bitcoin Pulse live sentiment proxy',
-    marketSource: marketChart?.source || priceResult?.source || 'public BTC feeds',
+    note: 'Official Alternative.me values update once per day. time_until_update is only returned by the API when limit=1, so the app fetches the latest value separately from the history range.',
     fetchedAt: new Date().toISOString(),
   };
   cacheSet(cacheKey, result);
@@ -5269,23 +5522,33 @@ function splitNewsTitle(rawTitle) {
   return { title, source: 'Bitcoin news' };
 }
 
-function isBitcoinNewsTitle(title) {
-  const lower = String(title || '').toLowerCase();
-  if (!lower.includes('bitcoin') && !/\bbtc\b/.test(lower)) return false;
-  if (lower.includes('bitcoin cash') || /\bbch\b/.test(lower)) return false;
+function isBitcoinNewsTitle(title, description = '', source = '') {
+  const headline = String(title || '').toLowerCase();
+  const body = String(description || '').toLowerCase();
+  const sourceName = String(source || '').toLowerCase();
+  const combined = headline + ' ' + body + ' ' + sourceName;
+  const hasBitcoinHeadline = headline.includes('bitcoin') || /\bbtc\b/.test(headline);
+  if (!hasBitcoinHeadline) return false;
+  if (/coinmarketcap/.test(sourceName)) return false;
+  if (combined.includes('bitcoin cash') || /\bbch\b/.test(combined)) return false;
+  if (/build on bitcoin|\bbob\b/.test(combined)) return false;
+  if (/price today.*\bto usd\b.*marketcap/.test(combined)) return false;
+  if (/\b(ethereum|ether|eth|solana|xrp|ripple|dogecoin|doge|cardano|ada|bnb|binance coin|shiba|pepe|memecoin|meme coin|stablecoin|usdt|usdc|altcoin|altcoins|airdrop|token launch|nft|defi)\b/.test(combined)) return false;
+  if (/\b(movie|film|trailer|hollywood|actor|actress|casting|box office|documentary)\b/.test(combined)) return false;
   return true;
 }
 
 function normalizeRssNewsItem(item, index) {
   const split = splitNewsTitle(item && item.title);
-  if (!split.title || !isBitcoinNewsTitle(split.title)) return null;
+  const description = decodeHtmlText(item.description || item.content || '');
+  if (!split.title || !isBitcoinNewsTitle(split.title, description, split.source)) return null;
   return {
     id: item.guid || item.link || 'rss-' + index,
     title: split.title,
     source: split.source || 'Google News',
     url: item.link || '#',
     publishedAt: item.pubDate ? new Date(item.pubDate).toISOString() : null,
-    description: decodeHtmlText(item.description || item.content || ''),
+    description,
     image: item.thumbnail || (item.enclosure && item.enclosure.link) || null,
   };
 }
@@ -5308,7 +5571,7 @@ globalThis.fetchBitcoinNews = async function fetchBitcoinNews() {
   const cached = cacheGet('bitcoin-news-feed', 300000);
   if (cached) return cached;
 
-  const googleNewsRss = 'https://news.google.com/rss/search?q=Bitcoin%20when%3A2d&hl=en-US&gl=US&ceid=US%3Aen';
+  const googleNewsRss = 'https://news.google.com/rss/search?q=Bitcoin%20when%3A2d%20-movie%20-film%20-hollywood&hl=en-US&gl=US&ceid=US%3Aen';
   const rssBridgeUrl = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(googleNewsRss);
   const rss = await tryFetch(rssBridgeUrl, 12000);
   let items = rss && rss.status === 'ok' && Array.isArray(rss.items)
@@ -5402,8 +5665,8 @@ globalThis.fetchMiningStats = async function fetchMiningStats(range = '1m') {
    Free public Farside Investors tables read through Jina Reader.
    Values are US$ millions and update on trading days after issuers report.
    ------------------------------------------ */
-const ETF_FLOWS_ALL_DATA_URL = 'https://r.jina.ai/http://r.jina.ai/http://farside.co.uk/bitcoin-etf-flow-all-data/';
-const ETF_FLOWS_RECENT_URL = 'https://r.jina.ai/http://r.jina.ai/http://farside.co.uk/btc/';
+const ETF_FLOWS_ALL_DATA_URL = 'https://r.jina.ai/http://farside.co.uk/bitcoin-etf-flow-all-data/';
+const ETF_FLOWS_RECENT_URL = 'https://r.jina.ai/http://farside.co.uk/btc/';
 
 function parseEtfMarkdownCells(line) {
   return String(line || '')
@@ -5444,6 +5707,20 @@ function formatEtfDateLabel(timestamp) {
 
 function sumEtfRows(rows) {
   return rows.reduce((sum, row) => sum + (Number(row.total) || 0), 0);
+}
+
+function sumEtfTickerRows(rows, ticker) {
+  return rows.reduce((sum, row) => {
+    const value = row && row.funds ? row.funds[ticker] : null;
+    return sum + (Number.isFinite(value) ? value : 0);
+  }, 0);
+}
+
+function countEtfTickerActiveRows(rows, ticker) {
+  return rows.reduce((count, row) => {
+    const value = row && row.funds ? row.funds[ticker] : null;
+    return count + (Number.isFinite(value) && value !== 0 ? 1 : 0);
+  }, 0);
 }
 
 function buildEtfFlowRow(dateLabel, tickers, values) {
@@ -5600,16 +5877,29 @@ function buildEtfFlowSnapshot(parsed, sourceUrl, fetchedAt) {
   const previous = rows.length > 1 ? rows[rows.length - 2] : null;
   const recent7 = rows.slice(-7);
   const recent30 = rows.slice(-30);
+  const recent5 = rows.slice(-5);
   const inflowDays30 = recent30.filter(row => row.total > 0).length;
   const outflowDays30 = recent30.filter(row => row.total < 0).length;
   const latestFunds = parsed.tickers
     .map(ticker => {
       const value = latest.funds ? latest.funds[ticker] : null;
-      return { ticker, value, reported: Number.isFinite(value) };
+      const net5d = sumEtfTickerRows(recent5, ticker);
+      const net30d = sumEtfTickerRows(recent30, ticker);
+      return {
+        ticker,
+        value,
+        reported: Number.isFinite(value),
+        net5d,
+        net30d,
+        activeRows5d: countEtfTickerActiveRows(recent5, ticker),
+        activeRows30d: countEtfTickerActiveRows(recent30, ticker),
+      };
     })
     .sort((a, b) => {
       if (a.reported !== b.reported) return a.reported ? -1 : 1;
-      return Math.abs(Number(b.value) || 0) - Math.abs(Number(a.value) || 0);
+      const latestMove = Math.abs(Number(b.value) || 0) - Math.abs(Number(a.value) || 0);
+      if (latestMove !== 0) return latestMove;
+      return Math.abs(Number(b.net5d) || 0) - Math.abs(Number(a.net5d) || 0);
     });
   const leader = latestFunds.find(fund => Number.isFinite(fund.value) && fund.value !== 0)
     || latestFunds.find(fund => fund.reported)
@@ -5663,6 +5953,10 @@ globalThis.fetchBitcoinEtfFlows = async function fetchBitcoinEtfFlows() {
   }
 
   return cached || null;
+}
+
+globalThis.getCachedBitcoinEtfFlows = function getCachedBitcoinEtfFlows(maxAgeMs = 10 * 60 * 1000) {
+  return cacheGet('bitcoin-etf-flows', maxAgeMs);
 }
 
 /* ------------------------------------------
@@ -6109,6 +6403,8 @@ globalThis.fetchGlobalAssetComparisonSnapshot = async function fetchGlobalAssetC
    ------------------------------------------ */
 const BITCOIN_HOLDERS_READER_URL = 'https://r.jina.ai/http://www.corpstacking.com/treasuries/by-token/bitcoin';
 const BITCOIN_HOLDERS_SOURCE_URL = 'https://www.corpstacking.com/treasuries/by-token/bitcoin';
+const ARKHAM_TOP_BTC_HOLDERS_SOURCE_URL = 'https://info.arkm.com/research/who-owns-the-most-bitcoin-top-btc-holders-2026';
+const COINGECKO_SATOSHI_SOURCE_URL = 'https://www.coingecko.com/learn/who-is-satoshi-nakamoto';
 const CHAINALYSIS_ADOPTION_READER_URL = 'https://r.jina.ai/http://www.chainalysis.com/blog/2025-global-crypto-adoption-index/';
 const CHAINALYSIS_ADOPTION_SOURCE_URL = 'https://www.chainalysis.com/blog/2025-global-crypto-adoption-index/';
 
@@ -6166,6 +6462,127 @@ const TREASURY_FALLBACK_ROWS = [
   { rank: 15, symbol: 'MARA', flag: '🇺🇸', name: 'Marathon Digital', btc: 35303, url: 'https://www.corpstacking.com/treasuries/marathon-digital', lastUpdated: 'May 11, 2026' },
 ];
 
+const TOP_ENTITY_ESTIMATE_ROWS = [
+  {
+    symbol: 'SATOSHI',
+    flag: '',
+    name: 'Satoshi Nakamoto',
+    btc: 1096000,
+    url: 'https://intel.arkm.com/explorer/entity/satoshi-nakamoto',
+    lastUpdated: '2026 Arkham estimate',
+    category: 'individual',
+    balanceType: 'Patoshi-pattern estimate',
+    sourceName: 'Arkham + Patoshi research',
+    sourceUrl: ARKHAM_TOP_BTC_HOLDERS_SOURCE_URL,
+    secondarySourceUrl: COINGECKO_SATOSHI_SOURCE_URL,
+    note: 'Estimated from early-mining block patterns across thousands of addresses; not a verified single wallet balance.',
+  },
+  {
+    symbol: 'COINBASE-ENTITY',
+    flag: '🇺🇸',
+    name: 'Coinbase',
+    btc: 958000,
+    url: 'https://intel.arkm.com/explorer/entity/coinbase',
+    lastUpdated: '2026 Arkham estimate',
+    category: 'exchange',
+    balanceType: 'Exchange entity cluster',
+    sourceName: 'Arkham BTC holders report',
+    sourceUrl: ARKHAM_TOP_BTC_HOLDERS_SOURCE_URL,
+    note: 'Includes Coinbase-controlled/custody wallets and should not be read as Coinbase shareholder-owned BTC.',
+  },
+  {
+    symbol: 'MSTR',
+    flag: '🇺🇸',
+    name: 'Strategy',
+    btc: 818000,
+    url: 'https://www.corpstacking.com/treasuries/strategy',
+    lastUpdated: '2026 Arkham estimate',
+    category: 'company',
+    balanceType: 'Public treasury',
+    sourceName: 'CorpStacking / Arkham',
+    sourceUrl: BITCOIN_HOLDERS_SOURCE_URL,
+    note: 'Overridden by the fresher CorpStacking public treasury feed when available.',
+  },
+  {
+    symbol: 'BLACKROCK-ENTITY',
+    flag: '🇺🇸',
+    name: 'BlackRock / iShares Bitcoin ETFs',
+    btc: 814000,
+    url: 'https://intel.arkm.com/explorer/entity/blackrock',
+    lastUpdated: '2026 Arkham estimate',
+    category: 'fund',
+    balanceType: 'ETF issuer aggregate',
+    sourceName: 'Arkham BTC holders report',
+    sourceUrl: ARKHAM_TOP_BTC_HOLDERS_SOURCE_URL,
+    note: 'Aggregate ETF issuer/custody entity estimate, not one single wallet.',
+  },
+  {
+    symbol: 'BINANCE-ENTITY',
+    flag: '',
+    name: 'Binance',
+    btc: 634000,
+    url: 'https://intel.arkm.com/explorer/entity/binance',
+    lastUpdated: '2026 Arkham estimate',
+    category: 'exchange',
+    balanceType: 'Exchange entity cluster',
+    sourceName: 'Arkham BTC holders report',
+    sourceUrl: ARKHAM_TOP_BTC_HOLDERS_SOURCE_URL,
+    note: 'Exchange cold-wallet/custody cluster estimate; customer deposits are included.',
+  },
+  {
+    symbol: 'FIDELITY-CUSTODY',
+    flag: '🇺🇸',
+    name: 'Fidelity Custody / ETF holdings',
+    btc: 452000,
+    url: 'https://intel.arkm.com/explorer/entity/fidelity-custody',
+    lastUpdated: '2026 Arkham estimate',
+    category: 'fund',
+    balanceType: 'Custody / ETF aggregate',
+    sourceName: 'Arkham BTC holders report',
+    sourceUrl: ARKHAM_TOP_BTC_HOLDERS_SOURCE_URL,
+    note: 'Custody and ETF-related holdings can overlap with beneficial owners, so totals are shown as entity-controlled balances.',
+  },
+  {
+    symbol: 'GOV-US',
+    flag: '🇺🇸',
+    name: 'United States Government',
+    btc: 328372,
+    url: 'https://intel.arkm.com/explorer/entity/usg',
+    lastUpdated: '2026 public estimate',
+    category: 'government',
+    balanceType: 'Government seizure wallets',
+    sourceName: 'Arkham / CorpStacking',
+    sourceUrl: ARKHAM_TOP_BTC_HOLDERS_SOURCE_URL,
+    note: 'Known government-controlled wallets are mainly seizure-derived and can change when coins are moved or sold.',
+  },
+  {
+    symbol: 'GOV-CN',
+    flag: '🇨🇳',
+    name: 'China Government',
+    btc: 194000,
+    url: 'https://www.corpstacking.com/treasuries/china',
+    lastUpdated: 'Latest public estimate',
+    category: 'government',
+    balanceType: 'Government seizure estimate',
+    sourceName: 'CorpStacking public treasury estimate',
+    sourceUrl: BITCOIN_HOLDERS_SOURCE_URL,
+    note: 'Public estimate from known seizure-related balances; not an official real-time government disclosure.',
+  },
+  {
+    symbol: 'TETHER-ENTITY',
+    flag: '',
+    name: 'Tether Holdings',
+    btc: 97000,
+    url: 'https://intel.arkm.com/explorer/entity/tether',
+    lastUpdated: '2026 Arkham estimate',
+    category: 'private',
+    balanceType: 'Private company reserves',
+    sourceName: 'Arkham BTC holders report',
+    sourceUrl: ARKHAM_TOP_BTC_HOLDERS_SOURCE_URL,
+    note: 'Private company reserve estimate, valued with the live BTC price feed.',
+  },
+];
+
 function parseBtcAmountText(value) {
   if (!value) return null;
   const n = Number(String(value).replace(/,/g, ''));
@@ -6174,7 +6591,10 @@ function parseBtcAmountText(value) {
 
 function classifyTreasuryHolder(row) {
   const text = ((row.symbol || '') + ' ' + (row.name || '')).toLowerCase();
+  if (row.category) return row.category;
   if ((row.symbol || '').toUpperCase().startsWith('GOV-')) return 'government';
+  if (/coinbase|binance|kraken|bitfinex|upbit|okx|robinhood|exchange/.test(text)) return 'exchange';
+  if (/satoshi|patoshi|nakamoto/.test(text)) return 'individual';
   if (/etf|etp|trust|fund|ishares|grayscale|fidelity|bitwise|ark|21shares|coinshares|purpose|vaneck|invesco|franklin|3iq|hashdex|valkyrie|etc group|xbt provider|qbtcbv|btcc|ibit|fbtc|gbtc|bitb|arkb|brrr|ezbc/.test(text)) return 'fund';
   if ((row.symbol || '').toUpperCase().startsWith('BTC-') || /tether|river|bitmex|spacex|stone ridge|tezos|massachusetts mutual|foundation|private/.test(text)) return 'private';
   return 'company';
@@ -6183,11 +6603,17 @@ function classifyTreasuryHolder(row) {
 function treasuryCategoryLabel(category) {
   if (category === 'government') return 'Government / sovereign';
   if (category === 'fund') return 'ETF / fund / trust';
+  if (category === 'exchange') return 'Exchange / custodian';
+  if (category === 'individual') return 'Estimated individual';
   if (category === 'private') return 'Private institution';
   return 'Public company';
 }
 
-function normalizeTreasuryRows(rows, btcPrice) {
+function normalizeTreasuryRows(rows, btcPrice, supplyBase = MAX_BTC_SUPPLY) {
+  const safeSupplyBase = Number.isFinite(Number(supplyBase)) && Number(supplyBase) > 0
+    ? Number(supplyBase)
+    : MAX_BTC_SUPPLY;
+
   return rows
     .filter(row => row && Number.isFinite(Number(row.btc)) && Number(row.btc) > 0)
     .sort((a, b) => Number(b.btc) - Number(a.btc))
@@ -6199,11 +6625,114 @@ function normalizeTreasuryRows(rows, btcPrice) {
         rank: index + 1,
         btc,
         category,
-        categoryLabel: treasuryCategoryLabel(category),
+        categoryLabel: row.categoryLabel || treasuryCategoryLabel(category),
+        balanceType: row.balanceType || (row.sourceName ? 'Public estimate' : 'Public treasury feed'),
+        sourceName: row.sourceName || 'CorpStacking BTC treasuries',
+        sourceUrl: row.sourceUrl || row.url || BITCOIN_HOLDERS_SOURCE_URL,
         currentValueUsd: btcPrice ? btc * btcPrice : null,
-        supplyShare: (btc / MAX_BTC_SUPPLY) * 100,
+        supplyShare: (btc / safeSupplyBase) * 100,
       };
     });
+}
+
+function liveTreasuryOverride(row, patch = {}) {
+  return {
+    ...row,
+    ...patch,
+    btc: row.btc,
+    lastUpdated: row.lastUpdated || patch.lastUpdated || 'Latest public feed',
+    category: patch.category || row.category || classifyTreasuryHolder(row),
+    balanceType: patch.balanceType || 'Live public treasury feed',
+    sourceName: patch.sourceName || 'CorpStacking BTC treasuries',
+    sourceUrl: patch.sourceUrl || BITCOIN_HOLDERS_SOURCE_URL,
+  };
+}
+
+function buildLargestHolderRows(treasuryRows, btcPrice, supplyBase = MAX_BTC_SUPPLY) {
+  const rows = Array.isArray(treasuryRows) ? treasuryRows : [];
+  const bySymbol = new Map(rows.map(row => [String(row.symbol || '').toUpperCase(), row]));
+  const byName = new Map(rows.map(row => [String(row.name || '').toLowerCase(), row]));
+  const strategyLive = bySymbol.get('MSTR') || byName.get('strategy');
+  const usGovernmentLive = bySymbol.get('GOV-US') || byName.get('united states');
+  const chinaLive = bySymbol.get('GOV-CN') || byName.get('china');
+  const tetherLive = bySymbol.get('BTC-TETHER') || byName.get('tether holdings ltd') || byName.get('tether holdings');
+
+  const estimateRows = TOP_ENTITY_ESTIMATE_ROWS.map(row => {
+    if (row.symbol === 'MSTR' && strategyLive) {
+      return liveTreasuryOverride(strategyLive, {
+        category: 'company',
+        categoryLabel: treasuryCategoryLabel('company'),
+        note: 'Public company treasury balance fetched from the CorpStacking feed.',
+      });
+    }
+    if (row.symbol === 'GOV-US' && usGovernmentLive) {
+      return liveTreasuryOverride(usGovernmentLive, {
+        category: 'government',
+        categoryLabel: treasuryCategoryLabel('government'),
+        balanceType: 'Government seizure wallets',
+        note: row.note,
+      });
+    }
+    if (row.symbol === 'GOV-CN' && chinaLive) {
+      return liveTreasuryOverride(chinaLive, {
+        category: 'government',
+        categoryLabel: treasuryCategoryLabel('government'),
+        balanceType: 'Government seizure estimate',
+        note: row.note,
+      });
+    }
+    if (row.symbol === 'TETHER-ENTITY' && tetherLive) {
+      return liveTreasuryOverride(tetherLive, {
+        category: 'private',
+        categoryLabel: treasuryCategoryLabel('private'),
+        balanceType: 'Private company reserves',
+        note: row.note,
+      });
+    }
+    return row;
+  });
+
+  const aggregateSymbols = new Set([
+    'SATOSHI',
+    'COINBASE-ENTITY',
+    'COIN',
+    'MSTR',
+    'BLACKROCK-ENTITY',
+    'IBIT',
+    'BINANCE-ENTITY',
+    'FIDELITY-CUSTODY',
+    'FBTC',
+    'GOV-US',
+    'GOV-CN',
+    'BTC-TETHER',
+    'TETHER-ENTITY',
+  ]);
+  const aggregateNameFragments = [
+    'coinbase',
+    'blackrock',
+    'ishares',
+    'fidelity',
+    'binance',
+    'strategy',
+    'united states',
+    'china',
+    'tether',
+  ];
+
+  const supplementalRows = rows.filter(row => {
+    const symbol = String(row.symbol || '').toUpperCase();
+    const name = String(row.name || '').toLowerCase();
+    if (aggregateSymbols.has(symbol)) return false;
+    return !aggregateNameFragments.some(fragment => name.includes(fragment));
+  }).map(row => ({
+    ...row,
+    balanceType: row.balanceType || 'Live public treasury feed',
+    sourceName: row.sourceName || 'CorpStacking BTC treasuries',
+    sourceUrl: row.sourceUrl || BITCOIN_HOLDERS_SOURCE_URL,
+    note: row.note || 'Public treasury balance fetched from CorpStacking when available.',
+  }));
+
+  return normalizeTreasuryRows([...estimateRows, ...supplementalRows], btcPrice, supplyBase);
 }
 
 function parseTreasuryMarkdown(markdown) {
@@ -6324,36 +6853,42 @@ function summarizeTreasuryCategories(rows) {
     return acc;
   }, {});
 
-  return ['fund', 'company', 'government', 'private']
+  return ['individual', 'exchange', 'fund', 'company', 'government', 'private']
     .map(category => totals[category])
     .filter(Boolean)
     .sort((a, b) => b.btc - a.btc);
 }
 
 globalThis.fetchCountriesAndHoldersSnapshot = async function fetchCountriesAndHoldersSnapshot() {
-  const cached = cacheGet('countries-holders-snapshot', 5 * 60 * 1000);
+  const cached = cacheGet('countries-holders-snapshot-v3', 5 * 60 * 1000);
   if (cached) return cached;
 
-  const [priceResult, adoption, treasuryRowsWithoutPrice] = await Promise.all([
+  const [priceResult, adoption, treasuryRowsWithoutPrice, networkData] = await Promise.all([
     fetchBTCPrice(),
     fetchChainalysisAdoptionRows(),
     fetchBitcoinTreasuryRows(null),
+    fetchNetworkData().catch(() => null),
   ]);
   const btcPrice = priceResult?.price || null;
-  const treasuryRows = normalizeTreasuryRows(treasuryRowsWithoutPrice, btcPrice);
-  const governmentRows = treasuryRows.filter(row => row.category === 'government');
-  const topHolders = treasuryRows.slice(0, 30);
-  const categoryTotals = summarizeTreasuryCategories(treasuryRows);
-  const trackedBtc = treasuryRows.reduce((sum, row) => sum + (row.btc || 0), 0);
+  const circulatingSupply = networkData?.circulatingSupply || MAX_BTC_SUPPLY;
+  const treasuryRows = normalizeTreasuryRows(treasuryRowsWithoutPrice, btcPrice, circulatingSupply);
+  const largestHolderRows = buildLargestHolderRows(treasuryRows, btcPrice, circulatingSupply);
+  const governmentRows = largestHolderRows.filter(row => row.category === 'government');
+  const topHolders = largestHolderRows.slice(0, 30);
+  const categoryTotals = summarizeTreasuryCategories(topHolders);
+  const trackedBtc = topHolders.reduce((sum, row) => sum + (row.btc || 0), 0);
 
   const snapshot = {
-    source: 'CorpStacking + Chainalysis',
-    holderSource: 'CorpStacking Bitcoin Treasuries',
+    source: 'CorpStacking + Arkham + Chainalysis',
+    holderSource: 'CorpStacking live treasury feed + Arkham entity estimates',
     holderSourceUrl: BITCOIN_HOLDERS_SOURCE_URL,
+    holderEstimateSourceUrl: ARKHAM_TOP_BTC_HOLDERS_SOURCE_URL,
+    satoshiSourceUrl: COINGECKO_SATOSHI_SOURCE_URL,
     adoptionSource: adoption.source,
     adoptionSourceUrl: adoption.sourceUrl,
     adoptionPublishedAt: adoption.publishedAt,
     btcPrice,
+    circulatingSupply,
     btcSource: priceResult?.source || 'unavailable',
     fetchedAt: new Date().toISOString(),
     adoptionFetchedAt: adoption.fetchedAt,
@@ -6370,7 +6905,7 @@ globalThis.fetchCountriesAndHoldersSnapshot = async function fetchCountriesAndHo
     largestGovernmentHolder: governmentRows[0] || null,
   };
 
-  cacheSet('countries-holders-snapshot', snapshot);
+  cacheSet('countries-holders-snapshot-v3', snapshot);
   return snapshot;
 }
 
@@ -6720,6 +7255,54 @@ globalThis.fetchHolderCohortSnapshot = async function fetchHolderCohortSnapshot(
   }
 }
 
+const _preloadState = {
+  started: false,
+  promise: null,
+};
+
+function runPreloadTask(label, fetcher, delayMs) {
+  return new Promise(resolve => {
+    setTimeout(async () => {
+      try {
+        await fetcher();
+        resolve({ label, ok: true });
+      } catch (error) {
+        resolve({ label, ok: false, error: error && error.message ? error.message : String(error) });
+      }
+    }, delayMs);
+  });
+}
+
+globalThis.preloadBitcoinPulseData = function preloadBitcoinPulseData() {
+  if (_preloadState.started) return _preloadState.promise;
+  _preloadState.started = true;
+
+  const tasks = [
+    ['price', () => fetchBTCPrice(), 0],
+    ['network', () => fetchNetworkData(), 100],
+    ['binance-ticker', () => fetchBinanceTicker(), 180],
+    ['etf-flows', () => fetchBitcoinEtfFlows(), 250],
+    ['fear-greed', () => fetchFearGreedHistory(365), 500],
+    ['bitcoin-news', () => fetchBitcoinNews(), 750],
+    ['dominance', () => fetchBitcoinDominanceSnapshot(), 1000],
+    ['ownership', () => fetchOwnershipDistributionSnapshot(), 1250],
+    ['exchange-reserves', () => fetchExchangeReserveSnapshot(), 1500],
+    ['holder-cohorts', () => fetchHolderCohortSnapshot(), 1800],
+    ['global-assets', () => fetchGlobalAssetComparisonSnapshot(), 2150],
+    ['countries-holders', () => fetchCountriesAndHoldersSnapshot(), 2500],
+    ['strategy', () => fetchStrategyTrackerSnapshot(), 2850],
+    ['market-chart-1d', () => fetchMarketChart(1), 3200],
+    ['market-chart-30d', () => fetchMarketChart(30), 3600],
+    ['market-chart-1y', () => fetchMarketChart(365), 4000],
+    ['market-chart-max', () => fetchMarketChart('max'), 4600],
+    ['market-cycles', () => fetchBitcoinMarketCycles(), 5200],
+    ['top-addresses', () => fetchTopBitcoinAddressesSnapshot(), 5800],
+  ].map(([label, fetcher, delay]) => runPreloadTask(label, fetcher, delay));
+
+  _preloadState.promise = Promise.allSettled(tasks);
+  return _preloadState.promise;
+}
+
 // Color helpers for charts
 globalThis.chartColors = {
   orange: '#f7931a',
@@ -6803,11 +7386,12 @@ globalThis.debounce = function debounce(fn, ms) {
    ------------------------------------------ */
 const { useState, useEffect, createElement: h } = window.React;
 
-globalThis.useLiveData = function useLiveData(fetchFn, intervalMs = 30000, deps = []) {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+globalThis.useLiveData = function useLiveData(fetchFn, intervalMs = 30000, deps = [], initialData = null) {
+  const hasInitialData = initialData !== null && initialData !== undefined;
+  const [data, setData] = useState(() => initialData);
+  const [loading, setLoading] = useState(() => !hasInitialData);
   const [error, setError] = useState(null);
-  const [lastUpdated, setLastUpdated] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState(() => hasInitialData ? new Date() : null);
 
   useEffect(() => {
     let mounted = true;
@@ -6815,18 +7399,19 @@ globalThis.useLiveData = function useLiveData(fetchFn, intervalMs = 30000, deps 
       try {
         const result = await fetchFn();
         if (mounted) {
-          setData(result);
+          const hasResult = result !== null && result !== undefined;
+          setData(prev => hasResult ? result : prev);
           setLoading(false);
-          setLastUpdated(new Date());
+          if (hasResult) setLastUpdated(new Date());
           setError(null);
         }
       } catch (e) {
         if (mounted) {
           setError(e.message);
           setLoading(false);
+          }
         }
-      }
-    };
+      };
     doFetch();
     const interval = setInterval(doFetch, intervalMs);
     const refreshWhenVisible = () => {
@@ -7771,45 +8356,29 @@ globalThis.BitcoinLogo = function BitcoinLogo({ size = 32 }) {
     height: size,
     viewBox: '0 0 64 64',
     fill: 'none',
+    role: 'img',
     'aria-label': 'Bitcoin Pulse',
   },
     h('defs', null,
-      h('radialGradient', { id: 'btcLogoGlow', cx: '50%', cy: '50%', r: '55%' },
-        h('stop', { offset: '0%', stopColor: '#ffbd59', stopOpacity: '0.70' }),
-        h('stop', { offset: '58%', stopColor: '#f7931a', stopOpacity: '0.30' }),
-        h('stop', { offset: '100%', stopColor: '#8b5cf6', stopOpacity: '0' })
-      ),
-      h('linearGradient', { id: 'btcLogoCoin', x1: '14', y1: '10', x2: '50', y2: '54' },
+      h('linearGradient', { id: 'btcLogoOrange', x1: '16', y1: '7', x2: '48', y2: '57' },
         h('stop', { offset: '0%', stopColor: '#ffd18a' }),
-        h('stop', { offset: '48%', stopColor: '#f7931a' }),
+        h('stop', { offset: '42%', stopColor: '#f7931a' }),
         h('stop', { offset: '100%', stopColor: '#ff6b00' })
       )
     ),
-    h('circle', { cx: '32', cy: '32', r: '30', fill: 'url(#btcLogoGlow)' }),
-    h('circle', { cx: '32', cy: '32', r: '26', fill: '#140b04', stroke: 'rgba(255,255,255,0.12)', strokeWidth: '1.2' }),
-    h('circle', { cx: '32', cy: '32', r: '21', fill: 'url(#btcLogoCoin)' }),
-    h('path', {
-      d: 'M13 38c10 8 27 9 38-3',
-      stroke: 'rgba(139,92,246,0.72)',
-      strokeWidth: '2',
-      strokeLinecap: 'round',
-    }),
-    h('path', {
-      d: 'M12 25c8-8 28-12 41 1',
-      stroke: 'rgba(255,255,255,0.20)',
-      strokeWidth: '1.5',
-      strokeLinecap: 'round',
-    }),
     h('text', {
       x: '32',
-      y: '43',
+      y: '49',
       textAnchor: 'middle',
-      fontSize: '31',
-      fontFamily: 'Georgia, serif',
+      fontSize: '54',
+      fontFamily: 'Arial Black, Helvetica, sans-serif',
       fontWeight: '900',
-      fill: '#180b02',
-    }, '₿'),
-    h('circle', { cx: '50', cy: '24', r: '3.2', fill: '#fff0c7', opacity: '0.92' })
+      fill: 'url(#btcLogoOrange)',
+      stroke: 'rgba(255, 210, 138, 0.28)',
+      strokeWidth: '0.9',
+      paintOrder: 'stroke',
+      style: { filter: 'drop-shadow(0 0 10px rgba(247, 147, 26, 0.34))' },
+    }, '₿')
   );
 }
 
@@ -7906,6 +8475,7 @@ const navItems = [
   { id: 'charts', label: 'Charts', icon: 'line-chart' },
   { id: 'holders', label: 'Holder Cohorts', icon: 'users' },
   { id: 'dominance', label: 'BTC Dominance', icon: 'pie-chart' },
+  { id: 'market-cycles', label: 'Market Cycles', icon: 'line-chart' },
   { id: 'global-assets', label: 'Global Assets', icon: 'globe-2' },
   { id: 'countries-holders', label: 'Countries & Holders', icon: 'landmark' },
   { id: 'market-pulse', label: 'Market Pulse', icon: 'newspaper' },
@@ -10183,7 +10753,7 @@ function flowDirection(value) {
   if (value === null || value === undefined || !Number.isFinite(Number(value))) return 'Not reported';
   if (value > 0) return 'Inflow';
   if (value < 0) return 'Outflow';
-  return 'No net flow';
+  return 'Reported $0.0M';
 }
 
 function filterRowsForRange(rows, range) {
@@ -10243,14 +10813,25 @@ function LatestFundTable({ funds }) {
         h('tr', null,
           h('th', null, 'ETF'),
           h('th', null, 'Latest Flow'),
-          h('th', null, 'Direction')
+          h('th', null, '5-Day Net'),
+          h('th', null, '30-Day Net'),
+          h('th', null, 'Status')
         )
       ),
       h('tbody', null,
         rows.map(row => h('tr', { key: row.ticker },
           h('td', null, row.ticker),
           h('td', { className: 'tabular-nums ' + flowTone(row.value) }, formatFlow(row.value, 1)),
-          h('td', { className: flowTone(row.value) }, flowDirection(row.value))
+          h('td', { className: 'tabular-nums ' + flowTone(row.net5d) }, formatFlow(row.net5d, 1)),
+          h('td', { className: 'tabular-nums ' + flowTone(row.net30d) }, formatFlow(row.net30d, 1)),
+          h('td', { className: flowTone(row.value) },
+            flowDirection(row.value),
+            Number.isFinite(row.value) && row.value === 0 && Number.isFinite(row.net5d) && row.net5d !== 0
+              ? h('span', { className: 'muted-flow', style: { display: 'block', fontSize: 'var(--text-xs)', marginTop: '2px' } },
+                  'Moved on ' + row.activeRows5d + ' of last 5 rows'
+                )
+              : null
+          )
         ))
       )
     )
@@ -10285,10 +10866,11 @@ function RecentFlowMatrix({ rows, tickers }) {
 
 globalThis.EtfFlowsPage = function EtfFlowsPage() {
   const [range, setRange] = useState('1m');
+  const cachedFlows = getCachedBitcoinEtfFlows();
   const { data, lastUpdated, loading } = useLiveData(async () => {
     const flows = await fetchBitcoinEtfFlows();
     return { flows };
-  }, 300000);
+  }, 300000, [], cachedFlows ? { flows: cachedFlows } : null);
 
   const flows = data && data.flows;
   const windowRows = useMemo(() => filterRowsForRange(flows?.rows || [], range), [flows, range]);
@@ -10318,11 +10900,11 @@ globalThis.EtfFlowsPage = function EtfFlowsPage() {
       h('div', { className: 'etf-hero-main' },
         h('span', { className: 'charts-eyebrow' }, 'Latest ETF demand'),
         h('h2', { className: 'tabular-nums ' + flowTone(latest?.total) }, latest ? formatFlow(latest.total, 1) : 'Loading...'),
-        h('p', null, latest ? 'Net U.S. spot Bitcoin ETF flow for ' + latest.displayDate + '. Positive values imply net creation demand; negative values imply redemptions.' : 'Pulling the latest ETF flow row from public tables.'),
+        h('p', null, latest ? 'Net U.S. spot Bitcoin ETF flow for the latest fully reported Farside row: ' + latest.displayDate + '. Positive values imply net creation demand; negative values imply redemptions.' : 'Pulling the latest ETF flow row from public tables.'),
         h('div', { className: 'etf-hero-pills' },
           flows?.latestLeader && h('span', null, 'Largest latest move: ' + flows.latestLeader.ticker + ' ' + formatFlow(flows.latestLeader.value, 1)),
           dayDelta !== null && h('span', { className: flowTone(dayDelta) }, 'Vs prior day: ' + formatFlow(dayDelta, 1)),
-          flows?.latestSummary && h('span', null, flows.latestSummary.inflows + ' inflow / ' + flows.latestSummary.outflows + ' outflow / ' + flows.latestSummary.noFlow + ' no-flow ETFs')
+          flows?.latestSummary && h('span', null, flows.latestSummary.inflows + ' inflow / ' + flows.latestSummary.outflows + ' outflow / ' + flows.latestSummary.noFlow + ' reported $0.0M')
         )
       ),
       h('div', { className: 'etf-range-card' },
@@ -10373,7 +10955,7 @@ globalThis.EtfFlowsPage = function EtfFlowsPage() {
         h('div', { className: 'charts-panel-header' },
           h('div', { className: 'charts-panel-heading' },
             h('div', { className: 'charts-panel-title' }, 'Latest Issuer Breakdown'),
-            h('div', { className: 'charts-panel-subtitle' }, latest ? latest.displayDate : 'Loading latest trading day')
+          h('div', { className: 'charts-panel-subtitle' }, latest ? latest.displayDate + ' · latest fully reported Farside row' : 'Loading latest trading day')
           ),
           flows?.latestSummary && h('span', { className: 'charts-badge' },
             flows.latestSummary.notReported ? flows.latestSummary.notReported + ' N/R' : 'All reported'
@@ -10382,7 +10964,7 @@ globalThis.EtfFlowsPage = function EtfFlowsPage() {
         flows?.latestSummary && h('div', { className: 'etf-breakdown-summary' },
           h('span', { className: 'positive' }, flows.latestSummary.inflows + ' inflow'),
           h('span', { className: 'negative' }, flows.latestSummary.outflows + ' outflow'),
-          h('span', null, flows.latestSummary.noFlow + ' no net flow'),
+          h('span', null, flows.latestSummary.noFlow + ' reported $0.0M'),
           flows.latestSummary.notReported > 0 && h('span', { className: 'muted-flow' }, flows.latestSummary.notReported + ' not reported')
         ),
         h('div', { className: 'charts-panel-body' },
@@ -10408,7 +10990,7 @@ globalThis.EtfFlowsPage = function EtfFlowsPage() {
       h('div', { className: 'charts-panel-header' },
         h('div', { className: 'charts-panel-heading' },
           h('div', { className: 'charts-panel-title' }, 'Recent Issuer Flow Matrix'),
-          h('div', { className: 'charts-panel-subtitle' }, 'Latest 14 reported Farside rows. Dash means Farside has no reported issuer value; true 0.0 remains $0.0M.')
+          h('div', { className: 'charts-panel-subtitle' }, 'Latest 14 reported Farside rows. Dash means Farside has no issuer value yet; true 0.0 is shown as reported $0.0M.')
         ),
         h('span', { className: 'charts-badge' }, 'US$m')
       ),
@@ -10418,7 +11000,7 @@ globalThis.EtfFlowsPage = function EtfFlowsPage() {
     ),
 
     h('div', { className: 'charts-source-note' },
-      'ETF data updates on trading days after issuers and data providers publish daily creations/redemptions. Values are shown in US$ millions from Farside Investors via Jina Reader. Blank or dash cells are treated as not reported, while explicit 0.0 values are shown as true no-flow readings.'
+      'ETF data updates on trading days after issuers and data providers publish daily creations/redemptions. Values are shown in US$ millions from Farside Investors via Jina Reader. Blank or dash cells are skipped as not reported, while explicit 0.0 values are shown as reported $0.0M readings.'
     )
   );
 }
@@ -10964,6 +11546,8 @@ const { createElement: h, useMemo, useState } = React;
 
 const HOLDER_FILTERS = [
   { id: 'all', label: 'All holders' },
+  { id: 'individual', label: 'Individuals / estimates' },
+  { id: 'exchange', label: 'Exchanges / custody' },
   { id: 'government', label: 'Governments' },
   { id: 'fund', label: 'ETFs / funds' },
   { id: 'company', label: 'Companies' },
@@ -10980,6 +11564,8 @@ function formatDateLabel(value) {
 function categoryTone(category) {
   if (category === 'government') return 'sovereign';
   if (category === 'fund') return 'fund';
+  if (category === 'exchange') return 'exchange';
+  if (category === 'individual') return 'individual';
   if (category === 'private') return 'private';
   return 'company';
 }
@@ -11060,20 +11646,31 @@ function HolderTable({ rows }) {
           h('th', null, 'Type'),
           h('th', null, 'BTC'),
           h('th', null, 'Value'),
-          h('th', null, 'Supply')
+          h('th', null, 'Circ. supply'),
+          h('th', null, 'Source')
         )
       ),
       h('tbody', null,
         displayRows.map(row => h('tr', { key: row.symbol + row.name, className: row.category + '-row' },
           h('td', { className: 'tabular-nums' }, '#' + row.rank),
           h('td', null,
-            h('strong', null, row.flag ? row.flag + ' ' + row.name : row.name),
-            h('span', null, row.symbol)
+            row.url
+              ? h('a', { href: row.url, target: '_blank', rel: 'noreferrer', className: 'holder-name-link' }, row.flag ? row.flag + ' ' + row.name : row.name)
+              : h('strong', null, row.flag ? row.flag + ' ' + row.name : row.name),
+            h('span', null, row.symbol),
+            row.note && h('em', { className: 'holder-row-note' }, row.note)
           ),
           h('td', null, h('span', { className: 'holder-type-pill ' + categoryTone(row.category) }, row.categoryLabel)),
           h('td', { className: 'tabular-nums' }, formatBTC(row.btc, 2)),
           h('td', { className: 'tabular-nums' }, formatUSD(row.currentValueUsd, 2)),
-          h('td', { className: 'tabular-nums' }, formatPercent(row.supplyShare, 3))
+          h('td', { className: 'tabular-nums' }, formatPercent(row.supplyShare, 3)),
+          h('td', { className: 'holder-source-cell' },
+            row.sourceUrl
+              ? h('a', { href: row.sourceUrl, target: '_blank', rel: 'noreferrer' }, row.sourceName || 'Public source')
+              : h('strong', null, row.sourceName || 'Public source'),
+            h('span', null, row.balanceType || 'Public estimate'),
+            h('small', null, formatDateLabel(row.lastUpdated))
+          )
         ))
       )
     )
@@ -11099,12 +11696,16 @@ function buildTopHolderChart(rows) {
       label: 'BTC held',
       data: displayRows.map(row => Number((row.btc / 1000).toFixed(2))),
       backgroundColor: displayRows.map(row => {
+        if (row.category === 'individual') return 'rgba(255, 183, 77, 0.86)';
+        if (row.category === 'exchange') return 'rgba(234, 88, 12, 0.72)';
         if (row.category === 'government') return 'rgba(0,212,170,0.72)';
         if (row.category === 'fund') return 'rgba(139,92,246,0.72)';
         if (row.category === 'private') return 'rgba(59,130,246,0.70)';
         return 'rgba(247,147,26,0.78)';
       }),
       borderColor: displayRows.map(row => {
+        if (row.category === 'individual') return '#ffb74d';
+        if (row.category === 'exchange') return '#ea580c';
         if (row.category === 'government') return chartColors.green;
         if (row.category === 'fund') return chartColors.purple;
         if (row.category === 'private') return chartColors.blue;
@@ -11186,21 +11787,21 @@ globalThis.CountriesHoldersPage = function CountriesHoldersPage() {
   return h('div', { className: 'page-enter charts-page countries-holders-page' },
     h(PageHeader, {
       title: 'Countries & Top Bitcoin Holders',
-      description: 'Track reported government Bitcoin treasuries, institutional holders, ETF/fund balances, and latest country adoption rankings from free public sources.',
+      description: 'Track major Bitcoin holder entities, public treasury feeds, custody clusters, government balances, and latest country adoption rankings from free public sources.',
       badge: 'Live holders',
     }),
 
     h('div', { className: 'pulse-status-row' },
       h(LastUpdated, { lastUpdated, live: !loading }),
-      h('span', null, snapshot ? 'Holder feed: ' + snapshot.holderSource + ' · BTC price: ' + snapshot.btcSource : 'Connecting to public rankings'),
+      h('span', null, snapshot ? 'Holder data: ' + snapshot.holderSource + ' · BTC price: ' + snapshot.btcSource : 'Connecting to public rankings'),
       h('span', null, 'Adoption index: Chainalysis 2025')
     ),
 
     h('section', { className: 'country-holder-hero' },
       h('div', { className: 'country-holder-hero-copy' },
         h('span', { className: 'charts-eyebrow' }, 'Country adoption + treasury concentration'),
-        h('h2', null, adoptionLeader ? adoptionLeader.country + ' leads adoption; ' + (largestHolder?.name || 'Strategy') + ' leads tracked BTC holdings.' : 'Loading country and holder rankings...'),
-        h('p', null, 'Country adoption is latest-published research, not a live on-chain ownership count. Government and institutional treasury balances refresh from public treasury pages and are valued against the live BTC price feed.')
+        h('h2', null, adoptionLeader ? adoptionLeader.country + ' leads adoption; ' + (largestHolder?.name || 'Satoshi Nakamoto') + ' leads tracked BTC holders.' : 'Loading country and holder rankings...'),
+        h('p', null, 'Country adoption is latest-published research, not a live on-chain ownership count. Public company treasury balances refresh from public feeds; entity estimates like Satoshi, Coinbase, and Binance are clearly labeled and valued against the live BTC price feed.')
       ),
       h('div', { className: 'country-holder-spotlight' },
         h('span', null, 'Largest reported sovereign holder'),
@@ -11240,10 +11841,10 @@ globalThis.CountriesHoldersPage = function CountriesHoldersPage() {
 
     h('section', { className: 'charts-panel charts-panel-full country-holder-panel' },
       h('div', { className: 'charts-panel-header' },
-        h('div', { className: 'charts-panel-heading' },
-          h('div', { className: 'charts-panel-title' }, 'Top Bitcoin Holders'),
-          h('div', { className: 'charts-panel-subtitle' }, 'Publicly tracked treasuries and funds, valued with the live BTC price feed.')
-        ),
+          h('div', { className: 'charts-panel-heading' },
+            h('div', { className: 'charts-panel-title' }, 'Top Bitcoin Holders'),
+            h('div', { className: 'charts-panel-subtitle' }, 'Largest public entities and estimates, separated by type and valued with live BTC price/current circulating supply.')
+          ),
         h('div', { className: 'holder-filter-row' },
           HOLDER_FILTERS.map(filter => h('button', {
             key: filter.id,
@@ -11295,16 +11896,250 @@ globalThis.CountriesHoldersPage = function CountriesHoldersPage() {
       ),
       h('article', { className: 'holder-note-card' },
         h('h3', null, 'Individuals caveat'),
-        h('p', null, 'Individual BTC balances are usually private, split across wallets, or unverified. The live holder table focuses on publicly reported treasuries, governments, ETFs, funds, and institutions.')
+        h('p', null, 'Satoshi is included because major 2026 holder research ranks the Patoshi-pattern cluster at about 1.096M BTC. That is an attribution estimate across early-mined addresses, not a verified single wallet or live audited balance.')
+      ),
+      h('article', { className: 'holder-note-card' },
+        h('h3', null, 'Live-data caveat'),
+        h('p', null, 'BTC price, current circulating supply, and public treasury rows refresh in-browser. Exchange custody clusters, government seizure estimates, and Satoshi/Patoshi holdings update only when public researchers publish new estimates, so they are labeled separately from live treasury feeds.')
       ),
       h('article', { className: 'holder-note-card' },
         h('h3', null, 'Sources'),
         h('p', null,
           h('a', { href: snapshot?.holderSourceUrl || 'https://www.corpstacking.com/treasuries/by-token/bitcoin', target: '_blank', rel: 'noreferrer' }, 'CorpStacking BTC treasuries'),
           ' · ',
+          h('a', { href: snapshot?.holderEstimateSourceUrl || 'https://info.arkm.com/research/who-owns-the-most-bitcoin-top-btc-holders-2026', target: '_blank', rel: 'noreferrer' }, 'Arkham top BTC holders'),
+          ' · ',
           h('a', { href: snapshot?.adoptionSourceUrl || 'https://www.chainalysis.com/blog/2025-global-crypto-adoption-index/', target: '_blank', rel: 'noreferrer' }, 'Chainalysis adoption index')
         )
       )
+    )
+  );
+}
+
+})();
+
+/* ===== pages/market-cycles.js ===== */
+(() => {
+/* ============================================
+   Bitcoin Market Cycles
+   Halving-aligned cycle overlay with live current cycle
+   ============================================ */
+
+const React = window.React;
+const { createElement: h, useMemo, useState } = React;
+
+function formatCycleDate(dateStr) {
+  const [year, month, day] = dateStr.split('-').map(Number);
+  const d = new Date(Date.UTC(year, month - 1, day, 12));
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+}
+
+function sampleCycleDays(cycles) {
+  const maxDay = Math.max(1, ...cycles.flatMap(cycle => cycle.points.map(point => point.day)));
+  const step = maxDay > 1200 ? 4 : maxDay > 700 ? 3 : 2;
+  const days = [];
+  for (let day = 0; day <= maxDay; day += step) days.push(day);
+  cycles.forEach(cycle => {
+    const latest = cycle.points[cycle.points.length - 1];
+    if (latest && !days.includes(latest.day)) days.push(latest.day);
+  });
+  return days.sort((a, b) => a - b);
+}
+
+function buildCycleChart(cycles, showPrevious, viewMode) {
+  const visibleCycles = showPrevious ? cycles : cycles.filter(cycle => cycle.current);
+  const days = sampleCycleDays(visibleCycles);
+  const maps = new Map();
+  visibleCycles.forEach(cycle => {
+    maps.set(cycle.id, new Map(cycle.points.map(point => [point.day, point])));
+  });
+
+  return {
+    labels: days.map(day => day === 0 ? 'Halving' : 'Day ' + day),
+    datasets: visibleCycles.map(cycle => {
+      const pointMap = maps.get(cycle.id);
+      return {
+        label: cycle.label,
+        data: days.map(day => {
+          const point = pointMap.get(day);
+          if (!point) return null;
+          return viewMode === 'indexed' ? point.indexed : point.price;
+        }),
+        borderColor: cycle.current ? '#ffb347' : cycle.color,
+        backgroundColor: cycle.current ? 'rgba(247,147,26,0.14)' : 'transparent',
+        borderWidth: cycle.current ? 4 : 1.8,
+        pointRadius: 0,
+        pointHoverRadius: cycle.current ? 5 : 4,
+        tension: 0.28,
+        fill: cycle.current && viewMode === 'price',
+      };
+    }),
+  };
+}
+
+function chartOptions(viewMode) {
+  return {
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: {
+        display: true,
+        labels: {
+          color: '#d6c7b5',
+          usePointStyle: true,
+          boxWidth: 8,
+          font: { family: 'Inter', size: 11 },
+        },
+      },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) {
+            const value = Number(ctx.raw);
+            if (!Number.isFinite(value)) return ctx.dataset.label + ': no data';
+            return ctx.dataset.label + ': ' + (viewMode === 'indexed' ? formatNumber(value, 1) + ' indexed' : formatUSD(value, 2));
+          },
+        },
+      },
+    },
+    scales: {
+      y: {
+        type: viewMode === 'price' ? 'logarithmic' : 'linear',
+        grid: { color: 'rgba(255,183,77,0.07)', drawBorder: false },
+        ticks: {
+          color: '#8a7867',
+          font: { family: 'Inter', size: 11 },
+          callback: function(value) {
+            return viewMode === 'indexed' ? value + '' : formatUSD(value, 0);
+          },
+        },
+        border: { display: false },
+      },
+      x: {
+        grid: { display: false },
+        ticks: { color: '#8a7867', font: { family: 'Inter', size: 10 }, maxTicksLimit: 8 },
+        border: { display: false },
+      },
+    },
+  };
+}
+
+function CycleLegendTable({ cycles }) {
+  return h('div', { className: 'card', style: { marginBottom: '24px' } },
+    h('div', { style: { display: 'flex', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap', marginBottom: '14px' } },
+      h('div', null,
+        h('h3', { style: { fontSize: 'var(--text-base)', fontWeight: 700, marginBottom: '4px' } }, 'Cycle Scorecard'),
+        h('p', { style: { color: 'var(--text-muted)', fontSize: 'var(--text-sm)' } }, 'Each cycle starts at its halving date. Current cycle is highlighted in bright orange.')
+      )
+    ),
+    h('div', { style: { overflowX: 'auto' } },
+      h('table', { className: 'data-table' },
+        h('thead', null,
+          h('tr', null,
+            h('th', null, 'Cycle'),
+            h('th', null, 'Halving Date'),
+            h('th', { style: { textAlign: 'right' } }, 'Halving Price'),
+            h('th', { style: { textAlign: 'right' } }, 'Latest / End Price'),
+            h('th', { style: { textAlign: 'right' } }, 'Return'),
+            h('th', { style: { textAlign: 'right' } }, 'Peak'),
+            h('th', { style: { textAlign: 'right' } }, 'Peak Day'),
+          )
+        ),
+        h('tbody', null,
+          cycles.map(cycle => h('tr', { key: cycle.id, style: cycle.current ? { background: 'rgba(247,147,26,0.06)' } : null },
+            h('td', null,
+              h('span', { style: { display: 'inline-flex', alignItems: 'center', gap: '8px', fontWeight: 700 } },
+                h('span', { style: { width: '10px', height: '10px', borderRadius: '999px', background: cycle.current ? '#ffb347' : cycle.color, boxShadow: cycle.current ? '0 0 12px rgba(247,147,26,0.75)' : 'none' } }),
+                cycle.label
+              )
+            ),
+            h('td', null, formatCycleDate(cycle.halvingDate)),
+            h('td', { className: 'tabular-nums', style: { textAlign: 'right' } }, cycle.halvingPrice ? formatUSD(cycle.halvingPrice, 2) : '—'),
+            h('td', { className: 'tabular-nums', style: { textAlign: 'right', color: cycle.current ? 'var(--btc-orange)' : 'var(--text-primary)', fontWeight: cycle.current ? 800 : 600 } }, cycle.latestPrice ? formatUSD(cycle.latestPrice, 2) : '—'),
+            h('td', { className: 'tabular-nums', style: { textAlign: 'right', color: cycle.returnSinceHalving >= 0 ? 'var(--success)' : 'var(--error)' } }, Number.isFinite(cycle.returnSinceHalving) ? (cycle.returnSinceHalving >= 0 ? '+' : '') + formatPercent(cycle.returnSinceHalving, 1) : '—'),
+            h('td', { className: 'tabular-nums', style: { textAlign: 'right' } }, cycle.peakPrice ? formatUSD(cycle.peakPrice, 2) : '—'),
+            h('td', { className: 'tabular-nums', style: { textAlign: 'right' } }, cycle.peakDay !== null ? 'Day ' + formatNumber(cycle.peakDay, 0) : '—'),
+          ))
+        )
+      )
+    )
+  );
+}
+
+globalThis.MarketCyclesPage = function MarketCyclesPage() {
+  const [showPrevious, setShowPrevious] = useState(true);
+  const [viewMode, setViewMode] = useState('price');
+  const { data, lastUpdated, loading } = useLiveData(fetchBitcoinMarketCycles, 10 * 60 * 1000);
+  const cycles = data && data.cycles ? data.cycles : [];
+  const current = data && data.currentCycle ? data.currentCycle : cycles.find(cycle => cycle.current);
+  const chartData = useMemo(() => buildCycleChart(cycles, showPrevious, viewMode), [cycles, showPrevious, viewMode]);
+
+  return h('div', { className: 'page-enter charts-page market-cycles-page' },
+    h(PageHeader, {
+      title: 'Bitcoin Market Cycles',
+      description: 'Overlay each Bitcoin cycle from its halving date so the current cycle can be compared against prior post-halving paths.',
+      badge: 'Halving aligned',
+    }),
+    h('div', { style: { marginTop: '-20px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' } },
+      h(LastUpdated, { lastUpdated, live: !loading }),
+      h('span', { style: { fontSize: 'var(--text-xs)', color: 'var(--text-faint)' } }, data ? 'Source: ' + data.source : 'Loading price history')
+    ),
+
+    h('div', { className: 'charts-grid', style: { marginBottom: '24px' } },
+      h(StatCard, {
+        label: 'Current Cycle Day',
+        value: current ? formatNumber(current.daysElapsed, 0) : '...',
+        subtext: current ? 'since ' + formatCycleDate(current.halvingDate) : 'Loading',
+        accent: 'var(--btc-orange)',
+      }),
+      h(StatCard, {
+        label: 'Current BTC Price',
+        value: current && current.latestPrice ? formatUSD(current.latestPrice, 2) : '...',
+        subtext: 'live price merged into chart',
+        accent: '#ffb347',
+      }),
+      h(StatCard, {
+        label: 'Return Since Halving',
+        value: current && Number.isFinite(current.returnSinceHalving) ? (current.returnSinceHalving >= 0 ? '+' : '') + formatPercent(current.returnSinceHalving, 1) : '...',
+        subtext: current && current.halvingPrice ? 'from ' + formatUSD(current.halvingPrice, 2) : 'Loading',
+        accent: current && current.returnSinceHalving >= 0 ? 'var(--success)' : 'var(--error)',
+      }),
+    ),
+
+    h('section', { className: 'charts-panel charts-panel-full', style: { marginBottom: '24px' } },
+      h('div', { className: 'charts-panel-header' },
+        h('div', { className: 'charts-panel-heading' },
+          h('div', { className: 'charts-panel-title' }, 'Halving-Aligned BTC Price Overlay'),
+          h('div', { className: 'charts-panel-subtitle' }, viewMode === 'price'
+            ? 'Log-scale BTC/USD, aligned by days since each halving.'
+            : 'Indexed view sets each cycle halving day to 100 for cleaner relative-cycle comparison.')
+        ),
+        h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'flex-end' } },
+          h('div', { className: 'tab-group' },
+            h('button', { className: 'tab-btn' + (viewMode === 'price' ? ' active' : ''), onClick: () => setViewMode('price') }, 'USD'),
+            h('button', { className: 'tab-btn' + (viewMode === 'indexed' ? ' active' : ''), onClick: () => setViewMode('indexed') }, 'Indexed')
+          ),
+          h('button', { className: 'btn btn-secondary btn-sm', onClick: () => setShowPrevious(value => !value) },
+            showPrevious ? 'Hide previous cycles' : 'Show previous cycles'
+          )
+        )
+      ),
+      h('div', { className: 'charts-panel-body' },
+        h(LineChart, {
+          labels: chartData.labels,
+          datasets: chartData.datasets,
+          options: chartOptions(viewMode),
+          height: 420,
+          fill: false,
+        })
+      )
+    ),
+
+    cycles.length
+      ? h(CycleLegendTable, { cycles })
+      : h('div', { className: 'card', style: { padding: '36px', color: 'var(--text-muted)' } }, 'Loading Bitcoin cycle history...'),
+
+    h('div', { className: 'charts-source-note' },
+      data && data.note ? data.note : 'Pulling daily BTC price history from free no-key public feeds.',
+      ' Previous-cycle lines are historical daily closes; the current cycle appends the latest live BTC price where available.'
     )
   );
 }
@@ -11376,12 +12211,17 @@ globalThis.WhalePage = function WhalePage() {
   const { data, lastUpdated, loading } = useLiveData(async () => {
     const priceResult = await fetchBTCPrice();
     const btcPrice = priceResult ? priceResult.price : 0;
-    const transfers = await fetchRecentLargeTransactions(btcPrice);
-    return { btcPrice, transfers };
+    const [transfers, topAddresses] = await Promise.all([
+      fetchRecentLargeTransactions(btcPrice),
+      fetchTopBitcoinAddressesSnapshot(),
+    ]);
+    return { btcPrice, transfers, topAddresses };
   }, 30000);
 
   const btcPrice = streamedPrice || (data && data.btcPrice ? data.btcPrice : 0);
   const transfers = data && data.transfers ? data.transfers : [];
+  const topAddresses = data && data.topAddresses ? data.topAddresses : null;
+  const addressRows = topAddresses && topAddresses.addresses ? topAddresses.addresses : [];
   const filteredTransfers = transfers.filter((tx) => tx.amount >= filter);
   const totalWindow = transfers.reduce((sum, tx) => sum + tx.amount, 0);
   const largestTransfer = transfers.length ? Math.max(...transfers.map((tx) => tx.amount)) : 0;
@@ -11393,11 +12233,104 @@ globalThis.WhalePage = function WhalePage() {
 
   return h('div', { className: 'page-enter' },
     h(PageHeader, {
-      title: 'Large Transaction Tracker',
-      description: 'Live Bitcoin transactions from the public mempool. No private API keys or simulated whale transfers.',
+      title: 'Whale Tracker',
+      description: 'Track the top 100 richest Bitcoin addresses and live large mempool transactions using free public no-key feeds.',
     }),
     h('div', { style: { marginTop: '-20px', marginBottom: '20px' } },
       h(LastUpdated, { lastUpdated, live: true }),
+    ),
+
+    h('div', { className: 'card', style: { marginBottom: '24px', borderTop: '2px solid rgba(247,147,26,0.55)' } },
+      h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px', flexWrap: 'wrap', marginBottom: '16px' } },
+        h('div', null,
+          h('h3', { style: { fontSize: 'var(--text-base)', fontWeight: 700, marginBottom: '4px' } }, 'Top 100 Bitcoin Addresses'),
+          h('p', { style: { fontSize: 'var(--text-sm)', color: 'var(--text-muted)', lineHeight: 1.6 } },
+            'Address-level rich list from BitInfoCharts. The app rechecks the public snapshot about once per minute, but it is not entity-adjusted ownership because exchanges and custodians can control many addresses.'
+          )
+        ),
+        h('span', { className: 'badge badge-orange', style: { fontSize: '10px' } }, 'TOP 100 SNAPSHOT')
+      ),
+      h('div', {
+        style: {
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))',
+          gap: '12px',
+          marginBottom: '18px',
+        },
+      },
+        h(StatCard, {
+          label: 'Top 100 BTC',
+          value: topAddresses ? formatBTC(topAddresses.totalBtc, 0) : 'Loading...',
+          subtext: topAddresses ? formatUSD(topAddresses.totalUsd, 0) : 'Public rich-list snapshot',
+          accent: 'var(--btc-orange)',
+        }),
+        h(StatCard, {
+          label: 'Supply Held',
+          value: topAddresses ? formatPercent(topAddresses.supplyPercent, 2) : 'Loading...',
+          subtext: topAddresses ? 'of live circulating supply' : 'Calculating supply share',
+          accent: '#ffb347',
+        }),
+        h(StatCard, {
+          label: 'Largest Address',
+          value: addressRows[0] ? formatBTC(addressRows[0].balance, 0) : 'Loading...',
+          subtext: addressRows[0] ? addressRows[0].label : 'BitInfoCharts rank #1',
+          accent: 'var(--success)',
+        }),
+      ),
+      h('div', { style: { overflowX: 'auto' } },
+        h('table', { className: 'data-table' },
+          h('thead', null,
+            h('tr', null,
+              h('th', null, '#'),
+              h('th', null, 'Address'),
+              h('th', null, 'Label'),
+              h('th', { style: { textAlign: 'right' } }, 'BTC Held'),
+              h('th', { style: { textAlign: 'right' } }, '% Supply'),
+              h('th', { style: { textAlign: 'right' } }, '7D'),
+              h('th', { style: { textAlign: 'right' } }, '30D'),
+            )
+          ),
+          h('tbody', null,
+            addressRows.length
+              ? addressRows.map(row => h('tr', { key: row.rank },
+                  h('td', { className: 'tabular-nums', style: { color: 'var(--text-faint)' } }, row.rank),
+                  h('td', null,
+                    h('a', {
+                      href: row.sourceUrl,
+                      target: '_blank',
+                      rel: 'noopener noreferrer',
+                      style: {
+                        display: 'block',
+                        minWidth: '240px',
+                        maxWidth: '420px',
+                        fontSize: 'var(--text-xs)',
+                        fontFamily: 'monospace',
+                        color: 'var(--btc-orange)',
+                        textDecoration: 'none',
+                        wordBreak: 'break-all',
+                        lineHeight: 1.35,
+                      },
+                    }, row.address)
+                  ),
+                  h('td', { style: { color: 'var(--text-muted)', maxWidth: '180px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, row.label),
+                  h('td', { className: 'tabular-nums', style: { textAlign: 'right', fontWeight: 700 } }, formatBTC(row.balance, 2)),
+                  h('td', { className: 'tabular-nums', style: { textAlign: 'right', color: 'var(--text-muted)' } }, formatPercent(row.supplyPercent, 4)),
+                  h('td', { className: 'tabular-nums', style: { textAlign: 'right', color: row.change7d === null ? 'var(--text-faint)' : row.change7d >= 0 ? 'var(--success)' : 'var(--error)' } },
+                    row.change7d === null ? '—' : (row.change7d >= 0 ? '+' : '') + formatBTC(row.change7d, 2)
+                  ),
+                  h('td', { className: 'tabular-nums', style: { textAlign: 'right', color: row.change30d === null ? 'var(--text-faint)' : row.change30d >= 0 ? 'var(--success)' : 'var(--error)' } },
+                    row.change30d === null ? '—' : (row.change30d >= 0 ? '+' : '') + formatBTC(row.change30d, 2)
+                  )
+                ))
+              : h('tr', null,
+                  h('td', { colSpan: 7, style: { color: 'var(--text-muted)', padding: '24px' } }, 'Loading top Bitcoin address snapshot...')
+                )
+          )
+        )
+      ),
+      h('p', { style: { fontSize: 'var(--text-xs)', color: 'var(--text-faint)', lineHeight: 1.6, marginTop: '12px' } },
+        topAddresses ? 'Source: ' + topAddresses.source + '. ' + topAddresses.methodology : 'Source: BitInfoCharts public top-address page via Jina Reader.'
+      )
     ),
 
     h('div', {
@@ -11910,7 +12843,7 @@ const { createElement: h, useMemo, useState } = React;
 
 const LIVE_POLL_MS = 30000;
 const EXCHANGE_RESERVE_CHECK_MS = 300000;
-const FALLBACK_CIRCULATING_SUPPLY = 19999365;
+const FALLBACK_CIRCULATING_SUPPLY = 20032946;
 
 /* ------------------------------------------
    Live data fetching functions (ad-blocker resilient)
@@ -12154,10 +13087,11 @@ globalThis.AvailableSupplyPage = function AvailableSupplyPage() {
   // Live data: circulating supply, price, all exchange data (ad-blocker resilient)
   const { data: liveData, lastUpdated } = useLiveData(async () => {
     // Fetch everything in parallel — all functions return null on failure
-    const [networkData, priceResult, reserveSnapshot, geckoExchanges, ...exchangeResults] = await Promise.all([
+    const [networkData, priceResult, reserveSnapshot, holderCohorts, geckoExchanges, ...exchangeResults] = await Promise.all([
       fetchNetworkData(),
       fetchBTCPrice(),
       fetchExchangeReserveSnapshot(),
+      fetchHolderCohortSnapshot(),
       fetchCoinGeckoExchanges(),
       ...EXCHANGE_CONFIG.map(ex => ex.fetchFn()),
     ]);
@@ -12182,13 +13116,15 @@ globalThis.AvailableSupplyPage = function AvailableSupplyPage() {
       };
     });
 
-    return { supply, priceResult, reserveSnapshot, exchanges };
+    return { supply, priceResult, reserveSnapshot, holderCohorts, exchanges };
   }, LIVE_POLL_MS);
 
   const circulatingSupply = (liveData && liveData.supply) || FALLBACK_CIRCULATING_SUPPLY || dashboardData.circulatingSupply;
   const btcPrice = streamedPrice || ((liveData && liveData.priceResult) ? liveData.priceResult.price : dashboardData.price);
   const exchangeDataLive = (liveData && liveData.exchanges) || [];
   const reserveSnapshot = (liveData && liveData.reserveSnapshot) || null;
+  const holderCohorts = (liveData && liveData.holderCohorts) || null;
+  const holderLatest = holderCohorts && holderCohorts.latest ? holderCohorts.latest : null;
   const reserveIsLive = reserveSnapshot && reserveSnapshot.isLive !== false;
   const reserveUpdatedLabel = reserveSnapshot && reserveSnapshot.updatedLabel ? reserveSnapshot.updatedLabel : null;
   const exchangeReserveTotal = reserveSnapshot && reserveSnapshot.total ? reserveSnapshot.total : 2460413.52;
@@ -12222,23 +13158,81 @@ globalThis.AvailableSupplyPage = function AvailableSupplyPage() {
   // not audited exchange liabilities.
   const liveExchangeCount = exchangeDataLive.filter(e => e.isLive).length;
 
+  const shortTermHolderSupply = holderLatest && Number.isFinite(holderLatest.shortSupply)
+    ? holderLatest.shortSupply
+    : Math.max(circulatingSupply - SUPPLY_ESTIMATES.longTermHolders.best, 0);
+  const longTermHolderSupply = holderLatest && Number.isFinite(holderLatest.longSupply)
+    ? holderLatest.longSupply
+    : SUPPLY_ESTIMATES.longTermHolders.best;
+  const holderCohortSupply = holderLatest && Number.isFinite(holderLatest.totalSupply) ? holderLatest.totalSupply : circulatingSupply;
+  const holderSupplyDelta = circulatingSupply - holderCohortSupply;
+  const estimatedLostCoins = SUPPLY_ESTIMATES.lostCoins.best;
+  const availableSupplyEstimate = Math.max(exchangeReserveTotal + shortTermHolderSupply - estimatedLostCoins, 0);
+  const availableSupplyPercent = circulatingSupply ? (availableSupplyEstimate / circulatingSupply) * 100 : null;
+  const holderSourceStatus = holderCohorts
+    ? 'Updated ' + new Date(holderCohorts.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    : 'Fallback estimate';
+  const availableSupplyRows = [
+    {
+      label: 'Exchange balances',
+      value: exchangeReserveTotal,
+      role: 'Added: public exchange wallet inventory',
+      source: reserveSnapshot ? reserveSnapshot.source : 'CoinGlass public balance snapshot',
+      status: reserveIsLive ? 'Public snapshot' : 'Backup',
+      color: 'var(--btc-orange)',
+    },
+    {
+      label: 'Short-term holder supply',
+      value: shortTermHolderSupply,
+      role: 'Added: coins last moved under 6 months',
+      source: 'BGeometrics HODL Waves',
+      status: holderSourceStatus,
+      color: '#ffb347',
+    },
+    {
+      label: 'Long-term holder supply / illiquid',
+      value: longTermHolderSupply,
+      role: 'Shown separately as illiquid supply; not added to available supply',
+      source: 'BGeometrics HODL Waves',
+      status: holderSourceStatus,
+      color: '#8b5cf6',
+    },
+    {
+      label: 'Estimated lost coins',
+      value: -estimatedLostCoins,
+      role: 'Subtracted: likely inaccessible BTC estimate',
+      source: 'Research estimate',
+      status: 'Static estimate',
+      color: 'var(--error)',
+    },
+    {
+      label: 'Available supply model',
+      value: availableSupplyEstimate,
+      role: 'Exchange balances + short-term holder supply - lost coins',
+      source: 'Calculated live in browser',
+      status: 'Formula output',
+      color: 'var(--success)',
+      total: true,
+    },
+  ];
+
   // Build stats
-  const liquidSupply = circulatingSupply - SUPPLY_ESTIMATES.lostCoins.best - SUPPLY_ESTIMATES.longTermHolders.best;
+  const liquidSupply = availableSupplyEstimate;
   const liquidPercent = (liquidSupply / circulatingSupply) * 100;
 
   // Supply breakdown for doughnut chart
   const estimatedExchangeReserves = exchangeReserveTotal;
   const exchangePercent = (estimatedExchangeReserves / circulatingSupply) * 100;
 
-  // Illiquid supply = circulating - liquid (consistent with the liquid supply calc above)
-  const illiquidSupply = circulatingSupply - liquidSupply;
+  // Illiquid supply = long-term holder proxy supply from BGeometrics HODL Waves.
+  const illiquidSupply = longTermHolderSupply;
   const illiquidPercent = (illiquidSupply / circulatingSupply) * 100;
   // Raw sum of categories for per-category % calculations
-  const illiquidCategoriesTotal = SUPPLY_ESTIMATES.longTermHolders.best + SUPPLY_ESTIMATES.lostCoins.best + SUPPLY_ESTIMATES.miners.best + SUPPLY_ESTIMATES.wrappersBridges.best + SUPPLY_ESTIMATES.etfCustody.best;
+  const illiquidCategoriesTotal = longTermHolderSupply + estimatedLostCoins + SUPPLY_ESTIMATES.miners.best + SUPPLY_ESTIMATES.wrappersBridges.best + SUPPLY_ESTIMATES.etfCustody.best;
 
   const illiquidCategories = [
-    { label: 'Long-Term Holders (HODLers)', value: SUPPLY_ESTIMATES.longTermHolders.best, color: '#3b82f6', description: 'Wallets that have not moved BTC in over 1 year; includes retail HODLers and institutional cold storage' },
-    { label: 'Permanently Lost', value: SUPPLY_ESTIMATES.lostCoins.best, color: '#6b6b80', description: 'Coins in provably unspendable wallets: Satoshi\'s estimated stash, burn addresses, lost keys' },
+    { label: 'Long-Term Holder Supply (6M+ proxy)', value: longTermHolderSupply, color: '#3b82f6', description: 'BGeometrics live HODL-wave proxy: circulating BTC last moved more than 6 months ago' },
+    { label: 'Estimated Lost Coins', value: estimatedLostCoins, color: '#6b6b80', description: 'Published research estimate for permanently inaccessible BTC; not a live on-chain feed' },
     { label: 'ETF & Institutional Custody', value: SUPPLY_ESTIMATES.etfCustody.best, color: '#8b5cf6', description: 'BTC held by spot ETFs (BlackRock, Fidelity, etc.), GBTC, MicroStrategy, and other custodial institutions' },
     { label: 'Miner Holdings', value: SUPPLY_ESTIMATES.miners.best, color: '#00d4aa', description: 'BTC held by mining pools and miners that has not been sold or moved to exchanges' },
     { label: 'Wrapped / Bridged BTC', value: SUPPLY_ESTIMATES.wrappersBridges.best, color: '#ff4757', description: 'BTC locked in bridge contracts: WBTC on Ethereum, tBTC, sBTC, and other cross-chain representations' },
@@ -12254,6 +13248,120 @@ globalThis.AvailableSupplyPage = function AvailableSupplyPage() {
   const sortedExchanges = useMemo(() => {
     return [...exchangeDataLive].sort((a, b) => (b.volume24hBtc || 0) - (a.volume24hBtc || 0));
   }, [exchangeDataLive]);
+
+  const availableSupplyModelSection = h('div', { className: 'card', style: { marginBottom: '24px', borderTop: '2px solid rgba(139, 92, 246, 0.55)' } },
+    h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px', flexWrap: 'wrap', marginBottom: '16px' } },
+      h('div', null,
+        h('h3', { style: { fontSize: 'var(--text-base)', fontWeight: 700, marginBottom: '4px' } }, 'Available Supply Model'),
+        h('p', { style: { color: 'var(--text-muted)', fontSize: 'var(--text-sm)', lineHeight: 1.6 } },
+          'This is separate from the exchange-balance table above: available supply = exchange balances + short-term holder supply - estimated lost coins.'
+        )
+      ),
+      h('span', { className: 'badge', style: { color: '#c4a7ff', borderColor: 'rgba(196,167,255,0.55)', background: 'rgba(139,92,246,0.16)', fontSize: '10px' } },
+        holderCohorts ? 'BGEOMETRICS UPDATED ' + new Date(holderCohorts.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'LOADING HOLDER DATA'
+      )
+    ),
+    h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '12px', marginBottom: '16px' } },
+      h(StatCard, {
+        label: 'Available Supply',
+        value: formatExactInt(availableSupplyEstimate),
+        subtext: availableSupplyPercent !== null ? formatPercent(availableSupplyPercent, 2) + ' of circulating' : 'model estimate',
+        accent: 'var(--success)',
+      }),
+      h(StatCard, {
+        label: 'Short-Term Holder Supply',
+        value: formatExactInt(shortTermHolderSupply),
+        subtext: holderLatest ? formatPercent(holderLatest.shortPct, 2) + ' of BGeometrics supply' : 'live HODL-wave proxy',
+        accent: '#ffb347',
+      }),
+      h(StatCard, {
+        label: 'Long-Term Holder Supply',
+        value: formatExactInt(longTermHolderSupply),
+        subtext: holderLatest ? formatPercent(holderLatest.longPct, 2) + ' of BGeometrics supply; used as illiquid supply' : 'illiquid supply proxy',
+        accent: '#8b5cf6',
+      }),
+      h(StatCard, {
+        label: 'Estimated Lost Coins',
+        value: '~' + formatExactInt(estimatedLostCoins),
+        subtext: 'research estimate, subtracted from model',
+        accent: 'var(--error)',
+      }),
+    ),
+    h('div', {
+      style: {
+        padding: '14px 16px',
+        borderRadius: 'var(--radius-md)',
+        background: 'linear-gradient(135deg, rgba(139,92,246,0.14), rgba(247,147,26,0.08))',
+        border: '1px solid rgba(196,167,255,0.2)',
+        marginBottom: '14px',
+      },
+    },
+      h('div', { style: { fontSize: 'var(--text-xs)', color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' } }, 'Live formula'),
+      h('div', { className: 'tabular-nums', style: { fontSize: 'var(--text-sm)', color: 'var(--text-primary)', fontWeight: 700, lineHeight: 1.6 } },
+        formatExactInt(exchangeReserveTotal), ' exchange BTC + ',
+        formatExactInt(shortTermHolderSupply), ' short-term BTC - ',
+        formatExactInt(estimatedLostCoins), ' lost BTC = ',
+        h('span', { style: { color: 'var(--success)' } }, formatExactInt(availableSupplyEstimate), ' available BTC')
+      ),
+    ),
+    h('div', { style: { overflowX: 'auto' } },
+      h('table', { className: 'data-table' },
+        h('thead', null,
+          h('tr', null,
+            h('th', null, 'Component'),
+            h('th', { style: { textAlign: 'right' } }, 'BTC'),
+            h('th', { style: { textAlign: 'right' } }, '% of circulating'),
+            h('th', null, 'Source / Status'),
+            h('th', null, 'Role'),
+          )
+        ),
+        h('tbody', null,
+          availableSupplyRows.map(row => h('tr', { key: row.label, style: row.total ? { background: 'rgba(0,212,170,0.06)', fontWeight: 700 } : null },
+            h('td', null, row.label),
+            h('td', { className: 'tabular-nums', style: { textAlign: 'right', color: row.color, fontWeight: row.total ? 800 : 650 } },
+              (row.value < 0 ? '-' : '') + formatExactInt(Math.abs(row.value))
+            ),
+            h('td', { className: 'tabular-nums', style: { textAlign: 'right' } },
+              circulatingSupply ? formatPercent((Math.abs(row.value) / circulatingSupply) * 100, 2) : '\u2014'
+            ),
+            h('td', { style: { color: 'var(--text-muted)' } },
+              h('div', { style: { display: 'grid', gap: '2px' } },
+                h('span', { style: { color: 'var(--text-primary)', fontWeight: 650 } }, row.source),
+                h('span', { style: { fontSize: 'var(--text-xs)', color: 'var(--text-faint)' } }, row.status),
+              )
+            ),
+            h('td', { style: { color: 'var(--text-muted)' } }, row.role),
+          ))
+        )
+      )
+    ),
+    h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '10px', marginTop: '14px' } },
+      h(DataFreshnessItem, {
+        label: 'Live circulating supply',
+        status: 'LIVE CHECK',
+        value: formatExactBTCFull(circulatingSupply) + ' BTC',
+        note: 'Pulled from blockchain.info totalbc when reachable, with block-height issuance math as backup.',
+        color: '#00d4aa',
+      }),
+      h(DataFreshnessItem, {
+        label: 'STH + LTH supply',
+        status: holderCohorts ? 'DAILY HODL WAVE' : 'BACKUP',
+        value: formatExactBTCFull(holderCohortSupply) + ' BTC',
+        note: 'Short-term plus long-term holder supply from the same BGeometrics HODL-wave snapshot.',
+        color: '#8b5cf6',
+      }),
+      h(DataFreshnessItem, {
+        label: 'Reconciliation gap',
+        status: Math.abs(holderSupplyDelta) < 25000 ? 'NORMAL' : 'CHECK',
+        value: (holderSupplyDelta >= 0 ? '+' : '-') + formatExactInt(Math.abs(holderSupplyDelta)) + ' BTC',
+        note: 'Difference between live chain supply and the latest daily BGeometrics cohort file. Small gaps are expected because one is live and one updates daily.',
+        color: Math.abs(holderSupplyDelta) < 25000 ? '#00d4aa' : '#ff4757',
+      }),
+    ),
+    h('p', { style: { fontSize: 'var(--text-xs)', color: 'var(--text-faint)', lineHeight: 1.6, marginTop: '12px' } },
+      'Glassnode/CoinGlass exact LTH/STH and lost-coin feeds are not available as reliable free real-time APIs. This site therefore uses BGeometrics free HODL-wave data for short-term and long-term holder supply, CoinGlass public exchange balances, and a clearly labeled lost-coin research estimate.'
+    )
+  );
 
   return h('div', { className: 'page-enter' },
     h(PageHeader, {
@@ -12306,10 +13414,10 @@ globalThis.AvailableSupplyPage = function AvailableSupplyPage() {
           color: reserveIsLive ? '#f7931a' : '#ff4757',
         }),
         h(DataFreshnessItem, {
-          label: 'Illiquid supply',
-          status: 'MODEL',
-          value: 'Research anchors, live-valued',
-          note: 'No reliable free no-key source provides real-time lost-coin, ETF custody, or LTH buckets.',
+          label: 'Holder cohorts',
+          status: 'DAILY PUBLIC CHART',
+          value: holderCohorts ? 'BGeometrics HODL-wave proxy' : 'Loading BGeometrics',
+          note: 'Short-term and long-term holder supply update from free no-key HODL-wave files; exact Glassnode entity-adjusted LTH/STH feeds are paid.',
           color: '#8b5cf6',
         }),
       ),
@@ -12342,11 +13450,11 @@ globalThis.AvailableSupplyPage = function AvailableSupplyPage() {
             title: 'Exchange Reserves: ' + formatPercent(exchangePercent, 1),
           }),
           h('div', {
-            style: { width: ((SUPPLY_ESTIMATES.longTermHolders.best / circulatingSupply) * 100) + '%', background: 'rgba(59, 130, 246, 0.4)' },
+            style: { width: ((longTermHolderSupply / circulatingSupply) * 100) + '%', background: 'rgba(59, 130, 246, 0.4)' },
             title: 'Long-Term Holders',
           }),
           h('div', {
-            style: { width: ((SUPPLY_ESTIMATES.lostCoins.best / circulatingSupply) * 100) + '%', background: 'rgba(107, 107, 128, 0.4)', borderRadius: '0 10px 10px 0' },
+            style: { width: ((estimatedLostCoins / circulatingSupply) * 100) + '%', background: 'rgba(107, 107, 128, 0.4)', borderRadius: '0 10px 10px 0' },
             title: 'Lost Forever',
           }),
         ),
@@ -12402,9 +13510,9 @@ globalThis.AvailableSupplyPage = function AvailableSupplyPage() {
         accent: 'var(--btc-orange)',
       }),
       h(StatCard, {
-        label: 'Estimated Liquid Supply',
+        label: 'Available Supply Model',
         value: formatExactInt(liquidSupply),
-        subtext: formatPercent(liquidPercent, 2) + ' of circulating, model',
+        subtext: formatPercent(liquidPercent, 2) + ' of circulating',
         accent: 'var(--success)',
       }),
       h(StatCard, {
@@ -12414,9 +13522,9 @@ globalThis.AvailableSupplyPage = function AvailableSupplyPage() {
         accent: 'var(--error)',
       }),
       h(StatCard, {
-        label: 'ETF/Institutional Estimate',
-        value: '~' + formatExactInt(SUPPLY_ESTIMATES.etfCustody.best),
-        subtext: 'research estimate, valued live',
+        label: 'Illiquid Supply',
+        value: formatExactInt(illiquidSupply),
+        subtext: 'long-term holder proxy',
         accent: '#8b5cf6',
       }),
     ),
@@ -12616,6 +13724,8 @@ globalThis.AvailableSupplyPage = function AvailableSupplyPage() {
       ),
     ),
 
+    availableSupplyModelSection,
+
     // Exchange Details Table (live data from each API)
     h('div', { className: 'card', style: { marginBottom: '24px' } },
       h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' } },
@@ -12704,9 +13814,9 @@ globalThis.AvailableSupplyPage = function AvailableSupplyPage() {
     h('div', { className: 'card', style: { marginBottom: '24px', borderTop: '2px solid #8b5cf6' } },
       h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px', marginBottom: '20px' } },
         h('div', null,
-          h('h3', { style: { fontSize: 'var(--text-lg)', fontWeight: 700, marginBottom: '4px' } }, 'Illiquid Supply Model (Live-Valued)'),
+          h('h3', { style: { fontSize: 'var(--text-lg)', fontWeight: 700, marginBottom: '4px' } }, 'Long-Term Holder / Illiquid Supply'),
           h('p', { style: { fontSize: 'var(--text-sm)', color: 'var(--text-muted)' } },
-            'Bitcoin that is not readily available for trading. Category BTC amounts are research estimates; percentages and USD value update from live circulating supply and BTC price.'
+            'Illiquid supply is anchored to the live BGeometrics long-term holder proxy. Additional harder-to-trade categories below are shown as context.'
           ),
         ),
         h('div', { style: { display: 'flex', alignItems: 'center', gap: '6px' } },
@@ -12804,7 +13914,7 @@ globalThis.AvailableSupplyPage = function AvailableSupplyPage() {
           borderLeft: '2px solid rgba(139, 92, 246, 0.3)',
         },
       },
-        'Illiquid supply includes BTC that has not moved or is structurally harder to trade. Category amounts are published-research estimates; circulating supply, BTC/USD value, and percentage math update live from public feeds. A reliable free no-key real-time illiquid-supply feed was not available, so the model is labeled rather than mixed into live data.'
+        'Illiquid supply uses BGeometrics live HODL-wave data: coins last moved more than 6 months ago. Lost-coin, miner, wrapper, and custody rows are contextual estimates because no reliable free no-key real-time feed exists for those exact buckets.'
       ),
     ),
 
@@ -12812,7 +13922,7 @@ globalThis.AvailableSupplyPage = function AvailableSupplyPage() {
     h('div', { className: 'card', style: { marginBottom: '24px' } },
       h('h3', { style: { fontSize: 'var(--text-base)', fontWeight: 600, marginBottom: '4px' } }, 'Research-Based Supply Category Breakdown'),
       h('p', { style: { fontSize: 'var(--text-sm)', color: 'var(--text-muted)', marginBottom: '20px' } },
-        'Estimated distribution across holder categories. The BTC category estimates are static research inputs, while percentages and dollar values update with live supply and price.'
+        'Estimated distribution across holder categories. Long-term and short-term holder rows update from BGeometrics; lost-coin and custody-style rows remain clearly labeled estimates while percentages and dollar values update with live supply and price.'
       ),
       h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '12px' } },
         Object.entries(SUPPLY_ESTIMATES).map(([key, est]) => {
@@ -12878,7 +13988,7 @@ globalThis.AvailableSupplyPage = function AvailableSupplyPage() {
           lineHeight: 1.6,
         },
       },
-        'Data sources: circulating supply from blockchain.info and block-height issuance math, exchange balances from CoinGlass public balance data via Jina Reader, 24h volume from exchange public REST APIs, and trust scores from CoinGecko. True live feeds refresh automatically; exchange balances are public snapshots, and supply-category estimates are labeled separately because no reliable no-key real-time feed exists for lost coins, ETF custody, and long-term-holder buckets.'
+        'Data sources: circulating supply from blockchain.info and block-height issuance math, exchange balances from CoinGlass public balance data via Jina Reader, short-term/long-term holder supply from BGeometrics HODL-wave files, 24h volume from exchange public REST APIs, and trust scores from CoinGecko. Lost coins remain a labeled research estimate because no reliable free real-time lost-coin API is available.'
       ),
     ),
   );
@@ -12933,6 +14043,9 @@ const RAINBOW_BANDS = [
   { label: 'BUY!', color: '#5267ff', coeff: 2.801, offset: 1225, score: -48 },
   { label: 'Fire Sale', color: '#9f5cff', coeff: 2.788, offset: 1200, score: -62 },
 ];
+
+const BELOW_RAINBOW_BAND = { label: 'Below Lower Band', color: '#6d5cff', score: -42 };
+const ABOVE_RAINBOW_BAND = { label: 'Above Upper Band', color: '#ff244d', score: 72 };
 
 const RAINBOW_INTERCEPT = -19.463;
 const POWER_LAW_SLOPE = 5.71;
@@ -13011,6 +14124,54 @@ function seriesStats(values) {
   };
 }
 
+function percentileRank(values, value) {
+  if (!Number.isFinite(value)) return null;
+  const valid = (values || []).filter(Number.isFinite).sort((a, b) => a - b);
+  if (!valid.length) return null;
+  if (valid.length === 1) return 50;
+
+  let below = 0;
+  let equal = 0;
+  for (const item of valid) {
+    if (item < value) below += 1;
+    else if (item === value) equal += 1;
+  }
+
+  return clamp(((below + equal * 0.5) / valid.length) * 100, 0, 100);
+}
+
+function formatPercentile(value) {
+  if (!Number.isFinite(value)) return '...';
+  const rounded = Math.round(value);
+  const teen = rounded % 100 >= 11 && rounded % 100 <= 13;
+  const last = rounded % 10;
+  const suffix = teen ? 'th' : last === 1 ? 'st' : last === 2 ? 'nd' : last === 3 ? 'rd' : 'th';
+  return rounded + suffix + ' pct';
+}
+
+function rangeContext(percentile, lowLabel = 'Low in range', highLabel = 'High in range') {
+  if (!Number.isFinite(percentile)) return 'Loading range context';
+  if (percentile <= 20) return lowLabel;
+  if (percentile >= 80) return highLabel;
+  return 'Middle of range';
+}
+
+function powerPositionSignal(position) {
+  if (!Number.isFinite(position)) return { label: 'Loading', color: 'var(--text-faint)' };
+  if (position < 18) return { label: 'Near Support', color: '#00d4aa' };
+  if (position < 72) return { label: 'Fair Range', color: '#ffd43b' };
+  if (position < 88) return { label: 'Extended', color: '#ff8c00' };
+  return { label: 'Near Resistance', color: '#ff4757' };
+}
+
+function piGapSignal(gap) {
+  if (!Number.isFinite(gap)) return { label: 'Loading', color: 'var(--text-faint)' };
+  if (gap < 3) return { label: 'Near Crossover', color: '#ff4757' };
+  if (gap < 10) return { label: 'Elevated Risk', color: '#ff8c00' };
+  if (gap < 18) return { label: 'Converging', color: '#ffd43b' };
+  return { label: 'No Top Signal', color: '#00d4aa' };
+}
+
 function spanDays(points) {
   if (!Array.isArray(points) || points.length < 2) return 0;
   const first = points[0]?.[0];
@@ -13051,7 +14212,7 @@ function formatRangeAverage(value, mode) {
 }
 
 function rangeSignalDescription(range, metricName) {
-  return rangeName(range) + ' range ' + metricName + ' from visible chart points';
+  return rangeName(range) + ' ' + metricName + ' from the visible chart window';
 }
 
 function rangeName(range) {
@@ -13214,7 +14375,7 @@ function getRainbowBand(price, timestamp) {
     if (price >= lower && price <= upper) return RAINBOW_BANDS[i + 1];
   }
   const lowest = rainbowBandValue(timestamp, RAINBOW_BANDS[RAINBOW_BANDS.length - 1].coeff, RAINBOW_BANDS[RAINBOW_BANDS.length - 1].offset);
-  return price < lowest ? RAINBOW_BANDS[RAINBOW_BANDS.length - 1] : RAINBOW_BANDS[0];
+  return price < lowest ? BELOW_RAINBOW_BAND : ABOVE_RAINBOW_BAND;
 }
 
 function normalizeCoinMetrics(data) {
@@ -13377,16 +14538,16 @@ function buildCompositeSeries(rows, pricePoints, range, livePrice, referencePric
   const points = metrics.map((row, index) => {
     const components = [];
 
-    if (Number.isFinite(row.mvrv)) components.push(clamp((row.mvrv - 1.65) * 36, -55, 70));
-    if (Number.isFinite(row.mvrvZ)) components.push(clamp((row.mvrvZ - 1.5) * 18, -55, 70));
+    if (Number.isFinite(row.mvrv)) components.push(clamp((row.mvrv - 1.7) * 30, -55, 70));
+    if (Number.isFinite(row.mvrvZ)) components.push(clamp((row.mvrvZ - 1.1) * 20, -55, 70));
     if (Number.isFinite(row.price)) {
       const position = powerLawPosition(row.price, row.ts);
-      if (Number.isFinite(position)) components.push((position - 50) * 1.18);
+      if (Number.isFinite(position)) components.push((position - 45) * 0.75);
       const band = getRainbowBand(row.price, row.ts);
-      components.push(band.score);
+      components.push(band.score * 0.55);
     }
     const drawdown = drawdowns[index];
-    if (Number.isFinite(drawdown)) components.push(drawdown <= -55 ? -42 : drawdown <= -35 ? -26 : drawdown <= -15 ? -10 : 12);
+    if (Number.isFinite(drawdown)) components.push(drawdown <= -55 ? -24 : drawdown <= -35 ? -15 : drawdown <= -15 ? -6 : 8);
 
     if (!components.length) return null;
     const score = components.reduce((sum, value) => sum + value, 0) / components.length;
@@ -13398,27 +14559,27 @@ function buildCompositeSeries(rows, pricePoints, range, livePrice, referencePric
 
 function valuationSignal(score) {
   if (!Number.isFinite(score)) return { label: 'Loading', color: 'var(--text-faint)', tone: 'neutral' };
-  if (score <= -45) return { label: 'Deeply Undervalued', color: '#00d4aa', tone: 'cheap' };
-  if (score <= -15) return { label: 'Undervalued', color: '#27e86f', tone: 'cheap' };
-  if (score < 20) return { label: 'Fair / Neutral', color: '#ffd43b', tone: 'neutral' };
-  if (score < 50) return { label: 'Overvalued', color: '#ff8c00', tone: 'hot' };
+  if (score <= -60) return { label: 'Deeply Undervalued', color: '#00d4aa', tone: 'cheap' };
+  if (score <= -30) return { label: 'Undervalued', color: '#27e86f', tone: 'cheap' };
+  if (score < 30) return { label: 'Fair / Neutral', color: '#ffd43b', tone: 'neutral' };
+  if (score < 60) return { label: 'Overvalued', color: '#ff8c00', tone: 'hot' };
   return { label: 'Extreme Overvaluation', color: '#ff4757', tone: 'hot' };
 }
 
 function mvrvSignal(value) {
   if (!Number.isFinite(value)) return { label: 'Loading', color: 'var(--text-faint)' };
-  if (value < 1) return { label: 'Below Realized Value', color: '#00d4aa' };
-  if (value < 1.5) return { label: 'Undervalued', color: '#27e86f' };
-  if (value < 2.4) return { label: 'Fair', color: '#ffd43b' };
-  if (value < 3.5) return { label: 'Overvalued', color: '#ff8c00' };
+  if (value < 0.95) return { label: 'Below Realized Value', color: '#00d4aa' };
+  if (value < 1.2) return { label: 'Undervalued', color: '#27e86f' };
+  if (value < 2.2) return { label: 'Fair / Neutral', color: '#ffd43b' };
+  if (value < 3.2) return { label: 'Overvalued', color: '#ff8c00' };
   return { label: 'Cycle Heat', color: '#ff4757' };
 }
 
 function zSignal(value) {
   if (!Number.isFinite(value)) return { label: 'Loading', color: 'var(--text-faint)' };
-  if (value < 0) return { label: 'Discounted', color: '#00d4aa' };
-  if (value < 2) return { label: 'Fair', color: '#ffd43b' };
-  if (value < 4) return { label: 'Hot', color: '#ff8c00' };
+  if (value < -0.2) return { label: 'Discounted', color: '#00d4aa' };
+  if (value < 1.5) return { label: 'Fair / Neutral', color: '#ffd43b' };
+  if (value < 3) return { label: 'Hot', color: '#ff8c00' };
   return { label: 'Overheated', color: '#ff4757' };
 }
 
@@ -13556,9 +14717,12 @@ globalThis.ValuationPage = function ValuationPage() {
     [valuationRows, compositePriceWindow, ranges.composite, btcPrice, longPrices]
   );
   const scoreStats = useMemo(() => seriesStats(compositeWindow.values), [compositeWindow.values]);
-  const liveScore = scoreStats.latest;
-  const selectedScore = scoreStats.average;
+  const selectedScore = scoreStats.latest;
+  const rangeAverageScore = scoreStats.average;
+  const scorePercentile = useMemo(() => percentileRank(compositeWindow.values, selectedScore), [compositeWindow.values, selectedScore]);
+  const scoreContext = rangeContext(scorePercentile, 'Cheap versus range', 'Hot versus range');
   const scoreSignal = valuationSignal(selectedScore);
+  const rangeAverageSignal = valuationSignal(rangeAverageScore);
 
   const mvrvPriceWindow = useMemo(() => getPriceWindow(ranges.mvrv), [getPriceWindow, ranges.mvrv]);
   const mvrvWindow = useMemo(
@@ -13566,10 +14730,11 @@ globalThis.ValuationPage = function ValuationPage() {
     [valuationRows, mvrvPriceWindow, longPrices, btcPrice, ranges.mvrv]
   );
   const mvrvStats = useMemo(() => seriesStats(mvrvWindow.values), [mvrvWindow.values]);
-  const liveMvrv = mvrvStats.latest;
-  const selectedMvrv = mvrvStats.average;
+  const selectedMvrv = mvrvStats.latest;
+  const rangeAverageMvrv = mvrvStats.average;
+  const mvrvPercentile = useMemo(() => percentileRank(mvrvWindow.values, selectedMvrv), [mvrvWindow.values, selectedMvrv]);
   const selectedMvrvSignal = mvrvSignal(selectedMvrv);
-  const liveMvrvSignal = mvrvSignal(liveMvrv);
+  const rangeAverageMvrvSignal = mvrvSignal(rangeAverageMvrv);
 
   const mvrvZPriceWindow = useMemo(() => getPriceWindow(ranges.mvrvZ), [getPriceWindow, ranges.mvrvZ]);
   const mvrvZWindow = useMemo(
@@ -13577,10 +14742,11 @@ globalThis.ValuationPage = function ValuationPage() {
     [valuationRows, mvrvZPriceWindow, longPrices, btcPrice, ranges.mvrvZ]
   );
   const mvrvZStats = useMemo(() => seriesStats(mvrvZWindow.values), [mvrvZWindow.values]);
-  const liveZ = mvrvZStats.latest;
-  const selectedZ = mvrvZStats.average;
+  const selectedZ = mvrvZStats.latest;
+  const rangeAverageZ = mvrvZStats.average;
+  const zPercentile = useMemo(() => percentileRank(mvrvZWindow.values, selectedZ), [mvrvZWindow.values, selectedZ]);
   const selectedZSignal = zSignal(selectedZ);
-  const liveZSignal = zSignal(liveZ);
+  const rangeAverageZSignal = zSignal(rangeAverageZ);
 
   const powerWindow = useMemo(() => {
     const window = getPriceWindow(ranges.powerLaw);
@@ -13593,8 +14759,11 @@ globalThis.ValuationPage = function ValuationPage() {
     };
   }, [getPriceWindow, ranges.powerLaw]);
   const powerStats = useMemo(() => seriesStats(powerWindow.position), [powerWindow.position]);
-  const livePowerPosition = powerStats.latest;
-  const selectedPowerPosition = powerStats.average;
+  const selectedPowerPosition = powerStats.latest;
+  const rangeAveragePowerPosition = powerStats.average;
+  const powerPercentile = useMemo(() => percentileRank(powerWindow.position, selectedPowerPosition), [powerWindow.position, selectedPowerPosition]);
+  const selectedPowerSignal = powerPositionSignal(selectedPowerPosition);
+  const rangeAveragePowerSignal = powerPositionSignal(rangeAveragePowerPosition);
   const currentPowerFair = latestFinite(powerWindow.fair);
   const currentPowerSupport = latestFinite(powerWindow.support);
   const currentPowerResistance = latestFinite(powerWindow.resistance);
@@ -13611,7 +14780,8 @@ globalThis.ValuationPage = function ValuationPage() {
     };
   }, [getPriceWindow, ranges.rainbow]);
   const liveBand = rainbowWindow.bandHistory.length ? rainbowWindow.bandHistory[rainbowWindow.bandHistory.length - 1] : RAINBOW_BANDS[4];
-  const selectedBand = dominantRainbowBand(rainbowWindow.bandHistory) || liveBand;
+  const dominantBand = dominantRainbowBand(rainbowWindow.bandHistory) || liveBand;
+  const selectedBand = liveBand;
 
   const piWindow = useMemo(() => {
     const longValues = longPrices.map(point => point[1]);
@@ -13637,14 +14807,17 @@ globalThis.ValuationPage = function ValuationPage() {
   }, [longPrices, ranges.piCycle]);
 
   const piStats = useMemo(() => seriesStats(piWindow.gap), [piWindow.gap]);
-  const livePiGap = piStats.latest;
-  const selectedPiGap = piStats.average;
+  const selectedPiGap = piStats.latest;
+  const rangeAveragePiGap = piStats.average;
+  const piPercentile = useMemo(() => percentileRank(piWindow.gap, selectedPiGap), [piWindow.gap, selectedPiGap]);
   const latestPi111 = latestFinite(piWindow.sma111);
   const latestPi350x2 = latestFinite(piWindow.sma350x2);
-  const selectedPowerColor = Number.isFinite(selectedPowerPosition) && selectedPowerPosition < 30 ? '#00d4aa' : Number.isFinite(selectedPowerPosition) && selectedPowerPosition < 70 ? '#ffd43b' : '#ff4757';
-  const livePowerColor = Number.isFinite(livePowerPosition) && livePowerPosition < 30 ? '#00d4aa' : Number.isFinite(livePowerPosition) && livePowerPosition < 70 ? '#ffd43b' : '#ff4757';
-  const selectedPiColor = Number.isFinite(selectedPiGap) && selectedPiGap < 5 ? '#ff4757' : Number.isFinite(selectedPiGap) && selectedPiGap < 15 ? '#ffd43b' : '#00d4aa';
-  const selectedPiLabel = Number.isFinite(selectedPiGap) && selectedPiGap < 5 ? 'Near Crossover' : Number.isFinite(selectedPiGap) && selectedPiGap < 15 ? 'Converging' : 'No Top Signal';
+  const selectedPowerColor = selectedPowerSignal.color;
+  const rangeAveragePowerColor = rangeAveragePowerSignal.color;
+  const selectedPiSignal = piGapSignal(selectedPiGap);
+  const rangeAveragePiSignal = piGapSignal(rangeAveragePiGap);
+  const selectedPiColor = selectedPiSignal.color;
+  const selectedPiLabel = selectedPiSignal.label;
 
   const drawdownWindow = useMemo(() => {
     const window = getPriceWindow(ranges.drawdown);
@@ -13674,34 +14847,34 @@ globalThis.ValuationPage = function ValuationPage() {
 
     h('section', { className: 'valuation-score-card' },
       h('div', { className: 'valuation-score-main' },
-        h('div', { className: 'charts-eyebrow' }, 'Composite range signal'),
+        h('div', { className: 'charts-eyebrow' }, 'Composite current signal'),
         h('div', { className: 'valuation-score tabular-nums', style: { color: scoreSignal.color } }, Number.isFinite(selectedScore) ? selectedScore.toFixed(0) : '...'),
         h('div', { className: 'valuation-score-label', style: { color: scoreSignal.color } }, scoreSignal.label),
-        h('p', null, 'Scores below zero lean undervalued. Scores above zero lean overvalued. This is the ' + rangeName(ranges.composite) + ' average from the visible chart, with the latest live point shown separately. Range move: ' + signedNumber(scoreStats.change, 1, ' pts') + '.'),
+        h('p', null, 'Scores below zero lean cheaper and scores above zero lean hotter. This is the latest point in the ' + rangeName(ranges.composite) + ' visible chart, with range average and percentile shown separately. Context: ' + scoreContext + ' at ' + formatPercentile(scorePercentile) + '. Range move: ' + signedNumber(scoreStats.change, 1, ' pts') + '.'),
         h(ChartRangeControls, { value: ranges.composite, onChange: range => setRange('composite', range), ranges: VALUATION_RANGES, label: 'Composite score timeframe' }),
       ),
       h('div', { className: 'valuation-score-side' },
         h(ValuationMeter, { score: selectedScore, signal: scoreSignal }),
         h('div', { className: 'valuation-summary-grid' },
           h('div', { className: 'valuation-mini-card' },
-            h('span', null, rangeName(ranges.mvrv) + ' MVRV avg'),
+            h('span', null, rangeName(ranges.mvrv) + ' MVRV latest'),
             h('strong', { className: 'tabular-nums', style: { color: selectedMvrvSignal.color } }, formatRangeAverage(selectedMvrv, 'ratio')),
-            h('em', null, selectedMvrvSignal.label + ' · live ' + formatRangeAverage(liveMvrv, 'ratio')),
+            h('em', null, selectedMvrvSignal.label + ' · avg ' + formatRangeAverage(rangeAverageMvrv, 'ratio') + ' · ' + formatPercentile(mvrvPercentile)),
           ),
           h('div', { className: 'valuation-mini-card' },
-            h('span', null, rangeName(ranges.mvrvZ) + ' MVRV Z avg'),
+            h('span', null, rangeName(ranges.mvrvZ) + ' MVRV Z latest'),
             h('strong', { className: 'tabular-nums', style: { color: selectedZSignal.color } }, formatRangeAverage(selectedZ, 'number')),
-            h('em', null, selectedZSignal.label + ' · live ' + formatRangeAverage(liveZ, 'number')),
+            h('em', null, selectedZSignal.label + ' · avg ' + formatRangeAverage(rangeAverageZ, 'number') + ' · ' + formatPercentile(zPercentile)),
           ),
           h('div', { className: 'valuation-mini-card' },
-            h('span', null, rangeName(ranges.powerLaw) + ' Power avg'),
+            h('span', null, rangeName(ranges.powerLaw) + ' Power latest'),
             h('strong', { className: 'tabular-nums', style: { color: selectedPowerColor } }, Number.isFinite(selectedPowerPosition) ? formatPercent(selectedPowerPosition, 0) : '...'),
-            h('em', null, 'Live ' + (Number.isFinite(livePowerPosition) ? formatPercent(livePowerPosition, 0) : '...')),
+            h('em', null, selectedPowerSignal.label + ' · avg ' + (Number.isFinite(rangeAveragePowerPosition) ? formatPercent(rangeAveragePowerPosition, 0) : '...') + ' · ' + formatPercentile(powerPercentile)),
           ),
           h('div', { className: 'valuation-mini-card' },
             h('span', null, rangeName(ranges.rainbow) + ' Rainbow'),
             h('strong', { style: { color: selectedBand.color } }, selectedBand.label),
-            h('em', null, 'Live ' + liveBand.label),
+            h('em', null, 'Dominant in range: ' + dominantBand.label),
           ),
         ),
       ),
@@ -13726,27 +14899,34 @@ globalThis.ValuationPage = function ValuationPage() {
             datasets: [
               lineDataset('Composite Score', compositeWindow.values, scoreSignal.color, { fill: true, backgroundColor: 'rgba(247,147,26,0.12)', borderWidth: 2.7 }),
               lineDataset('Fair Value', compositeWindow.values.map(() => 0), '#ffd43b', { borderWidth: 1, borderDash: [6, 6] }),
-              lineDataset('Undervalued', compositeWindow.values.map(() => -35), '#00d4aa', { borderWidth: 1, borderDash: [6, 6] }),
-              lineDataset('Overvalued', compositeWindow.values.map(() => 35), '#ff4757', { borderWidth: 1, borderDash: [6, 6] }),
+              lineDataset('Undervalued', compositeWindow.values.map(() => -30), '#00d4aa', { borderWidth: 1, borderDash: [6, 6] }),
+              lineDataset('Overvalued', compositeWindow.values.map(() => 30), '#ff4757', { borderWidth: 1, borderDash: [6, 6] }),
             ],
           },
           options: chartOptions({ mode: 'score', min: -100, max: 100, legend: true }),
         }),
+        h(StatGrid, { rows: [
+          { label: 'Latest Score', value: Number.isFinite(selectedScore) ? selectedScore.toFixed(0) : '...', color: scoreSignal.color, emphasis: true },
+          { label: 'Range Average', value: Number.isFinite(rangeAverageScore) ? rangeAverageScore.toFixed(0) : '...', color: rangeAverageSignal.color },
+          { label: 'Range Context', value: scoreContext + ' · ' + formatPercentile(scorePercentile), color: scoreSignal.color },
+          { label: 'First Visible', value: Number.isFinite(scoreStats.first) ? scoreStats.first.toFixed(0) : '...' },
+          { label: 'Range Move', value: signedNumber(scoreStats.change, 1, ' pts'), color: Number.isFinite(scoreStats.change) && scoreStats.change < 0 ? '#00d4aa' : '#ff8c00' },
+        ] }),
       ),
 
       h(ChartPanel, {
         title: 'MVRV Ratio',
         subtitle: 'CoinMetrics market cap / realized cap, live-scaled by current BTC price',
-        badge: Number.isFinite(selectedMvrv) ? rangeName(ranges.mvrv) + ' avg ' + selectedMvrv.toFixed(2) + 'x' : '...',
+        badge: Number.isFinite(selectedMvrv) ? rangeName(ranges.mvrv) + ' latest ' + selectedMvrv.toFixed(2) + 'x · ' + formatPercentile(mvrvPercentile) : '...',
         badgeColor: selectedMvrvSignal.color,
         range: ranges.mvrv,
         onRangeChange: range => setRange('mvrv', range),
       },
         h(IndicatorHero, {
           value: formatRangeAverage(selectedMvrv, 'ratio'),
-          label: rangeName(ranges.mvrv) + ' Average: ' + selectedMvrvSignal.label,
+          label: rangeName(ranges.mvrv) + ' Latest: ' + selectedMvrvSignal.label,
           color: selectedMvrvSignal.color,
-          subvalue: rangeSignalDescription(ranges.mvrv, 'average') + '. Live latest: ' + formatRangeAverage(liveMvrv, 'ratio') + ' (' + liveMvrvSignal.label + ').',
+          subvalue: rangeSignalDescription(ranges.mvrv, 'latest point') + '. Range average: ' + formatRangeAverage(rangeAverageMvrv, 'ratio') + ' (' + rangeAverageMvrvSignal.label + '). Context: ' + rangeContext(mvrvPercentile, 'Low MVRV for range', 'High MVRV for range') + '.',
         }),
         mvrvWindow.values.length > 1 && h(ChartComponent, {
           key: 'mvrv-' + ranges.mvrv,
@@ -13757,33 +14937,35 @@ globalThis.ValuationPage = function ValuationPage() {
             datasets: [
               lineDataset('MVRV', mvrvWindow.values, '#f7931a', { fill: true, backgroundColor: 'rgba(247,147,26,0.11)' }),
               lineDataset('Realized Value', mvrvWindow.values.map(() => 1), '#00d4aa', { borderWidth: 1, borderDash: [6, 6] }),
-              lineDataset('Cycle Heat', mvrvWindow.values.map(() => 2.4), '#ff4757', { borderWidth: 1, borderDash: [6, 6] }),
+              lineDataset('Overvalued Zone', mvrvWindow.values.map(() => 2.2), '#ff4757', { borderWidth: 1, borderDash: [6, 6] }),
             ],
           },
           options: chartOptions({ mode: 'ratio', suggestedMin: 0.5, suggestedMax: 3.5, legend: true }),
         }),
         h(StatGrid, { rows: [
-          { label: 'Range Average', value: formatRangeAverage(selectedMvrv, 'ratio'), color: selectedMvrvSignal.color, emphasis: true },
-          { label: 'Live Latest', value: formatRangeAverage(liveMvrv, 'ratio'), color: liveMvrvSignal.color },
+          { label: 'Latest in Range', value: formatRangeAverage(selectedMvrv, 'ratio'), color: selectedMvrvSignal.color, emphasis: true },
+          { label: 'Range Average', value: formatRangeAverage(rangeAverageMvrv, 'ratio'), color: rangeAverageMvrvSignal.color },
+          { label: 'Range Percentile', value: formatPercentile(mvrvPercentile) },
           { label: 'First Visible', value: Number.isFinite(mvrvStats.first) ? mvrvStats.first.toFixed(3) + 'x' : '...' },
           { label: 'Range Change', value: signedNumber(mvrvStats.changePercent, 2, '%'), color: Number.isFinite(mvrvStats.change) && mvrvStats.change < 0 ? '#00d4aa' : '#ff8c00' },
-          { label: 'Undervalued', value: '< 1.5x', color: '#00d4aa' },
+          { label: 'Undervalued Zone', value: '< 1.20x', color: '#00d4aa' },
+          { label: 'Fair Zone', value: '1.20x - 2.20x', color: '#ffd43b' },
         ] }),
       ),
 
       h(ChartPanel, {
         title: 'MVRV Z-Score',
         subtitle: 'Traditional market cap minus realized cap divided by market-cap standard deviation',
-        badge: Number.isFinite(selectedZ) ? rangeName(ranges.mvrvZ) + ' avg ' + selectedZ.toFixed(2) : '...',
+        badge: Number.isFinite(selectedZ) ? rangeName(ranges.mvrvZ) + ' latest ' + selectedZ.toFixed(2) + ' · ' + formatPercentile(zPercentile) : '...',
         badgeColor: selectedZSignal.color,
         range: ranges.mvrvZ,
         onRangeChange: range => setRange('mvrvZ', range),
       },
         h(IndicatorHero, {
           value: formatRangeAverage(selectedZ, 'number'),
-          label: rangeName(ranges.mvrvZ) + ' Average: ' + selectedZSignal.label,
+          label: rangeName(ranges.mvrvZ) + ' Latest: ' + selectedZSignal.label,
           color: selectedZSignal.color,
-          subvalue: rangeSignalDescription(ranges.mvrvZ, 'average') + '. Live latest: ' + formatRangeAverage(liveZ, 'number') + ' (' + liveZSignal.label + ').',
+          subvalue: rangeSignalDescription(ranges.mvrvZ, 'latest point') + '. Range average: ' + formatRangeAverage(rangeAverageZ, 'number') + ' (' + rangeAverageZSignal.label + '). Context: ' + rangeContext(zPercentile, 'Low Z for range', 'High Z for range') + '.',
         }),
         mvrvZWindow.values.length > 1 && h(ChartComponent, {
           key: 'mvrvz-' + ranges.mvrvZ,
@@ -13800,8 +14982,9 @@ globalThis.ValuationPage = function ValuationPage() {
           options: chartOptions({ suggestedMin: -1, suggestedMax: 5, legend: true }),
         }),
         h(StatGrid, { rows: [
-          { label: 'Range Average', value: formatRangeAverage(selectedZ, 'number'), color: selectedZSignal.color, emphasis: true },
-          { label: 'Live Latest', value: formatRangeAverage(liveZ, 'number'), color: liveZSignal.color },
+          { label: 'Latest in Range', value: formatRangeAverage(selectedZ, 'number'), color: selectedZSignal.color, emphasis: true },
+          { label: 'Range Average', value: formatRangeAverage(rangeAverageZ, 'number'), color: rangeAverageZSignal.color },
+          { label: 'Range Percentile', value: formatPercentile(zPercentile) },
           { label: 'First Visible', value: Number.isFinite(mvrvZStats.first) ? mvrvZStats.first.toFixed(3) : '...' },
           { label: 'Range Change', value: signedNumber(mvrvZStats.change, 2, ' pts'), color: Number.isFinite(mvrvZStats.change) && mvrvZStats.change < 0 ? '#00d4aa' : '#ff8c00' },
         ] }),
@@ -13810,7 +14993,7 @@ globalThis.ValuationPage = function ValuationPage() {
       h(ChartPanel, {
         title: 'Power Law Valuation',
         subtitle: 'BTC price versus long-term support, fair value, and resistance bands',
-        badge: Number.isFinite(selectedPowerPosition) ? rangeName(ranges.powerLaw) + ' avg ' + formatPercent(selectedPowerPosition, 0) : '...',
+        badge: Number.isFinite(selectedPowerPosition) ? rangeName(ranges.powerLaw) + ' latest ' + formatPercent(selectedPowerPosition, 0) + ' · ' + formatPercentile(powerPercentile) : '...',
         badgeColor: selectedPowerColor,
         range: ranges.powerLaw,
         onRangeChange: range => setRange('powerLaw', range),
@@ -13819,16 +15002,18 @@ globalThis.ValuationPage = function ValuationPage() {
         h('div', { className: 'chart-split-header' },
           h(IndicatorHero, {
             value: Number.isFinite(selectedPowerPosition) ? formatPercent(selectedPowerPosition, 1) : '...',
-            label: rangeName(ranges.powerLaw) + ' Average Position',
+            label: rangeName(ranges.powerLaw) + ' Latest Position: ' + selectedPowerSignal.label,
             color: selectedPowerColor,
-            subvalue: 'Live latest: ' + (Number.isFinite(livePowerPosition) ? formatPercent(livePowerPosition, 1) : '...') + '. Range position change: ' + signedNumber(powerStats.change, 1, ' pts') + '. Lower means closer to support.',
+            subvalue: 'Position is measured from support to resistance. Range average: ' + (Number.isFinite(rangeAveragePowerPosition) ? formatPercent(rangeAveragePowerPosition, 1) : '...') + ' (' + rangeAveragePowerSignal.label + '). Context: ' + rangeContext(powerPercentile, 'Closer to support', 'Closer to resistance') + '.',
           }),
           h(StatGrid, { rows: [
-            { label: 'Range Average', value: Number.isFinite(selectedPowerPosition) ? formatPercent(selectedPowerPosition, 1) : '...', color: selectedPowerColor, emphasis: true },
-            { label: 'Live Latest', value: Number.isFinite(livePowerPosition) ? formatPercent(livePowerPosition, 1) : '...', color: livePowerColor },
+            { label: 'Latest Position', value: Number.isFinite(selectedPowerPosition) ? formatPercent(selectedPowerPosition, 1) : '...', color: selectedPowerColor, emphasis: true },
+            { label: 'Range Average', value: Number.isFinite(rangeAveragePowerPosition) ? formatPercent(rangeAveragePowerPosition, 1) : '...', color: rangeAveragePowerColor },
+            { label: 'Range Percentile', value: formatPercentile(powerPercentile) },
             { label: 'Current Price', value: btcPrice ? formatUSD(btcPrice, 0) : '...', color: 'var(--btc-orange)', emphasis: true },
             { label: 'Support Band', value: formatUSD(currentPowerSupport, 0), color: '#00d4aa' },
             { label: 'Fair Value', value: formatUSD(currentPowerFair, 0), color: '#ffd43b' },
+            { label: 'Resistance Band', value: formatUSD(currentPowerResistance, 0), color: '#ff4757' },
           ] }),
         ),
         powerWindow.values.length > 1 && h(ChartComponent, {
@@ -13851,7 +15036,7 @@ globalThis.ValuationPage = function ValuationPage() {
       h(ChartPanel, {
         title: 'Rainbow Valuation Bands',
         subtitle: 'Logarithmic color bands with live BTC price overlay',
-        badge: rangeName(ranges.rainbow) + ' mode: ' + selectedBand.label,
+        badge: rangeName(ranges.rainbow) + ' current: ' + selectedBand.label,
         badgeColor: selectedBand.color,
         range: ranges.rainbow,
         onRangeChange: range => setRange('rainbow', range),
@@ -13860,13 +15045,13 @@ globalThis.ValuationPage = function ValuationPage() {
         h('div', { className: 'chart-split-header' },
           h(IndicatorHero, {
             value: selectedBand.label,
-            label: rangeName(ranges.rainbow) + ' Dominant Band',
+            label: rangeName(ranges.rainbow) + ' Current Band',
             color: selectedBand.color,
-            subvalue: 'Most common band across the selected visible chart. Live latest: ' + liveBand.label + '.',
+            subvalue: 'Current BTC band at the latest visible chart point. Dominant band across this selected range: ' + dominantBand.label + '.',
           }),
           h(StatGrid, { rows: [
-            { label: 'Range Dominant', value: selectedBand.label, color: selectedBand.color, emphasis: true },
-            { label: 'Live Latest Band', value: liveBand.label, color: liveBand.color },
+            { label: 'Current Band', value: selectedBand.label, color: selectedBand.color, emphasis: true },
+            { label: 'Range Dominant', value: dominantBand.label, color: dominantBand.color },
             { label: 'BTC Latest', value: rainbowWindow.values.length ? formatUSD(rainbowWindow.values[rainbowWindow.values.length - 1], 0) : '...', color: 'var(--btc-orange)' },
             { label: 'Top Band Latest', value: rainbowWindow.bands?.[0]?.data?.length ? formatUSD(rainbowWindow.bands[0].data[rainbowWindow.bands[0].data.length - 1], 0) : '...', color: RAINBOW_BANDS[0].color },
             { label: 'Bottom Band Latest', value: rainbowWindow.bands?.[8]?.data?.length ? formatUSD(rainbowWindow.bands[8].data[rainbowWindow.bands[8].data.length - 1], 0) : '...', color: RAINBOW_BANDS[8].color },
@@ -13890,16 +15075,16 @@ globalThis.ValuationPage = function ValuationPage() {
       h(ChartPanel, {
         title: 'Pi Cycle Top Risk',
         subtitle: '111DMA versus 350DMA x2 top-signal distance',
-        badge: Number.isFinite(selectedPiGap) ? rangeName(ranges.piCycle) + ' avg ' + formatPercent(selectedPiGap, 1) + ' gap' : '...',
+        badge: Number.isFinite(selectedPiGap) ? rangeName(ranges.piCycle) + ' latest ' + formatPercent(selectedPiGap, 1) + ' gap' : '...',
         badgeColor: selectedPiColor,
         range: ranges.piCycle,
         onRangeChange: range => setRange('piCycle', range),
       },
         h(IndicatorHero, {
           value: Number.isFinite(selectedPiGap) ? formatPercent(selectedPiGap, 2) : '...',
-          label: rangeName(ranges.piCycle) + ' Average: ' + selectedPiLabel,
+          label: rangeName(ranges.piCycle) + ' Latest: ' + selectedPiLabel,
           color: selectedPiColor,
-          subvalue: 'Live latest: ' + (Number.isFinite(livePiGap) ? formatPercent(livePiGap, 2) : '...') + '. Range gap change: ' + signedNumber(piStats.change, 2, ' pts') + '. Top risk rises as the averages converge.',
+          subvalue: 'Top risk rises as the averages converge. Range average: ' + (Number.isFinite(rangeAveragePiGap) ? formatPercent(rangeAveragePiGap, 2) : '...') + ' (' + rangeAveragePiSignal.label + '). Context: ' + rangeContext(piPercentile, 'Tighter than range', 'Wider than range') + '.',
         }),
         piWindow.price.length > 1 && h(ChartComponent, {
           key: 'pi-' + ranges.piCycle,
@@ -13916,8 +15101,9 @@ globalThis.ValuationPage = function ValuationPage() {
           options: chartOptions({ yType: 'logarithmic', mode: 'currency', legend: true }),
         }),
         h(StatGrid, { rows: [
-          { label: 'Range Average Gap', value: Number.isFinite(selectedPiGap) ? formatPercent(selectedPiGap, 2) : '...', color: selectedPiColor, emphasis: true },
-          { label: 'Live Latest Gap', value: Number.isFinite(livePiGap) ? formatPercent(livePiGap, 2) : '...' },
+          { label: 'Latest Gap', value: Number.isFinite(selectedPiGap) ? formatPercent(selectedPiGap, 2) : '...', color: selectedPiColor, emphasis: true },
+          { label: 'Range Average Gap', value: Number.isFinite(rangeAveragePiGap) ? formatPercent(rangeAveragePiGap, 2) : '...', color: rangeAveragePiSignal.color },
+          { label: 'Range Percentile', value: formatPercentile(piPercentile) },
           { label: '111DMA', value: latestPi111 ? formatUSD(latestPi111, 0) : '...', color: '#f7931a' },
           { label: '350DMA x2', value: latestPi350x2 ? formatUSD(latestPi350x2, 0) : '...', color: '#00d4aa' },
           { label: 'Range Change', value: signedNumber(piStats.change, 2, ' pts'), color: Number.isFinite(piStats.change) && piStats.change < 0 ? '#ff8c00' : '#00d4aa' },
@@ -13961,7 +15147,7 @@ globalThis.ValuationPage = function ValuationPage() {
     ),
 
     h('div', { className: 'charts-source-note' },
-      'Data sources: CoinMetrics Community API for free no-key BTC MVRV and market-cap history, live BTC price from Coinbase WebSocket plus Kraken/Bitstamp/Gemini fallbacks, and CoinGecko market-chart history where available. CoinMetrics MVRV is daily-resolution community data; the latest current-day valuation is live-scaled from the BTC tick so the headline signal and current chart point update in real time.'
+      'Data sources: CoinMetrics Community API for free no-key BTC MVRV and market-cap history, live BTC price from Coinbase WebSocket plus Kraken/Bitstamp/Gemini fallbacks, and CoinGecko market-chart history where available. CoinMetrics MVRV is daily-resolution community data; the current-day valuation is live-scaled from the BTC tick. Each timeframe now shows the latest visible point, the visible range average, and percentile/context separately so the chart window and the readout stay aligned.'
     ),
   );
 }
@@ -14934,11 +16120,11 @@ globalThis.ChartsPage = function ChartsPage() {
   }, [liveData?.marketByRange, chartRanges.drawdown, rawLongPrices, btcPrice]);
 
   const fearGreedData = liveData?.fearGreedData || null;
-  const fgCurrentRow = fearGreedData?.live || fearGreedData?.current || null;
+  const fgCurrentRow = fearGreedData?.current || null;
   const fgCurrent = fgCurrentRow ? parseInt(fgCurrentRow.value, 10) : 50;
   const fgLabel = fgCurrentRow ? fgCurrentRow.label : 'Neutral';
   const fgWindow = useMemo(() => {
-    const rows = (fearGreedData?.liveHistory || fearGreedData?.history || [])
+    const rows = (fearGreedData?.history || [])
       .map(row => [Number(row.timestamp), parseInt(row.value, 10)])
       .filter(point => Number.isFinite(point[0]) && Number.isFinite(point[1]));
     const visible = downsampleSeries(trimSeriesToDays(rows, getRangeDays(chartRanges.fearGreed)), 220);
@@ -15032,8 +16218,8 @@ globalThis.ChartsPage = function ChartsPage() {
 
     h('div', { className: 'charts-grid charts-grid-refined' },
       h(ChartPanel, {
-        title: 'Live Fear & Greed Sentiment',
-        subtitle: 'Alternative.me daily index plus a live BTC momentum and dominance proxy',
+        title: 'Official Fear & Greed Index',
+        subtitle: 'Alternative.me official daily reading, fetched from the no-key public API',
         badge: fgLabel,
         badgeColor: fgCurrent <= 25 ? '#ff4757' : fgCurrent <= 45 ? '#ff8c00' : fgCurrent <= 55 ? '#ffd43b' : fgCurrent <= 75 ? '#b7ff45' : '#00d4aa',
         range: chartRanges.fearGreed,
@@ -15052,6 +16238,7 @@ globalThis.ChartsPage = function ChartsPage() {
         h(StatGrid, { rows: [
           { label: 'Extreme Fear', value: '0-25', color: '#ff4757' },
           { label: 'Fear', value: '26-45', color: '#ff8c00' },
+          { label: 'Neutral', value: '46-55', color: '#ffd43b' },
           { label: 'Greed', value: '56-75', color: '#b7ff45' },
           { label: 'Extreme Greed', value: '76-100', color: '#00d4aa' },
         ] }),
@@ -15308,7 +16495,7 @@ globalThis.ChartsPage = function ChartsPage() {
     ),
 
     h('div', { className: 'charts-source-note' },
-      'Data sources: official Fear & Greed Index from alternative.me updates daily; Bitcoin Pulse appends a live sentiment proxy from BTC momentum, volume, and dominance. BTC price and market history come from CoinGecko with Kraken/Bitstamp fallbacks, plus Coinbase WebSocket live ticks. MVRV score/Z-score are public-data estimates using a moving cost-basis proxy because realized cap requires paid/on-chain datasets. Rainbow, Power Law, and Pi Cycle are model charts calculated locally from public price history. Source feed currently: ' + marketSource + '.'
+      'Data sources: official Fear & Greed Index from Alternative.me updates daily and is fetched directly from its public no-key API. BTC price and market history come from CoinGecko with Kraken/Bitstamp fallbacks, plus Coinbase WebSocket live ticks. MVRV score/Z-score are public-data estimates using a moving cost-basis proxy because realized cap requires paid/on-chain datasets. Rainbow, Power Law, and Pi Cycle are model charts calculated locally from public price history. Source feed currently: ' + marketSource + '.'
     ),
   );
 }
@@ -15318,8 +16505,8 @@ globalThis.ChartsPage = function ChartsPage() {
 /* ===== pages/market-pulse.js ===== */
 (() => {
 /* ============================================
-   Market Pulse - Sentiment, News, Mining
-   Live public feeds: Alternative.me, Google News, mempool.space
+   Market Pulse - Sentiment and Bitcoin-only news
+   Live public feeds: Alternative.me, Google News
    ============================================ */
 
 const React = window.React;
@@ -15334,25 +16521,10 @@ const SENTIMENT_RANGES = [
   { id: 'max', label: 'MAX', days: 0, description: 'All available Alternative.me history' },
 ];
 
-const MINING_RANGES = [
-  { id: '3d', label: '3D', description: 'Past 3 days' },
-  { id: '1w', label: '1W', description: 'Past week' },
-  { id: '1m', label: '1M', description: 'Past month' },
-  { id: '3m', label: '3M', description: 'Past 3 months' },
-  { id: '6m', label: '6M', description: 'Past 6 months' },
-  { id: '1y', label: '1Y', description: 'Past year' },
-];
-
 function rangeToFearGreedLimit(range) {
   const found = SENTIMENT_RANGES.find(item => item.id === range);
   if (!found) return 365;
   return found.id === 'max' ? 0 : Math.max(10, found.days + 1);
-}
-
-function formatDifficulty(value) {
-  const n = Number(value);
-  if (!Number.isFinite(n)) return '—';
-  return formatNumber(n / 1e12, 2) + ' T';
 }
 
 function formatDuration(ms) {
@@ -15362,6 +16534,17 @@ function formatDuration(ms) {
   if (days > 0) return days + 'd ' + hours + 'h';
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   return hours + 'h ' + minutes + 'm';
+}
+
+function formatUtcDate(timestamp) {
+  const date = new Date(Number(timestamp));
+  if (Number.isNaN(date.getTime())) return 'latest daily close';
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
 }
 
 function sentimentColor(value) {
@@ -15380,16 +16563,13 @@ function sentimentHint(value) {
   return 'Extreme fear means sentiment is washed out, but price can still stay volatile.';
 }
 
-function pulseChartOptions({ min = 0, max = 100, mode = 'number' } = {}) {
+function pulseChartOptions({ min = 0, max = 100 } = {}) {
   return {
     plugins: {
       legend: { display: false },
       tooltip: {
         callbacks: {
           label: function(ctx) {
-            if (mode === 'percent') return ctx.dataset.label + ': ' + formatPercent(ctx.raw, 2);
-            if (mode === 'hashrate') return ctx.dataset.label + ': ' + formatHashrate(ctx.raw);
-            if (mode === 'difficulty') return ctx.dataset.label + ': ' + ctx.raw.toFixed(2) + ' T';
             return ctx.dataset.label + ': ' + ctx.raw;
           },
         },
@@ -15404,9 +16584,6 @@ function pulseChartOptions({ min = 0, max = 100, mode = 'number' } = {}) {
           color: '#806f62',
           font: { family: 'Inter', size: 11 },
           callback: function(value) {
-            if (mode === 'hashrate') return value + ' EH/s';
-            if (mode === 'difficulty') return value + 'T';
-            if (mode === 'percent') return value + '%';
             return value;
           },
         },
@@ -15424,7 +16601,6 @@ function pulseChartOptions({ min = 0, max = 100, mode = 'number' } = {}) {
 function SentimentGauge({ current, official }) {
   const value = current ? current.value : 0;
   const color = sentimentColor(value);
-  const isLiveProxy = current && current.source && current.source.toLowerCase().includes('live');
   return h('div', { className: 'pulse-gauge-card' },
     h('div', { className: 'pulse-gauge-ring', style: { '--gauge': value, '--gauge-color': color } },
       h('div', { className: 'pulse-gauge-inner' },
@@ -15433,15 +16609,14 @@ function SentimentGauge({ current, official }) {
       )
     ),
     h('div', { className: 'pulse-gauge-copy' },
-      h('div', { className: 'charts-eyebrow' }, isLiveProxy ? 'Bitcoin Pulse Live Sentiment' : 'Fear & Greed Index'),
+      h('div', { className: 'charts-eyebrow' }, 'Fear & Greed Index'),
       h('h2', null, current ? current.label : 'Loading sentiment'),
       h('p', null, current
-        ? (isLiveProxy
-            ? 'This live score blends the official daily Fear & Greed reading with current BTC price momentum, volume pressure, and dominance context.'
-            : sentimentHint(value))
+        ? sentimentHint(value)
         : 'Pulling the latest Bitcoin sentiment reading.'),
       official && h('div', { className: 'pulse-meta-line' },
         'Official Alternative.me daily index: ', official.value, '/100 ', official.label,
+        official.timestamp ? ' · dated ' + formatUtcDate(official.timestamp) : '',
         official.timeUntilUpdate !== null ? ' · next official update in about ' + formatDuration(official.timeUntilUpdate * 1000) : ''
       )
     )
@@ -15465,55 +16640,26 @@ function NewsCard({ article, featured = false }) {
   );
 }
 
-function MetricTile({ label, value, subtext, tone }) {
-  return h('div', { className: 'pulse-metric-tile' + (tone ? ' ' + tone : '') },
-    h('div', { className: 'pulse-metric-label' }, label),
-    h('div', { className: 'pulse-metric-value tabular-nums' }, value),
-    subtext && h('div', { className: 'pulse-metric-subtext' }, subtext)
-  );
-}
-
 globalThis.MarketPulsePage = function MarketPulsePage() {
   const [sentimentRange, setSentimentRange] = useState('1m');
-  const [miningRange, setMiningRange] = useState('1m');
 
   const { data, lastUpdated, loading } = useLiveData(async () => {
-    const [sentiment, news, mining] = await Promise.all([
+    const [sentiment, news] = await Promise.all([
       fetchFearGreedHistory(rangeToFearGreedLimit(sentimentRange)),
       fetchBitcoinNews(),
-      fetchMiningStats(miningRange),
     ]);
-    return { sentiment, news, mining };
-  }, 60000, [sentimentRange, miningRange]);
+    return { sentiment, news };
+  }, 60000, [sentimentRange]);
 
   const sentiment = data && data.sentiment;
-  const liveSentiment = sentiment && sentiment.live ? sentiment.live : (sentiment && sentiment.current);
+  const liveSentiment = sentiment && sentiment.current;
   const officialSentiment = sentiment && sentiment.current;
   const news = data && data.news;
-  const mining = data && data.mining;
 
   const sentimentHistory = useMemo(() => {
-    const history = sentiment && sentiment.liveHistory ? sentiment.liveHistory : (sentiment && sentiment.history ? sentiment.history : []);
+    const history = sentiment && sentiment.history ? sentiment.history : [];
     return downsampleSeries(history.map(point => [point.timestamp, point.value]), 260);
   }, [sentiment]);
-
-  const hashratePoints = useMemo(() => {
-    const points = mining && mining.hashrates ? mining.hashrates.map(point => [point.timestamp, point.hashrate]) : [];
-    return downsampleSeries(points, miningRange === '1y' ? 220 : 180);
-  }, [mining, miningRange]);
-
-  const difficultyPoints = useMemo(() => {
-    const points = mining && mining.difficulty ? mining.difficulty.map(point => [point.timestamp, point.difficulty / 1e12, point.adjustment]) : [];
-    return downsampleSeries(points, 80);
-  }, [mining]);
-
-  const latestHashratePoint = hashratePoints[hashratePoints.length - 1];
-  const previousHashratePoint = hashratePoints.length > 2 ? hashratePoints[hashratePoints.length - 2] : null;
-  const hashrateChange = latestHashratePoint && previousHashratePoint
-    ? ((latestHashratePoint[1] - previousHashratePoint[1]) / previousHashratePoint[1]) * 100
-    : null;
-  const adjustment = mining && mining.difficultyAdjustment;
-  const adjustmentTone = adjustment && adjustment.difficultyChange >= 0 ? 'positive' : 'negative';
 
   const featuredArticle = news && news.items && news.items[0];
   const otherArticles = news && news.items ? news.items.slice(1) : [];
@@ -15521,19 +16667,19 @@ globalThis.MarketPulsePage = function MarketPulsePage() {
   return h('div', { className: 'page-enter charts-page market-pulse-page' },
     h(PageHeader, {
       title: 'Market Pulse',
-      description: 'Live Bitcoin sentiment, top headlines, mining difficulty, and hashrate context in one place.',
+      description: 'Official Bitcoin Fear & Greed sentiment and top Bitcoin-only headlines in one clean pulse view.',
       badge: 'Live feeds',
     }),
     h('div', { className: 'pulse-status-row' },
       h(LastUpdated, { lastUpdated, live: !loading }),
-      h('span', null, 'Sources: Alternative.me daily index, live BTC market feeds, Google News RSS, mempool.space')
+      h('span', null, 'Sources: Alternative.me official daily index, Google News RSS')
     ),
 
     h('section', { className: 'pulse-section' },
       h('div', { className: 'pulse-section-header' },
         h('div', null,
           h('span', { className: 'charts-eyebrow' }, 'Sentiment'),
-          h('h2', null, 'Live Fear & Greed Sentiment')
+          h('h2', null, 'Official Fear & Greed Index')
         ),
         h(ChartRangeControls, { value: sentimentRange, onChange: setSentimentRange, ranges: SENTIMENT_RANGES, label: 'Fear and Greed timeframe' })
       ),
@@ -15543,18 +16689,18 @@ globalThis.MarketPulsePage = function MarketPulsePage() {
           h('div', { className: 'charts-panel-header' },
             h('div', { className: 'charts-panel-heading' },
               h('div', { className: 'charts-panel-title' }, 'Sentiment History'),
-              h('div', { className: 'charts-panel-subtitle' }, 'Alternative.me daily history plus a live intraday Bitcoin Pulse sentiment point.')
+              h('div', { className: 'charts-panel-subtitle' }, 'Alternative.me official daily Fear & Greed history.')
             ),
             liveSentiment && h('span', {
               className: 'charts-badge',
               style: { color: sentimentColor(liveSentiment.value), borderColor: sentimentColor(liveSentiment.value), background: sentimentColor(liveSentiment.value) + '20' },
-            }, liveSentiment.value + '/100 live')
+            }, liveSentiment.value + '/100 official')
           ),
           h('div', { className: 'charts-panel-body' },
             h(LineChart, {
               labels: sentimentHistory.map(point => formatChartDateLabel(point[0], sentimentRange === 'max' ? '5y' : sentimentRange)),
               datasets: [{
-                label: 'Fear & Greed / Live Sentiment',
+                label: 'Fear & Greed Index',
                 data: sentimentHistory.map(point => point[1]),
                 borderColor: liveSentiment ? sentimentColor(liveSentiment.value) : chartColors.orange,
                 backgroundColor: 'rgba(247,147,26,0.12)',
@@ -15597,101 +16743,8 @@ globalThis.MarketPulsePage = function MarketPulsePage() {
       )
     ),
 
-    h('section', { className: 'pulse-section' },
-      h('div', { className: 'pulse-section-header' },
-        h('div', null,
-          h('span', { className: 'charts-eyebrow' }, 'Mining security'),
-          h('h2', null, 'Difficulty & Hashrate')
-        ),
-        h(ChartRangeControls, { value: miningRange, onChange: setMiningRange, ranges: MINING_RANGES, label: 'Mining timeframe' })
-      ),
-      h('div', { className: 'pulse-metric-grid' },
-        h(MetricTile, {
-          label: 'Current Hashrate',
-          value: mining && Number.isFinite(mining.currentHashrate) ? formatHashrate(mining.currentHashrate) : 'Loading...',
-          subtext: hashrateChange !== null ? (hashrateChange >= 0 ? '+' : '') + formatPercent(hashrateChange, 2) + ' vs prior point' : 'Estimated network compute',
-          tone: hashrateChange !== null && hashrateChange >= 0 ? 'positive' : 'negative',
-        }),
-        h(MetricTile, {
-          label: 'Current Difficulty',
-          value: mining ? formatDifficulty(mining.currentDifficulty) : 'Loading...',
-          subtext: 'Retargets every 2,016 blocks',
-        }),
-        h(MetricTile, {
-          label: 'Next Adjustment',
-          value: adjustment && Number.isFinite(adjustment.difficultyChange) ? formatPercent(adjustment.difficultyChange, 2) : 'Loading...',
-          subtext: adjustment ? formatNumber(adjustment.remainingBlocks, 0) + ' blocks · ' + formatDuration(adjustment.remainingTime) : 'Live mempool.space estimate',
-          tone: adjustmentTone,
-        }),
-        h(MetricTile, {
-          label: 'Block Height',
-          value: mining && mining.blockHeight ? formatNumber(mining.blockHeight, 0) : 'Loading...',
-          subtext: 'Latest chain tip',
-        })
-      ),
-      h('div', { className: 'pulse-two-column' },
-        h('div', { className: 'charts-panel' },
-          h('div', { className: 'charts-panel-header' },
-            h('div', { className: 'charts-panel-heading' },
-              h('div', { className: 'charts-panel-title' }, 'Network Hashrate'),
-              h('div', { className: 'charts-panel-subtitle' }, 'Estimated exahashes per second securing Bitcoin.')
-            )
-          ),
-          h('div', { className: 'charts-panel-body' },
-            h(LineChart, {
-              labels: hashratePoints.map(point => formatChartDateLabel(point[0], miningRange === '3d' ? '1w' : miningRange)),
-              datasets: [{
-                label: 'Hashrate',
-                data: hashratePoints.map(point => point[1]),
-                borderColor: chartColors.orange,
-                backgroundColor: 'rgba(247,147,26,0.12)',
-              }],
-              options: pulseChartOptions({ mode: 'hashrate' }),
-              height: 260,
-              fill: true,
-            })
-          )
-        ),
-        h('div', { className: 'charts-panel' },
-          h('div', { className: 'charts-panel-header' },
-            h('div', { className: 'charts-panel-heading' },
-              h('div', { className: 'charts-panel-title' }, 'Difficulty Retargets'),
-              h('div', { className: 'charts-panel-subtitle' }, 'Difficulty in trillions at recent retargets.')
-            )
-          ),
-          h('div', { className: 'charts-panel-body' },
-            h(BarChart, {
-              labels: difficultyPoints.map(point => formatChartDateLabel(point[0], miningRange === '3d' ? '1m' : miningRange)),
-              datasets: [{
-                label: 'Difficulty',
-                data: difficultyPoints.map(point => point[1]),
-                backgroundColor: difficultyPoints.map(point => point[2] >= 0 ? 'rgba(0,212,170,0.70)' : 'rgba(255,71,87,0.70)'),
-                borderColor: 'transparent',
-              }],
-              options: pulseChartOptions({ mode: 'difficulty' }),
-              height: 260,
-            })
-          )
-        )
-      ),
-      h('div', { className: 'mining-explainer-grid' },
-        h('div', null,
-          h('strong', null, 'Hashrate'),
-          h('p', null, 'Hashrate estimates how much computing power miners are pointing at Bitcoin. Higher hashrate generally means more security and more competition for block rewards.')
-        ),
-        h('div', null,
-          h('strong', null, 'Difficulty'),
-          h('p', null, 'Difficulty is Bitcoin’s automatic throttle. Every 2,016 blocks, the network adjusts it so blocks keep arriving near the 10-minute target.')
-        ),
-        h('div', null,
-          h('strong', null, 'Retarget signal'),
-          h('p', null, 'A positive next adjustment means blocks have been coming faster than expected. A negative adjustment means blocks have been slower.')
-        )
-      )
-    ),
-
     h('div', { className: 'charts-source-note' },
-      'Data sources: official Fear & Greed from Alternative.me updates daily, while the Bitcoin Pulse live sentiment score refreshes about every minute from BTC price momentum, volume pressure, and BTC dominance. Headlines come from Google News RSS through rss2json with Hacker News fallback; mining difficulty/hashrate come from mempool.space public API.'
+      'Data sources: official Fear & Greed from Alternative.me updates daily and is fetched directly from its no-key public API. The app polls about once per minute so the display picks up the next official daily update automatically. Headlines come from Google News RSS through rss2json with Hacker News fallback and are filtered to Bitcoin/BTC-only stories.'
     )
   );
 }
@@ -15867,6 +16920,7 @@ const routes = {
   dominance: { component: DominancePage, title: 'Bitcoin Dominance' },
   'global-assets': { component: GlobalAssetsPage, title: 'Bitcoin vs Global Assets' },
   'countries-holders': { component: CountriesHoldersPage, title: 'Countries & Top Bitcoin Holders' },
+  'market-cycles': { component: MarketCyclesPage, title: 'Bitcoin Market Cycles' },
   whales: { component: WhalePage, title: 'Whale Tracker' },
   pyramid: { component: PyramidPage, title: 'Wealth Pyramid' },
   'available-supply': { component: AvailableSupplyPage, title: 'Available Supply' },
@@ -15898,6 +16952,11 @@ globalThis.App = function App() {
     };
     window.addEventListener('hashchange', onHashChange);
     return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
+  // Warm the heavier live-data caches before a user taps into those routes.
+  useEffect(() => {
+    preloadBitcoinPulseData();
   }, []);
 
   const navigate = useCallback((page) => {
@@ -15943,9 +17002,8 @@ globalThis.App = function App() {
 
 })();
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(React.createElement(globalThis.App));
 </script>
-
 </body>
 </html>
