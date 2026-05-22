@@ -11027,6 +11027,8 @@ globalThis.CountriesHoldersPage = function CountriesHoldersPage() {
   const [adoptionMode, setAdoptionMode] = useState('overall');
   const { data: snapshot, loading, error, lastUpdated } = useLiveData(fetchCountriesAndHoldersSnapshot, 10 * 60 * 1000);
   const holders = snapshot?.topHolders || [];
+  const displayedHolderBtc = useMemo(() => holders.reduce((sum, row) => sum + (row.btc || 0), 0), [holders]);
+  const displayedHolderValue = snapshot?.btcPrice ? displayedHolderBtc * snapshot.btcPrice : null;
   const filteredHolders = useMemo(() => holderFilter === 'all' ? holders : holders.filter(row => row.category === holderFilter), [holders, holderFilter]);
   const chartRows = filteredHolders.length ? filteredHolders : holders;
   const chartData = useMemo(() => buildTopHolderChart(chartRows), [chartRows]);
@@ -11105,9 +11107,9 @@ globalThis.CountriesHoldersPage = function CountriesHoldersPage() {
         tone: 'bitcoin',
       }),
       h(RankingMetric, {
-        label: 'Parsed holder BTC',
-        value: snapshot ? formatBTC(snapshot.trackedBtc, 2) : '—',
-        subtext: snapshot ? formatUSD(snapshot.trackedValueUsd, 2) + ' at live BTC price' : 'Loading',
+        label: 'Top 30 holder BTC',
+        value: holders.length ? formatBTC(displayedHolderBtc, 2) : '—',
+        subtext: holders.length ? formatUSD(displayedHolderValue, 2) + ' across displayed holders' : 'Loading',
         tone: 'fund',
       }),
       h(RankingMetric, {
