@@ -26,7 +26,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <title>Bitcoin Pulse | Live Bitcoin Dashboard</title>
-<meta name="description" content="Comprehensive Bitcoin analytics dashboard with live ownership, supply, exchange reserves, market charts, DCA, whale tracking, and scarcity tools.">
+<meta name="description" content="Comprehensive Bitcoin analytics dashboard with live price tracking, ETF flows, ownership, supply, exchange reserves, market charts, whale tracking, and scarcity tools.">
 
 <!-- Google Fonts: Inter -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1406,321 +1406,6 @@ body {
 }
 
 /* ============================================
-   DCA Calculator - Simple Builder
-   ============================================ */
-
-.dca-page {
-  max-width: 1440px;
-}
-
-.dca-live-strip {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: -20px;
-  margin-bottom: 20px;
-  color: var(--text-faint);
-  font-size: var(--text-xs);
-}
-
-.dca-builder {
-  display: grid;
-  gap: 22px;
-  margin-bottom: 24px;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 8% 0%, rgba(247, 147, 26, 0.13), transparent 34%),
-    radial-gradient(circle at 92% 8%, rgba(139, 92, 246, 0.10), transparent 30%),
-    var(--bg-card);
-}
-
-.dca-builder-header,
-.dca-chart-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.dca-builder-header h2,
-.dca-result-hero h2,
-.dca-chart-heading h3,
-.dca-scenario-section h3 {
-  color: var(--text-primary);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  margin: 0;
-}
-
-.dca-builder-header h2 {
-  font-size: clamp(1.4rem, 3vw, 2.25rem);
-}
-
-.dca-plan-pill {
-  display: inline-flex;
-  align-items: center;
-  min-height: 34px;
-  padding: 7px 12px;
-  border: 1px solid rgba(247, 147, 26, 0.28);
-  border-radius: 999px;
-  background: rgba(247, 147, 26, 0.08);
-  color: var(--btc-orange);
-  font-size: var(--text-xs);
-  font-weight: 800;
-}
-
-.dca-form-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 16px;
-}
-
-.dca-control-block {
-  display: grid;
-  gap: 10px;
-  min-width: 0;
-  padding: 15px;
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: var(--radius-lg);
-  background: rgba(0, 0, 0, 0.18);
-}
-
-.dca-control-block label,
-.dca-timeframe-wrap span {
-  color: var(--text-faint);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.dca-control-block p {
-  margin: 0;
-  color: var(--text-faint);
-  font-size: var(--text-xs);
-  line-height: 1.5;
-}
-
-.dca-button-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(126px, 1fr));
-  gap: 8px;
-}
-
-.dca-button-grid.compact {
-  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
-}
-
-.dca-button-grid .btn {
-  min-width: 0;
-  white-space: nowrap;
-}
-
-.dca-input-row {
-  display: grid;
-  grid-template-columns: auto minmax(90px, 1fr) auto;
-  align-items: center;
-  gap: 8px;
-}
-
-.dca-input-row span,
-.dca-input-row em {
-  color: var(--text-faint);
-  font-size: var(--text-sm);
-  font-style: normal;
-  font-weight: 700;
-}
-
-.dca-timeframe-wrap {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-
-.dca-timeframe-wrap > div {
-  display: grid;
-  gap: 8px;
-  min-width: 0;
-}
-
-.dca-model-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.dca-model-button {
-  min-width: 0;
-  display: grid;
-  gap: 4px;
-  padding: 12px;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  background: rgba(255,255,255,0.025);
-  text-align: left;
-  cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-out);
-}
-
-.dca-model-button:hover,
-.dca-model-button.active {
-  transform: translateY(-1px);
-}
-
-.dca-model-button strong {
-  font-size: var(--text-sm);
-}
-
-.dca-model-button span {
-  color: var(--text-faint);
-  font-size: 11px;
-  line-height: 1.35;
-}
-
-.dca-results {
-  display: grid;
-  gap: 20px;
-}
-
-.dca-result-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
-  gap: 18px;
-  align-items: stretch;
-  padding: 22px;
-  border: 1px solid rgba(247, 147, 26, 0.18);
-  border-radius: var(--radius-xl);
-  background:
-    radial-gradient(circle at 12% 12%, rgba(247, 147, 26, 0.20), transparent 32%),
-    linear-gradient(135deg, rgba(18, 14, 10, 0.96), rgba(8, 8, 16, 0.98));
-  box-shadow: var(--shadow-card);
-}
-
-.dca-result-hero h2 {
-  margin-top: 8px;
-  font-size: clamp(2.1rem, 7vw, 5rem);
-  line-height: 0.95;
-  color: var(--btc-orange);
-}
-
-.dca-result-hero p,
-.dca-chart-heading p,
-.dca-scenario-section p {
-  max-width: 680px;
-  margin: 8px 0 0;
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-  line-height: 1.6;
-}
-
-.dca-value-box {
-  display: grid;
-  align-content: center;
-  gap: 6px;
-  padding: 18px;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: var(--radius-lg);
-  background: rgba(0, 0, 0, 0.28);
-}
-
-.dca-value-box span {
-  color: var(--text-faint);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.dca-value-box strong {
-  color: var(--text-primary);
-  font-size: clamp(1.8rem, 5vw, 3rem);
-  line-height: 1;
-}
-
-.dca-value-box em {
-  font-style: normal;
-  font-weight: 800;
-}
-
-.dca-stat-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 12px;
-}
-
-.dca-chart-card,
-.dca-scenario-section {
-  display: grid;
-  gap: 16px;
-}
-
-.dca-scenario-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.dca-scenario-card {
-  display: grid;
-  gap: 5px;
-  padding: 14px;
-  border: 1px solid;
-  border-radius: var(--radius-md);
-  background: rgba(255,255,255,0.03);
-}
-
-.dca-scenario-card span {
-  font-size: var(--text-xs);
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.dca-scenario-card strong {
-  color: var(--text-primary);
-  font-size: var(--text-xl);
-  line-height: 1.1;
-}
-
-.dca-scenario-card em {
-  color: var(--text-faint);
-  font-size: var(--text-xs);
-  font-style: normal;
-}
-
-@media (max-width: 860px) {
-  .dca-form-grid,
-  .dca-timeframe-wrap,
-  .dca-result-hero,
-  .dca-scenario-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .dca-model-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 520px) {
-  .dca-builder,
-  .dca-result-hero {
-    padding: 16px;
-  }
-
-  .dca-button-grid,
-  .dca-button-grid.compact {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .dca-button-grid .btn {
-    padding-left: 8px;
-    padding-right: 8px;
-  }
-}
-
-/* ============================================
    Charts Page - BitBo-style Grid
    ============================================ */
 
@@ -2185,6 +1870,393 @@ body {
 
   .valuation-page .chart-range-controls .tab-btn {
     flex-basis: calc(20% - 3px);
+  }
+}
+
+/* ============================================
+   Price Tracker & ETF Flows
+   ============================================ */
+
+.price-tracker-page,
+.etf-flows-page {
+  max-width: 100%;
+}
+
+.price-tracker-hero,
+.etf-hero-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+  gap: 18px;
+  margin-bottom: 18px;
+  padding: clamp(18px, 3vw, 26px);
+  border: 1px solid rgba(247, 147, 26, 0.18);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(247, 147, 26, 0.20), transparent 34%),
+    radial-gradient(circle at 92% 18%, rgba(139, 92, 246, 0.15), transparent 34%),
+    linear-gradient(135deg, rgba(17, 11, 7, 0.96), rgba(7, 6, 9, 0.98));
+  box-shadow: var(--shadow-card), 0 0 48px rgba(247, 147, 26, 0.08);
+  overflow: hidden;
+}
+
+.price-main-panel,
+.etf-hero-main {
+  min-width: 0;
+  display: grid;
+  align-content: center;
+  gap: 10px;
+}
+
+.price-main-panel h2,
+.etf-hero-main h2 {
+  margin: 0;
+  font-size: clamp(3rem, 10vw, 7rem);
+  line-height: 0.86;
+  font-weight: 950;
+  letter-spacing: -0.09em;
+}
+
+.etf-hero-main h2 {
+  font-size: clamp(2.8rem, 8vw, 6rem);
+}
+
+.price-main-panel p,
+.etf-hero-main p {
+  max-width: 680px;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+}
+
+.price-live-row,
+.etf-hero-pills {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.live-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--warning);
+  box-shadow: 0 0 14px rgba(255, 165, 2, 0.42);
+}
+
+.live-dot.live {
+  background: var(--success);
+  box-shadow: 0 0 14px rgba(0, 212, 170, 0.55);
+}
+
+.positive {
+  color: var(--success) !important;
+}
+
+.negative {
+  color: var(--error) !important;
+}
+
+.price-range-panel,
+.etf-range-card {
+  min-width: 0;
+  display: grid;
+  gap: 14px;
+  align-content: center;
+  padding: 16px;
+  border: 1px solid rgba(255, 183, 77, 0.12);
+  border-radius: 22px;
+  background: rgba(0, 0, 0, 0.24);
+}
+
+.price-tracker-page .chart-range-controls,
+.etf-flows-page .chart-range-controls {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  overflow-x: visible;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.price-tracker-page .chart-range-controls .tab-btn,
+.etf-flows-page .chart-range-controls .tab-btn {
+  flex: 1 1 calc(11.111% - 3px);
+  min-width: 0;
+  padding-left: 6px;
+  padding-right: 6px;
+  text-align: center;
+}
+
+.etf-flows-page .chart-range-controls .tab-btn {
+  flex-basis: calc(14.285% - 3px);
+}
+
+.price-inspector-card,
+.etf-range-net {
+  display: grid;
+  gap: 4px;
+  padding: 16px;
+  border: 1px solid rgba(247,147,26,0.14);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 90% 0%, rgba(247,147,26,0.13), transparent 36%),
+    rgba(255,255,255,0.035);
+}
+
+.price-inspector-card span,
+.etf-range-net span {
+  color: var(--text-faint);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.price-inspector-card strong,
+.etf-range-net strong {
+  color: var(--text-primary);
+  font-size: clamp(1.6rem, 4vw, 2.5rem);
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+}
+
+.price-inspector-card em,
+.etf-range-net em {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  font-style: normal;
+}
+
+.price-chart-card {
+  margin-bottom: 16px;
+  padding: clamp(16px, 3vw, 22px);
+  border: 1px solid rgba(247,147,26,0.16);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(247,147,26,0.13), transparent 34%),
+    radial-gradient(circle at 92% 12%, rgba(139,92,246,0.10), transparent 34%),
+    rgba(6, 5, 5, 0.82);
+  box-shadow: var(--shadow-card);
+}
+
+.price-chart-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.price-chart-header h2 {
+  margin: 0 0 4px;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+}
+
+.price-chart-header p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.price-chart-stage {
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.025), rgba(0,0,0,0.08)),
+    rgba(0, 0, 0, 0.22);
+}
+
+.price-chart-svg {
+  display: block;
+  width: 100%;
+  height: clamp(280px, 48vw, 420px);
+  cursor: crosshair;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.price-chart-empty {
+  min-height: 320px;
+  display: grid;
+  place-items: center;
+  color: var(--text-faint);
+  border: 1px dashed rgba(247,147,26,0.16);
+  border-radius: 24px;
+  background: rgba(0,0,0,0.18);
+}
+
+.price-stat-grid,
+.etf-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.price-stat-card,
+.etf-metric-card {
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+  padding: 15px;
+  border: 1px solid rgba(255,183,77,0.12);
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.24);
+}
+
+.price-stat-card.positive,
+.etf-metric-card.positive {
+  border-color: rgba(0, 212, 170, 0.22);
+  background: rgba(0, 212, 170, 0.055);
+}
+
+.price-stat-card.negative,
+.etf-metric-card.negative {
+  border-color: rgba(255, 71, 87, 0.20);
+  background: rgba(255, 71, 87, 0.045);
+}
+
+.price-stat-card span,
+.etf-metric-card span {
+  color: var(--text-faint);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.price-stat-card strong,
+.etf-metric-card strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--text-primary);
+  font-size: var(--text-lg);
+  line-height: 1.08;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+
+.price-stat-card em,
+.etf-metric-card em {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  font-style: normal;
+  line-height: 1.35;
+}
+
+.etf-chart-panel {
+  margin-bottom: 18px;
+}
+
+.etf-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  gap: 18px;
+}
+
+.etf-table-wrap {
+  max-height: 420px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.etf-flow-table td:first-child {
+  color: var(--text-primary);
+  font-weight: 900;
+}
+
+.etf-explainer {
+  display: grid;
+  gap: 14px;
+}
+
+.etf-explainer p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+}
+
+.etf-explainer a {
+  color: var(--btc-orange);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1180px) {
+  .price-stat-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .etf-metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .price-tracker-hero,
+  .etf-hero-card,
+  .etf-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .price-chart-header {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 640px) {
+  .price-tracker-hero,
+  .etf-hero-card {
+    border-radius: 22px;
+    padding: 16px;
+  }
+
+  .price-main-panel h2,
+  .etf-hero-main h2 {
+    font-size: clamp(2.5rem, 16vw, 4rem);
+  }
+
+  .price-range-panel,
+  .etf-range-card {
+    padding: 12px;
+  }
+
+  .price-tracker-page .chart-range-controls .tab-btn {
+    flex-basis: calc(20% - 3px);
+  }
+
+  .etf-flows-page .chart-range-controls .tab-btn {
+    flex-basis: calc(25% - 3px);
+  }
+
+  .price-stat-grid,
+  .etf-metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .price-chart-card {
+    border-radius: 22px;
+    padding: 14px;
+  }
+
+  .price-chart-svg {
+    height: 330px;
   }
 }
 
@@ -2685,83 +2757,6 @@ globalThis.supplyData = {
   ],
 };
 
-// DCA Calculator Historical Price Data (monthly average prices)
-// Source: Approximated from CoinGecko historical data
-globalThis.dcaPriceData = [
-  { date: '2015-01', price: 217 }, { date: '2015-04', price: 236 }, { date: '2015-07', price: 282 }, { date: '2015-10', price: 275 },
-  { date: '2016-01', price: 378 }, { date: '2016-04', price: 434 }, { date: '2016-07', price: 627 }, { date: '2016-10', price: 638 },
-  { date: '2017-01', price: 921 }, { date: '2017-04', price: 1248 }, { date: '2017-07', price: 2534 }, { date: '2017-10', price: 5508 },
-  { date: '2017-12', price: 13860 }, { date: '2018-01', price: 11050 }, { date: '2018-04', price: 8349 }, { date: '2018-07', price: 7378 },
-  { date: '2018-10', price: 6432 }, { date: '2019-01', price: 3457 }, { date: '2019-04', price: 5269 }, { date: '2019-07', price: 10579 },
-  { date: '2019-10', price: 8312 }, { date: '2020-01', price: 8445 }, { date: '2020-04', price: 7136 }, { date: '2020-07', price: 9237 },
-  { date: '2020-10', price: 13084 }, { date: '2020-12', price: 28949 }, { date: '2021-01', price: 33114 }, { date: '2021-04', price: 57683 },
-  { date: '2021-07', price: 33546 }, { date: '2021-10', price: 61300 }, { date: '2021-12', price: 46306 }, { date: '2022-01', price: 38483 },
-  { date: '2022-04', price: 39768 }, { date: '2022-07', price: 22573 }, { date: '2022-10', price: 19311 }, { date: '2023-01', price: 21500 },
-  { date: '2023-04', price: 29200 }, { date: '2023-07', price: 29500 }, { date: '2023-10', price: 34100 }, { date: '2023-12', price: 42280 },
-  { date: '2024-01', price: 42580 }, { date: '2024-04', price: 63800 }, { date: '2024-07', price: 57200 }, { date: '2024-10', price: 67500 },
-  { date: '2024-12', price: 93800 }, { date: '2025-01', price: 97200 }, { date: '2025-06', price: 108000 }, { date: '2025-10', price: 126000 }, { date: '2026-01', price: 95000 }, { date: '2026-03', price: 67000 },
-];
-
-// Future price projection models (quarterly from 2026-Q2 to 2060)
-// These are speculative models for educational/simulation purposes
-globalThis.projectionModels = {
-  conservative: { label: 'Conservative', description: '5% annual growth, declining over time', color: '#6b6b80' },
-  moderate: { label: 'Moderate', description: '15% annual growth with halving cycle boosts', color: '#f7931a' },
-  aggressive: { label: 'Aggressive', description: '25%+ annual growth following S2F-like trajectory', color: '#00d4aa' },
-};
-
-// Generate future quarterly price projections
-globalThis.generateProjections = function generateProjections(basePrice, startYear, endYear) {
-  const projections = { conservative: [], moderate: [], aggressive: [] };
-  const halvingYears = [2028, 2032, 2036, 2040, 2044, 2048, 2052, 2056, 2060];
-  const quarters = ['01', '04', '07', '10'];
-
-  for (const model of ['conservative', 'moderate', 'aggressive']) {
-    let price = basePrice;
-    for (let year = startYear; year <= endYear; year++) {
-      for (let q = 0; q < 4; q++) {
-        const date = year + '-' + quarters[q];
-        // Skip dates that overlap with historical data
-        if (year === startYear && q < 2) continue;
-
-        const yearsOut = year - 2026;
-        const isHalvingYear = halvingYears.includes(year);
-        const isPostHalving = halvingYears.includes(year - 1);
-
-        let quarterlyGrowth;
-        if (model === 'conservative') {
-          // 5% annual base, decaying to 2% by 2060
-          const annualRate = Math.max(0.02, 0.05 - yearsOut * 0.001);
-          quarterlyGrowth = annualRate / 4;
-          if (isHalvingYear) quarterlyGrowth *= 1.3;
-          if (isPostHalving) quarterlyGrowth *= 1.2;
-        } else if (model === 'moderate') {
-          // 15% annual base, decaying to 5% by 2060
-          const annualRate = Math.max(0.05, 0.15 - yearsOut * 0.003);
-          quarterlyGrowth = annualRate / 4;
-          if (isHalvingYear) quarterlyGrowth *= 1.5;
-          if (isPostHalving) quarterlyGrowth *= 1.6;
-        } else {
-          // 25% annual base, decaying to 8% by 2060
-          const annualRate = Math.max(0.08, 0.25 - yearsOut * 0.005);
-          quarterlyGrowth = annualRate / 4;
-          if (isHalvingYear) quarterlyGrowth *= 1.8;
-          if (isPostHalving) quarterlyGrowth *= 2.0;
-        }
-
-        // Add some cycle volatility (bear markets after halving+1 year)
-        if (halvingYears.includes(year - 2)) {
-          quarterlyGrowth *= (model === 'aggressive' ? 0.6 : 0.7);
-        }
-
-        price *= (1 + quarterlyGrowth);
-        projections[model].push({ date, price: Math.round(price) });
-      }
-    }
-  }
-  return projections;
-}
-
 // Dashboard KPI Data
 globalThis.dashboardData = {
   price: 67000,
@@ -2794,6 +2789,13 @@ globalThis.sparklineData = {
 // Feature cards for the home page
 globalThis.features = [
   {
+    id: 'price-tracker',
+    hash: '#price-tracker',
+    title: 'Bitcoin Price Tracker',
+    description: 'Track live BTC price with a touch-friendly historical chart across daily, weekly, yearly, and max timeframes.',
+    icon: 'line-chart',
+  },
+  {
     id: 'strategy',
     hash: '#strategy',
     title: 'Strategy Holdings',
@@ -2820,13 +2822,6 @@ globalThis.features = [
     title: 'Supply Countdown',
     description: 'Track circulating supply, halving countdowns, and the path to 21 million BTC.',
     icon: 'timer',
-  },
-  {
-    id: 'dca',
-    hash: '#dca',
-    title: 'DCA Calculator',
-    description: 'Calculate returns on dollar-cost averaging strategies with historical data.',
-    icon: 'trending-up',
   },
   {
     id: 'whales',
@@ -2862,6 +2857,13 @@ globalThis.features = [
     title: 'Market Pulse',
     description: 'Track live Fear & Greed sentiment, top Bitcoin headlines, mining difficulty, and network hashrate.',
     icon: 'newspaper',
+  },
+  {
+    id: 'etf-flows',
+    hash: '#etf-flows',
+    title: 'ETF Flows',
+    description: 'Monitor daily U.S. spot Bitcoin ETF inflows and outflows by issuer with recent institutional demand trends.',
+    icon: 'bar-chart-2',
   },
 ];
 
@@ -4007,6 +4009,245 @@ globalThis.fetchMiningStats = async function fetchMiningStats(range = '1m') {
   };
   cacheSet(cacheKey, result);
   return result;
+}
+
+/* ------------------------------------------
+   Bitcoin ETF flows
+   Free public Farside Investors tables read through Jina Reader.
+   Values are US$ millions and update on trading days after issuers report.
+   ------------------------------------------ */
+const ETF_FLOWS_ALL_DATA_URL = 'https://r.jina.ai/http://r.jina.ai/http://farside.co.uk/bitcoin-etf-flow-all-data/';
+const ETF_FLOWS_RECENT_URL = 'https://r.jina.ai/http://r.jina.ai/http://farside.co.uk/btc/';
+
+function parseEtfMarkdownCells(line) {
+  return String(line || '')
+    .trim()
+    .replace(/^\|/, '')
+    .replace(/\|$/, '')
+    .split('|')
+    .map(cell => cell.trim().replace(/\*\*/g, ''));
+}
+
+function parseEtfFlowValue(value) {
+  const raw = String(value || '').trim();
+  if (!raw || raw === '-' || raw === '—') return 0;
+  const isNegative = raw.startsWith('(') && raw.endsWith(')');
+  const cleaned = raw
+    .replace(/\[[^\]]+\]\([^)]+\)/g, '')
+    .replace(/[,$]/g, '')
+    .replace(/[()]/g, '')
+    .trim();
+  const parsed = parseFloat(cleaned);
+  if (!Number.isFinite(parsed)) return 0;
+  return isNegative ? -parsed : parsed;
+}
+
+function parseEtfDateLabel(label) {
+  const months = {
+    Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+    Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
+  };
+  const match = String(label || '').match(/^(\d{1,2})\s+([A-Z][a-z]{2})\s+(\d{4})$/);
+  if (!match || months[match[2]] === undefined) return null;
+  return Date.UTC(parseInt(match[3], 10), months[match[2]], parseInt(match[1], 10));
+}
+
+function formatEtfDateLabel(timestamp) {
+  return new Date(timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+}
+
+function sumEtfRows(rows) {
+  return rows.reduce((sum, row) => sum + (Number(row.total) || 0), 0);
+}
+
+function parseFarsidePipeEtfFlows(markdown) {
+  const lines = markdown.split('\n').map(line => line.trim()).filter(line => line.startsWith('|') && !line.includes('---'));
+  let tickers = [];
+  let totalByFund = null;
+  const rows = [];
+
+  for (const line of lines) {
+    const cells = parseEtfMarkdownCells(line);
+    if (cells.length < 3) continue;
+
+    if (cells.includes('IBIT')) {
+      const dateIndex = cells[0] === 'Date' || cells[0] === '' ? 0 : -1;
+      let endIndex = cells.findIndex(cell => cell === 'Total');
+      if (endIndex < 0) endIndex = cells.length;
+      if (cells[endIndex - 1] === '') endIndex -= 1;
+      tickers = cells
+        .slice(dateIndex + 1, endIndex)
+        .filter(cell => /^[A-Z0-9]+$/.test(cell));
+      continue;
+    }
+
+    if (!tickers.length) continue;
+
+    const first = cells[0];
+    if (first === 'Total') {
+      totalByFund = {};
+      tickers.forEach((ticker, index) => {
+        totalByFund[ticker] = parseEtfFlowValue(cells[index + 1]);
+      });
+      totalByFund.Total = parseEtfFlowValue(cells[tickers.length + 1]);
+      continue;
+    }
+
+    const timestamp = parseEtfDateLabel(first);
+    if (!timestamp) continue;
+
+    const funds = {};
+    tickers.forEach((ticker, index) => {
+      funds[ticker] = parseEtfFlowValue(cells[index + 1]);
+    });
+    rows.push({
+      dateLabel: first,
+      displayDate: formatEtfDateLabel(timestamp),
+      timestamp,
+      funds,
+      total: parseEtfFlowValue(cells[tickers.length + 1]),
+    });
+  }
+
+  const sortedRows = rows
+    .filter(row => Number.isFinite(row.timestamp))
+    .sort((a, b) => a.timestamp - b.timestamp);
+
+  if (!sortedRows.length) return null;
+
+  return {
+    tickers,
+    rows: sortedRows,
+    totalByFund,
+  };
+}
+
+function parseFarsidePlainEtfFlows(text) {
+  const lines = String(text || '').split('\n').map(line => line.trim()).filter(Boolean);
+  const dateHeader = lines.findIndex((line, index) => (
+    line === 'Date' && lines.slice(index + 1, index + 18).includes('IBIT') && lines.slice(index + 1, index + 18).includes('Total')
+  ));
+  if (dateHeader < 0) return null;
+
+  const tickers = [];
+  let cursor = dateHeader + 1;
+  while (cursor < lines.length && lines[cursor] !== 'Total') {
+    if (/^[A-Z0-9]+$/.test(lines[cursor])) tickers.push(lines[cursor]);
+    cursor += 1;
+  }
+  if (!tickers.length || lines[cursor] !== 'Total') return null;
+
+  const rows = [];
+  let totalByFund = null;
+  for (let i = cursor + 1; i < lines.length; i += 1) {
+    const line = lines[i];
+    const timestamp = parseEtfDateLabel(line);
+    if (timestamp) {
+      const values = [];
+      let j = i + 1;
+      while (j < lines.length && values.length < tickers.length + 1) {
+        values.push(lines[j]);
+        j += 1;
+      }
+      if (values.length >= tickers.length + 1) {
+        const funds = {};
+        tickers.forEach((ticker, index) => {
+          funds[ticker] = parseEtfFlowValue(values[index]);
+        });
+        rows.push({
+          dateLabel: line,
+          displayDate: formatEtfDateLabel(timestamp),
+          timestamp,
+          funds,
+          total: parseEtfFlowValue(values[tickers.length]),
+        });
+        i = j - 1;
+      }
+      continue;
+    }
+
+    if (line === 'Total' && rows.length) {
+      totalByFund = {};
+      for (let k = 0; k < tickers.length; k += 1) {
+        totalByFund[tickers[k]] = parseEtfFlowValue(lines[i + 1 + k]);
+      }
+      totalByFund.Total = parseEtfFlowValue(lines[i + 1 + tickers.length]);
+      break;
+    }
+  }
+
+  const sortedRows = rows
+    .filter(row => Number.isFinite(row.timestamp))
+    .sort((a, b) => a.timestamp - b.timestamp);
+
+  if (!sortedRows.length) return null;
+
+  return {
+    tickers,
+    rows: sortedRows,
+    totalByFund,
+  };
+}
+
+function parseFarsideEtfFlows(markdown) {
+  if (typeof markdown !== 'string' || !markdown.includes('IBIT') || !markdown.includes('Total')) return null;
+  return parseFarsidePipeEtfFlows(markdown) || parseFarsidePlainEtfFlows(markdown);
+}
+
+function buildEtfFlowSnapshot(parsed, sourceUrl, fetchedAt) {
+  const rows = parsed.rows;
+  const latest = rows[rows.length - 1];
+  const previous = rows.length > 1 ? rows[rows.length - 2] : null;
+  const recent7 = rows.slice(-7);
+  const recent30 = rows.slice(-30);
+  const inflowDays30 = recent30.filter(row => row.total > 0).length;
+  const outflowDays30 = recent30.filter(row => row.total < 0).length;
+  const latestFunds = Object.entries(latest.funds || {})
+    .map(([ticker, value]) => ({ ticker, value }))
+    .sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
+  const leader = latestFunds[0] || null;
+  const cumulativeFromRows = sumEtfRows(rows);
+  const cumulative = parsed.totalByFund && Number.isFinite(parsed.totalByFund.Total)
+    ? parsed.totalByFund.Total
+    : cumulativeFromRows;
+
+  return {
+    source: 'Farside Investors via Jina Reader',
+    sourceUrl,
+    unit: 'US$m',
+    fetchedAt,
+    tickers: parsed.tickers,
+    rows,
+    latest,
+    previous,
+    latestFunds,
+    latestLeader: leader,
+    net7d: sumEtfRows(recent7),
+    net30d: sumEtfRows(recent30),
+    cumulativeNet: cumulative,
+    inflowDays30,
+    outflowDays30,
+    totalByFund: parsed.totalByFund,
+  };
+}
+
+globalThis.fetchBitcoinEtfFlows = async function fetchBitcoinEtfFlows() {
+  const cached = cacheGet('bitcoin-etf-flows', 300000);
+  if (cached) return cached;
+
+  const fetchedAt = new Date().toISOString();
+  const sources = [ETF_FLOWS_ALL_DATA_URL, ETF_FLOWS_RECENT_URL];
+  for (const url of sources) {
+    const text = await tryFetch(url, 20000, { cache: 'no-store' });
+    const parsed = parseFarsideEtfFlows(text);
+    if (parsed && parsed.rows.length) {
+      const result = buildEtfFlowSnapshot(parsed, url.includes('all-data') ? 'https://farside.co.uk/bitcoin-etf-flow-all-data/' : 'https://farside.co.uk/btc/', fetchedAt);
+      cacheSet('bitcoin-etf-flows', result);
+      return result;
+    }
+  }
+
+  return cached || null;
 }
 
 /* ------------------------------------------
@@ -5330,16 +5571,17 @@ const navItems = [
   { section: 'Overview' },
   { id: 'home', label: 'Home', icon: 'home' },
   { id: 'dashboard', label: 'Dashboard', icon: 'layout-dashboard' },
+  { id: 'price-tracker', label: 'Price Tracker', icon: 'line-chart' },
   { id: 'strategy', label: 'Strategy Holdings', icon: 'briefcase-bitcoin' },
   { section: 'Charts & Indicators' },
   { id: 'valuation', label: 'Valuation', icon: 'line-chart' },
   { id: 'charts', label: 'Charts', icon: 'line-chart' },
   { id: 'market-pulse', label: 'Market Pulse', icon: 'newspaper' },
+  { id: 'etf-flows', label: 'ETF Flows', icon: 'bar-chart-2' },
   { section: 'Analytics Tools' },
   { id: 'available-supply', label: 'Available Supply', icon: 'database' },
   { id: 'ownership', label: 'Ownership Distribution', icon: 'pie-chart' },
   { id: 'supply', label: 'Supply Countdown', icon: 'timer' },
-  { id: 'dca', label: 'DCA Calculator', icon: 'trending-up' },
   { id: 'whales', label: 'Whale Tracker', icon: 'anchor' },
   { id: 'pyramid', label: 'Wealth Pyramid', icon: 'triangle' },
   { section: 'Timers' },
@@ -5453,6 +5695,7 @@ const featureIcons = {
   'anchor': h('svg', { width: 28, height: 28, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5 }, h('circle', { cx: 12, cy: 5, r: 3 }), h('line', { x1: 12, y1: 22, x2: 12, y2: 8 }), h('path', { d: 'M5 12H2a10 10 0 0 0 20 0h-3' })),
   'activity': h('svg', { width: 28, height: 28, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5 }, h('polyline', { points: '22 12 18 12 15 21 9 3 6 12 2 12' })),
   'bar-chart-2': h('svg', { width: 28, height: 28, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5 }, h('line', { x1: 18, y1: 20, x2: 18, y2: 10 }), h('line', { x1: 12, y1: 20, x2: 12, y2: 4 }), h('line', { x1: 6, y1: 20, x2: 6, y2: 14 })),
+  'line-chart': h('svg', { width: 28, height: 28, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5 }, h('path', { d: 'M3 3v18h18' }), h('path', { d: 'm19 9-5 5-4-4-3 3' })),
   'battery-charging': h('svg', { width: 28, height: 28, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5 }, h('path', { d: 'M15 7h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2' }), h('path', { d: 'M6 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h1' }), h('path', { d: 'm11 7-3 5h4l-3 5' }), h('line', { x1: 22, y1: 11, x2: 22, y2: 13 })),
   'triangle': h('svg', { width: 28, height: 28, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5 }, h('path', { d: 'M10.5 20.5 10 3l11 17.5z' }), h('path', { d: 'm3 20.5 7-17.5' })),
   'newspaper': h('svg', { width: 28, height: 28, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5 }, h('path', { d: 'M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v18z' }), h('path', { d: 'M14 2v6h6' }), h('path', { d: 'M8 13h8' }), h('path', { d: 'M8 17h5' }), h('path', { d: 'M8 9h2' })),
@@ -5574,7 +5817,7 @@ globalThis.HomePage = function HomePage({ onNavigate }) {
       // CTA buttons
       h('div', { style: { display: 'flex', gap: '12px', justifyContent: 'center', marginTop: '32px', flexWrap: 'wrap', padding: '0 16px' } },
         h('button', { className: 'btn btn-primary btn-lg', onClick: () => onNavigate('dashboard') }, 'Open Dashboard'),
-        h('button', { className: 'btn btn-secondary btn-lg', onClick: () => onNavigate('dca') }, 'DCA Calculator'),
+        h('button', { className: 'btn btn-secondary btn-lg', onClick: () => onNavigate('price-tracker') }, 'Price Tracker'),
       ),
     ),
 
@@ -5849,7 +6092,12 @@ globalThis.DashboardPage = function DashboardPage({ onNavigate }) {
             h('h3', { style: { fontSize: 'var(--text-base)', fontWeight: 600 } }, 'BTC Price (' + getRangeLabel(priceRange) + ')'),
             h('span', { style: { fontSize: 'var(--text-xs)', color: 'var(--text-faint)' } },
               marketChart.source ? 'Source: ' + marketChart.source + ' + live tick' : 'Live'
-            )
+            ),
+            h('a', {
+              href: '#price-tracker',
+              onClick: (e) => { e.preventDefault(); onNavigate('price-tracker'); },
+              style: { display: 'inline-block', marginTop: '6px', fontSize: 'var(--text-xs)', color: 'var(--btc-orange)', textDecoration: 'none', cursor: 'pointer', fontWeight: 700 },
+            }, 'Open full price tracker \u2192')
           ),
           h(ChartRangeControls, { value: priceRange, onChange: setPriceRange }),
         ),
@@ -7266,567 +7514,509 @@ globalThis.SupplyPage = function SupplyPage() {
 
 })();
 
-/* ===== pages/dca.js ===== */
+/* ===== pages/price-tracker.js ===== */
 (() => {
 /* ============================================
-   Bitcoin DCA Calculator
-   Simple amount/frequency/timeframe flow
+   Bitcoin Price Tracker
+   Touch-friendly live and historical BTC chart
+   ============================================ */
+
+const React = window.React;
+const { createElement: h, useState, useMemo, useRef } = React;
+
+const PRICE_RANGES = [
+  { id: '1d', label: 'D', days: 1, description: 'Live day' },
+  { id: '1w', label: '1W', days: 7, description: 'Past week' },
+  { id: '1m', label: '1M', days: 30, description: 'Past month' },
+  { id: '3m', label: '3M', days: 90, description: 'Past 3 months' },
+  { id: '6m', label: '6M', days: 180, description: 'Past 6 months' },
+  { id: '1y', label: '1Y', days: 365, description: 'Past year' },
+  { id: '3y', label: '3Y', days: 1095, description: 'Past 3 years' },
+  { id: '5y', label: '5Y', days: 1825, description: 'Past 5 years' },
+  { id: 'max', label: 'MAX', days: 'max', description: 'Full available history' },
+];
+
+function cleanPricePoints(points) {
+  return (Array.isArray(points) ? points : [])
+    .map(point => [Number(point[0]), Number(point[1])])
+    .filter(point => Number.isFinite(point[0]) && Number.isFinite(point[1]) && point[1] > 0)
+    .sort((a, b) => a[0] - b[0]);
+}
+
+function appendLivePricePoint(points, price) {
+  const rows = cleanPricePoints(points);
+  const livePrice = Number(price);
+  if (!Number.isFinite(livePrice) || livePrice <= 0) return rows;
+  const now = Date.now();
+  const last = rows[rows.length - 1];
+  if (!last || now - last[0] > 60000) return [...rows, [now, livePrice]];
+  return [...rows.slice(0, -1), [last[0], livePrice]];
+}
+
+function calcStats(points) {
+  if (!points.length) {
+    return { latest: null, first: null, high: null, low: null, change: null, changePercent: null };
+  }
+  const first = points[0][1];
+  const latest = points[points.length - 1][1];
+  const values = points.map(point => point[1]);
+  const change = latest - first;
+  return {
+    latest,
+    first,
+    high: Math.max(...values),
+    low: Math.min(...values),
+    change,
+    changePercent: first ? (change / first) * 100 : null,
+  };
+}
+
+function formatSelectedDate(timestamp, range) {
+  const date = new Date(timestamp);
+  if (range === '1d') {
+    return date.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+  }
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function PriceStat({ label, value, subtext, tone }) {
+  return h('div', { className: 'price-stat-card' + (tone ? ' ' + tone : '') },
+    h('span', null, label),
+    h('strong', { className: 'tabular-nums' }, value),
+    subtext && h('em', null, subtext)
+  );
+}
+
+function InteractivePriceChart({ points, selectedIndex, onSelect, range }) {
+  const svgRef = useRef(null);
+  if (!points.length) {
+    return h('div', { className: 'price-chart-empty' }, 'Loading live BTC chart...');
+  }
+
+  const width = 760;
+  const height = 320;
+  const pad = { top: 26, right: 24, bottom: 38, left: 54 };
+  const values = points.map(point => point[1]);
+  let min = Math.min(...values);
+  let max = Math.max(...values);
+  const spread = max - min || max * 0.02 || 1;
+  min -= spread * 0.08;
+  max += spread * 0.08;
+
+  const xFor = index => pad.left + (index / Math.max(1, points.length - 1)) * (width - pad.left - pad.right);
+  const yFor = value => pad.top + (1 - ((value - min) / (max - min))) * (height - pad.top - pad.bottom);
+  const path = points.map((point, index) => (index ? 'L' : 'M') + xFor(index).toFixed(2) + ' ' + yFor(point[1]).toFixed(2)).join(' ');
+  const area = path + ' L ' + xFor(points.length - 1).toFixed(2) + ' ' + (height - pad.bottom) + ' L ' + pad.left + ' ' + (height - pad.bottom) + ' Z';
+  const safeSelected = selectedIndex === null || selectedIndex === undefined
+    ? points.length - 1
+    : Math.max(0, Math.min(points.length - 1, selectedIndex));
+  const selected = points[safeSelected];
+  const selectedX = xFor(safeSelected);
+  const selectedY = yFor(selected[1]);
+  const yTicks = [0, 0.25, 0.5, 0.75, 1].map(step => max - (max - min) * step);
+
+  const selectFromClientX = (clientX) => {
+    if (!svgRef.current || !Number.isFinite(clientX)) return;
+    const rect = svgRef.current.getBoundingClientRect();
+    const innerLeft = (pad.left / width) * rect.width;
+    const innerWidth = ((width - pad.left - pad.right) / width) * rect.width;
+    const ratio = Math.max(0, Math.min(1, (clientX - rect.left - innerLeft) / Math.max(1, innerWidth)));
+    onSelect(Math.round(ratio * (points.length - 1)));
+  };
+
+  const handlePointer = (event) => {
+    if (event.type === 'pointermove' && event.buttons === 0) return;
+    selectFromClientX(event.clientX);
+  };
+
+  const handleTouch = (event) => {
+    const touch = event.touches && event.touches[0];
+    if (touch) selectFromClientX(touch.clientX);
+  };
+
+  return h('div', { className: 'price-chart-stage' },
+    h('svg', {
+      ref: svgRef,
+      className: 'price-chart-svg',
+      viewBox: '0 0 ' + width + ' ' + height,
+      role: 'img',
+      'aria-label': 'Interactive BTC price chart',
+      onPointerDown: handlePointer,
+      onPointerMove: handlePointer,
+      onTouchStart: handleTouch,
+      onTouchMove: handleTouch,
+    },
+      h('defs', null,
+        h('linearGradient', { id: 'priceAreaGradient', x1: '0', y1: '0', x2: '0', y2: '1' },
+          h('stop', { offset: '0%', stopColor: 'rgba(247,147,26,0.30)' }),
+          h('stop', { offset: '58%', stopColor: 'rgba(139,92,246,0.10)' }),
+          h('stop', { offset: '100%', stopColor: 'rgba(247,147,26,0)' })
+        ),
+        h('filter', { id: 'priceGlow', x: '-20%', y: '-20%', width: '140%', height: '140%' },
+          h('feGaussianBlur', { stdDeviation: '3', result: 'blur' }),
+          h('feMerge', null, h('feMergeNode', { in: 'blur' }), h('feMergeNode', { in: 'SourceGraphic' }))
+        )
+      ),
+      h('rect', { x: 0, y: 0, width, height, rx: 24, fill: 'rgba(0,0,0,0.18)' }),
+      yTicks.map((tick, index) => h('g', { key: index },
+        h('line', {
+          x1: pad.left,
+          x2: width - pad.right,
+          y1: yFor(tick),
+          y2: yFor(tick),
+          stroke: 'rgba(255,183,77,0.09)',
+          strokeWidth: 1,
+        }),
+        h('text', {
+          x: pad.left - 10,
+          y: yFor(tick) + 4,
+          textAnchor: 'end',
+          fill: '#806f62',
+          fontSize: 11,
+        }, formatUSD(tick, 0))
+      )),
+      h('path', { d: area, fill: 'url(#priceAreaGradient)' }),
+      h('path', { d: path, fill: 'none', stroke: '#f7931a', strokeWidth: 3, strokeLinecap: 'round', strokeLinejoin: 'round', filter: 'url(#priceGlow)' }),
+      h('line', { x1: selectedX, x2: selectedX, y1: pad.top, y2: height - pad.bottom, stroke: 'rgba(255,255,255,0.28)', strokeDasharray: '4 6' }),
+      h('circle', { cx: selectedX, cy: selectedY, r: 7, fill: '#050405', stroke: '#ffbd59', strokeWidth: 3 }),
+      h('text', { x: pad.left, y: height - 12, fill: '#806f62', fontSize: 11 }, formatChartDateLabel(points[0][0], range)),
+      h('text', { x: width - pad.right, y: height - 12, textAnchor: 'end', fill: '#806f62', fontSize: 11 }, formatChartDateLabel(points[points.length - 1][0], range))
+    )
+  );
+}
+
+globalThis.PriceTrackerPage = function PriceTrackerPage({ onNavigate }) {
+  const { price: streamedPrice, wsStatus } = useBTCWebSocket();
+  const [range, setRange] = useState('1d');
+  const [selectedIndex, setSelectedIndex] = useState(null);
+
+  const { data, lastUpdated, loading } = useLiveData(async () => {
+    const [priceResult, ticker, marketChart] = await Promise.all([
+      fetchBTCPrice(),
+      fetchBinanceTicker(),
+      fetchMarketChart(getRangeDays(range)),
+    ]);
+    return { priceResult, ticker, marketChart };
+  }, range === '1d' ? 10000 : 30000, [range]);
+
+  const price = streamedPrice || data?.priceResult?.price || null;
+  const change24h = (data?.priceResult?.change24h !== null && data?.priceResult?.change24h !== undefined)
+    ? data.priceResult.change24h
+    : data?.ticker?.change24h;
+  const volume24h = data?.priceResult?.volume24h || data?.ticker?.volume24h || null;
+  const rawPoints = data?.marketChart?.prices || [];
+  const chartPoints = useMemo(() => {
+    const points = appendLivePricePoint(rawPoints, price);
+    return downsampleSeries(points, range === '1d' ? 288 : range === 'max' ? 420 : 320);
+  }, [rawPoints, price, range]);
+
+  const stats = useMemo(() => calcStats(chartPoints), [chartPoints]);
+  const activeIndex = selectedIndex === null || selectedIndex === undefined
+    ? chartPoints.length - 1
+    : Math.max(0, Math.min(chartPoints.length - 1, selectedIndex));
+  const selectedPoint = chartPoints[activeIndex] || null;
+  const selectedChange = selectedPoint && chartPoints.length
+    ? selectedPoint[1] - chartPoints[0][1]
+    : null;
+  const selectedChangePercent = selectedPoint && chartPoints[0] && chartPoints[0][1]
+    ? (selectedChange / chartPoints[0][1]) * 100
+    : null;
+
+  const handleRangeChange = (nextRange) => {
+    setRange(nextRange);
+    setSelectedIndex(null);
+  };
+
+  return h('div', { className: 'page-enter charts-page price-tracker-page' },
+    h(PageHeader, {
+      title: 'Bitcoin Price Tracker',
+      description: 'Live BTC/USD pricing with a smooth historical chart you can tap or drag on mobile to inspect past prices.',
+      badge: wsStatus === 'live' ? 'Live stream' : 'Live fallback',
+    }),
+    h('div', { className: 'pulse-status-row' },
+      h(LastUpdated, { lastUpdated, live: !loading }),
+      h('span', null, wsStatus === 'live' ? 'Coinbase WebSocket streaming plus REST history' : 'REST live price fallback active')
+    ),
+
+    h('section', { className: 'price-tracker-hero' },
+      h('div', { className: 'price-main-panel' },
+        h('span', { className: 'charts-eyebrow' }, 'BTC / USD'),
+        h('h2', { className: 'tabular-nums' }, price ? formatUSD(price, 2) : 'Loading...'),
+        h('div', { className: 'price-live-row' },
+          h('span', { className: 'live-dot ' + (wsStatus === 'live' ? 'live' : '') }),
+          h('span', null, wsStatus === 'live' ? 'Streaming live ticks' : 'Updating from public price feeds'),
+          Number.isFinite(change24h) && h('strong', { className: change24h >= 0 ? 'positive' : 'negative' }, (change24h >= 0 ? '+' : '') + formatPercent(change24h, 2) + ' 24h')
+        )
+      ),
+      h('div', { className: 'price-range-panel' },
+        h('div', { className: 'charts-panel-range' },
+          h('span', null, 'Timeframe'),
+          h(ChartRangeControls, { value: range, onChange: handleRangeChange, ranges: PRICE_RANGES, label: 'BTC price timeframe' })
+        ),
+        h('div', { className: 'price-inspector-card' },
+          h('span', null, selectedPoint ? formatSelectedDate(selectedPoint[0], range) : 'Select a point'),
+          h('strong', { className: 'tabular-nums' }, selectedPoint ? formatUSD(selectedPoint[1], 2) : '—'),
+          selectedChangePercent !== null && h('em', { className: selectedChangePercent >= 0 ? 'positive' : 'negative' },
+            (selectedChangePercent >= 0 ? '+' : '') + formatPercent(selectedChangePercent, 2) + ' from range start'
+          )
+        )
+      )
+    ),
+
+    h('section', { className: 'price-chart-card' },
+      h('div', { className: 'price-chart-header' },
+        h('div', null,
+          h('h2', null, 'Historical Price'),
+          h('p', null, 'Tap or drag across the chart to inspect the exact price at any point in the selected range.')
+        ),
+        h('span', { className: 'charts-badge' }, data?.marketChart?.source ? 'Source: ' + data.marketChart.source : 'Loading source')
+      ),
+      h(InteractivePriceChart, { points: chartPoints, selectedIndex, onSelect: setSelectedIndex, range })
+    ),
+
+    h('div', { className: 'price-stat-grid' },
+      h(PriceStat, { label: 'Range Change', value: stats.changePercent !== null ? (stats.changePercent >= 0 ? '+' : '') + formatPercent(stats.changePercent, 2) : '—', subtext: stats.change !== null ? formatUSD(stats.change, 2) : 'Loading', tone: stats.changePercent >= 0 ? 'positive' : 'negative' }),
+      h(PriceStat, { label: 'Range High', value: stats.high ? formatUSD(stats.high, 2) : '—', subtext: 'Highest selected point' }),
+      h(PriceStat, { label: 'Range Low', value: stats.low ? formatUSD(stats.low, 2) : '—', subtext: 'Lowest selected point' }),
+      h(PriceStat, { label: '24h Volume', value: volume24h ? formatUSD(volume24h) : '—', subtext: 'From live public exchange APIs' }),
+      h(PriceStat, { label: 'Chart Points', value: formatNumber(chartPoints.length, 0), subtext: range.toUpperCase() + ' sampled for mobile speed' }),
+      h(PriceStat, { label: 'Price Source', value: data?.priceResult?.source || 'Live', subtext: 'Kraken, Gemini, Bitstamp, Coinbase fallback stack' })
+    ),
+
+    h('div', { className: 'charts-source-note' },
+      'The live price uses Coinbase WebSocket ticks when available and falls back to free REST feeds. Historical ranges use CoinGecko market chart data when available, then Kraken or Bitstamp OHLC fallbacks so the chart still loads on mobile browsers.'
+    )
+  );
+}
+
+})();
+
+/* ===== pages/etf-flows.js ===== */
+(() => {
+/* ============================================
+   Bitcoin ETF Flows
+   Daily U.S. spot ETF inflows/outflows from free public data
    ============================================ */
 
 const React = window.React;
 const { createElement: h, useState, useMemo } = React;
 
-const FREQUENCIES = [
-  { id: 'daily', label: 'Daily', short: 'day', purchasesPerMonth: 30.4375 },
-  { id: 'weekly', label: 'Weekly', short: 'week', purchasesPerMonth: 4.345 },
-  { id: 'biweekly', label: 'Every 2 weeks', short: '2 weeks', purchasesPerMonth: 2.1725 },
-  { id: 'monthly', label: 'Monthly', short: 'month', purchasesPerMonth: 1 },
+const ETF_RANGES = [
+  { id: '1d', label: 'D', days: 1, description: 'Latest trading day' },
+  { id: '1w', label: '1W', days: 7, description: 'Past week' },
+  { id: '1m', label: '1M', days: 30, description: 'Past month' },
+  { id: '3m', label: '3M', days: 90, description: 'Past 3 months' },
+  { id: '6m', label: '6M', days: 180, description: 'Past 6 months' },
+  { id: '1y', label: '1Y', days: 365, description: 'Past year' },
+  { id: 'max', label: 'MAX', days: 'max', description: 'All available ETF flow history' },
 ];
 
-const AMOUNT_PRESETS = [10, 25, 50, 100, 250, 500, 1000];
-
-const PAST_TIMEFRAMES = [
-  { id: '1m', label: '1M', months: 1 },
-  { id: '3m', label: '3M', months: 3 },
-  { id: '6m', label: '6M', months: 6 },
-  { id: '1y', label: '1Y', months: 12 },
-  { id: '3y', label: '3Y', months: 36 },
-  { id: '5y', label: '5Y', months: 60 },
-  { id: '10y', label: '10Y', months: 120 },
-  { id: 'max', label: 'MAX', allHistory: true },
-];
-
-const FUTURE_TIMEFRAMES = [
-  { id: 'future-1y', label: '+1Y', months: 12, future: true },
-  { id: 'future-3y', label: '+3Y', months: 36, future: true },
-  { id: 'future-5y', label: '+5Y', months: 60, future: true },
-  { id: 'future-10y', label: '+10Y', months: 120, future: true },
-  { id: 'future-20y', label: '+20Y', months: 240, future: true },
-  { id: 'future-2060', label: '2060', future: true, end: '2060-10' },
-];
-
-const MODEL_PARAMS = {
-  conservative: { start: 0.05, floor: 0.02, decay: 0.001 },
-  moderate: { start: 0.15, floor: 0.05, decay: 0.003 },
-  aggressive: { start: 0.25, floor: 0.08, decay: 0.005 },
-};
-
-const HALVING_YEARS = [2028, 2032, 2036, 2040, 2044, 2048, 2052, 2056, 2060];
-
-function getCurrentMonthKey() {
-  const now = new Date();
-  return now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+function getEtfRangeDays(range) {
+  const found = ETF_RANGES.find(item => item.id === range);
+  return found ? found.days : 30;
 }
 
-function monthKeyToDate(key) {
-  const [year, month] = key.split('-').map(Number);
-  return new Date(year, month - 1, 1);
+function formatFlow(value, decimals = 1) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return '—';
+  const sign = n > 0 ? '+' : n < 0 ? '-' : '';
+  const abs = Math.abs(n);
+  if (abs >= 1000) return sign + '$' + (abs / 1000).toFixed(2) + 'B';
+  return sign + '$' + abs.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + 'M';
 }
 
-function addMonths(key, months) {
-  const d = monthKeyToDate(key);
-  d.setMonth(d.getMonth() + months);
-  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+function flowTone(value) {
+  const n = Number(value);
+  if (n > 0) return 'positive';
+  if (n < 0) return 'negative';
+  return '';
 }
 
-function formatMonth(key) {
-  const d = monthKeyToDate(key);
-  return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+function filterRowsForRange(rows, range) {
+  if (!Array.isArray(rows) || !rows.length) return [];
+  const days = getEtfRangeDays(range);
+  if (days === 'max') return rows;
+  if (range === '1d') return rows.slice(-1);
+  const cutoff = rows[rows.length - 1].timestamp - Number(days) * 86400000;
+  const filtered = rows.filter(row => row.timestamp >= cutoff);
+  return filtered.length ? filtered : rows.slice(-Math.max(1, Math.min(rows.length, Number(days))));
 }
 
-function buildMonthlyPriceData(prices, currentPrice) {
-  const byMonth = new Map();
-  if (Array.isArray(prices)) {
-    prices.forEach(point => {
-      const ts = point && point[0];
-      const price = point && Number(point[1]);
-      if (!Number.isFinite(ts) || !Number.isFinite(price) || price <= 0) return;
-      const d = new Date(ts);
-      const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
-      byMonth.set(key, { date: key, price, projected: false, source: 'live-history' });
-    });
-  }
-
-  const currentMonth = getCurrentMonthKey();
-  if (currentPrice) {
-    byMonth.set(currentMonth, { date: currentMonth, price: currentPrice, projected: false, live: true, source: 'live-price' });
-  }
-
-  return Array.from(byMonth.values()).sort((a, b) => a.date.localeCompare(b.date));
-}
-
-function projectionMonthlyRate(modelKey, monthIndex, calendarYear) {
-  const params = MODEL_PARAMS[modelKey] || MODEL_PARAMS.moderate;
-  const yearsOut = monthIndex / 12;
-  let annualRate = Math.max(params.floor, params.start - yearsOut * params.decay);
-  if (HALVING_YEARS.includes(calendarYear)) annualRate *= 1.35;
-  if (HALVING_YEARS.includes(calendarYear - 1)) annualRate *= 1.45;
-  if (HALVING_YEARS.includes(calendarYear - 2)) annualRate *= 0.72;
-  return Math.pow(1 + annualRate, 1 / 12) - 1;
-}
-
-function buildMonthlyProjections(modelKey, anchorPrice, currentMonth, endMonth) {
-  if (!anchorPrice || endMonth <= currentMonth) return [];
-  const rows = [];
-  let cursor = addMonths(currentMonth, 1);
-  let price = anchorPrice;
-  let monthIndex = 0;
-
-  while (cursor <= endMonth) {
-    monthIndex += 1;
-    const year = Number(cursor.slice(0, 4));
-    price *= 1 + projectionMonthlyRate(modelKey, monthIndex, year);
-    rows.push({ date: cursor, price, projected: true });
-    cursor = addMonths(cursor, 1);
-  }
-  return rows;
-}
-
-function buildPriceData(modelKey, liveHistorical, basePrice, endMonth) {
-  const currentMonth = getCurrentMonthKey();
-  let historical = Array.isArray(liveHistorical) && liveHistorical.length >= 24
-    ? liveHistorical
-    : dcaPriceData.map(d => ({ ...d, projected: false, source: 'fallback-history' }));
-
-  historical = historical
-    .filter(d => d.date <= currentMonth)
-    .map(d => ({ ...d, projected: false }));
-
-  if (basePrice) {
-    const existingIdx = historical.findIndex(d => d.date === currentMonth);
-    if (existingIdx >= 0) historical[existingIdx] = { ...historical[existingIdx], price: basePrice, live: true, source: 'live-price' };
-    else historical.push({ date: currentMonth, price: basePrice, projected: false, live: true, source: 'live-price' });
-  }
-
-  const anchorPrice = basePrice || (historical.length ? historical[historical.length - 1].price : dashboardData.price);
-  const future = buildMonthlyProjections(modelKey, anchorPrice, currentMonth, endMonth);
-  return [...historical, ...future].sort((a, b) => a.date.localeCompare(b.date));
-}
-
-function getTimeframeConfig(id) {
-  return [...PAST_TIMEFRAMES, ...FUTURE_TIMEFRAMES].find(item => item.id === id) || PAST_TIMEFRAMES[4];
-}
-
-function getTimeframeDates(id, currentMonth, firstHistoryMonth) {
-  const config = getTimeframeConfig(id);
-  if (config.future) {
-    const futureLabel = config.label.replace('+', '');
-    return {
-      startDate: currentMonth,
-      endDate: config.end || addMonths(currentMonth, config.months),
-      projection: true,
-      label: config.end ? 'Through 2060' : 'Next ' + futureLabel,
-    };
-  }
-  if (config.allHistory) {
-    return {
-      startDate: firstHistoryMonth || '2015-01',
-      endDate: currentMonth,
-      projection: false,
-      label: 'Full available history',
-    };
-  }
+function flowOptions() {
   return {
-    startDate: addMonths(currentMonth, -config.months),
-    endDate: currentMonth,
-    projection: false,
-    label: 'Past ' + config.label,
-  };
-}
-
-function calculateDca(priceData, amount, frequency, startDate, endDate, currentPrice) {
-  const rows = priceData.filter(row => row.date >= startDate && row.date <= endDate);
-  if (!rows.length) return null;
-
-  let totalInvested = 0;
-  let totalBTC = 0;
-  let firstProjectedIdx = -1;
-  const dataPoints = rows.map((entry, index) => {
-    const price = entry.live && currentPrice ? currentPrice : entry.price;
-    const monthlyInvestment = amount * frequency.purchasesPerMonth;
-    const btcBought = monthlyInvestment / price;
-    totalInvested += monthlyInvestment;
-    totalBTC += btcBought;
-    const portfolioValue = totalBTC * price;
-
-    if (entry.projected && firstProjectedIdx === -1) firstProjectedIdx = index;
-
-    return {
-      date: entry.date,
-      price,
-      invested: totalInvested,
-      btcAccumulated: totalBTC,
-      portfolioValue,
-      profit: portfolioValue - totalInvested,
-      profitPercent: ((portfolioValue - totalInvested) / totalInvested) * 100,
-      projected: entry.projected,
-    };
-  });
-
-  const lastPoint = dataPoints[dataPoints.length - 1];
-  const lastRow = rows[rows.length - 1];
-  const finalPrice = lastRow.projected ? lastRow.price : (currentPrice || lastRow.price);
-  const currentValue = totalBTC * finalPrice;
-  const profit = currentValue - totalInvested;
-
-  return {
-    totalInvested,
-    totalBTC,
-    currentValue,
-    profit,
-    roi: (profit / totalInvested) * 100,
-    avgCostBasis: totalInvested / totalBTC,
-    estimatedPurchases: rows.length * frequency.purchasesPerMonth,
-    latestPrice: finalPrice,
-    dataPoints,
-    hasProjectedData: rows.some(row => row.projected),
-    firstProjectedIdx,
-    projectedEndPrice: lastRow.projected ? lastRow.price : null,
-    startLabel: formatMonth(rows[0].date),
-    endLabel: formatMonth(lastPoint.date),
-  };
-}
-
-function formatAbbrev(v) {
-  if (v >= 1e9) return (v / 1e9).toFixed(1) + 'B';
-  if (v >= 1e6) return (v / 1e6).toFixed(1) + 'M';
-  if (v >= 1e3) return (v / 1e3).toFixed(0) + 'K';
-  return String(Math.round(v));
-}
-
-function ButtonGrid({ items, activeId, onSelect, compact }) {
-  return h('div', { className: compact ? 'dca-button-grid compact' : 'dca-button-grid' },
-    items.map(item => h('button', {
-      key: item.id || item,
-      type: 'button',
-      className: 'btn ' + (activeId === (item.id || item) ? 'btn-primary' : 'btn-secondary') + ' btn-sm',
-      onClick: () => onSelect(item.id || item),
-    }, item.label || ('$' + item.toLocaleString())))
-  );
-}
-
-function ProjectionScenarioCards({ amount, frequency, timeframe, currentMonth, firstHistoryMonth, currentPrice, liveHistorical }) {
-  const dates = getTimeframeDates(timeframe, currentMonth, firstHistoryMonth);
-  const rows = Object.entries(projectionModels).map(([key, model]) => {
-    const priceData = buildPriceData(key, liveHistorical, currentPrice, dates.endDate);
-    const result = calculateDca(priceData, amount, frequency, dates.startDate, dates.endDate, currentPrice);
-    return result ? { key, model, result } : null;
-  }).filter(Boolean);
-
-  return h('div', { className: 'dca-scenario-grid' },
-    rows.map(row => h('div', {
-      key: row.key,
-      className: 'dca-scenario-card',
-      style: { borderColor: row.model.color + '66' },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) {
+            return 'Net flow: ' + formatFlow(ctx.raw, 1);
+          },
+        },
+      },
     },
-      h('span', { style: { color: row.model.color } }, row.model.label),
-      h('strong', { className: 'tabular-nums' }, formatUSD(row.result.currentValue, 0)),
-      h('em', { className: 'tabular-nums' },
-        row.result.totalBTC.toFixed(5) + ' BTC at ' + formatUSD(row.result.projectedEndPrice || row.result.latestPrice, 0)
-      ),
-    ))
+    scales: {
+      y: {
+        grid: { color: 'rgba(255,183,77,0.06)', drawBorder: false },
+        ticks: {
+          color: '#806f62',
+          font: { family: 'Inter', size: 11 },
+          callback: function(value) { return formatFlow(value, 0); },
+        },
+        border: { display: false },
+      },
+      x: {
+        grid: { display: false },
+        ticks: { color: '#806f62', font: { family: 'Inter', size: 10 }, maxTicksLimit: 8 },
+        border: { display: false },
+      },
+    },
+  };
+}
+
+function EtfMetric({ label, value, subtext, tone }) {
+  return h('div', { className: 'etf-metric-card ' + (tone || '') },
+    h('span', null, label),
+    h('strong', { className: 'tabular-nums' }, value),
+    subtext && h('em', null, subtext)
   );
 }
 
-globalThis.DCAPage = function DCAPage() {
-  const { price: streamedPrice } = useBTCWebSocket();
-  const [amount, setAmount] = useState(50);
-  const [frequencyId, setFrequencyId] = useState('weekly');
-  const [timeframe, setTimeframe] = useState('5y');
-  const [growthModel, setGrowthModel] = useState('moderate');
-
-  const { data: liveDcaData, lastUpdated } = useLiveData(async () => {
-    const [priceResult, marketChart] = await Promise.all([
-      fetchBTCPrice(),
-      fetchMarketChart('max'),
-    ]);
-    return { priceResult, marketChart };
-  }, 60000);
-
-  const currentBtcPrice = streamedPrice || (liveDcaData && liveDcaData.priceResult ? liveDcaData.priceResult.price : null) || dashboardData.price;
-  const liveHistorical = useMemo(
-    () => buildMonthlyPriceData(liveDcaData && liveDcaData.marketChart ? liveDcaData.marketChart.prices : [], currentBtcPrice),
-    [liveDcaData, currentBtcPrice]
+function LatestFundTable({ funds }) {
+  const rows = Array.isArray(funds) ? funds : [];
+  return h('div', { className: 'etf-table-wrap' },
+    h('table', { className: 'data-table etf-flow-table' },
+      h('thead', null,
+        h('tr', null,
+          h('th', null, 'ETF'),
+          h('th', null, 'Latest Flow'),
+          h('th', null, 'Direction')
+        )
+      ),
+      h('tbody', null,
+        rows.map(row => h('tr', { key: row.ticker },
+          h('td', null, row.ticker),
+          h('td', { className: 'tabular-nums ' + flowTone(row.value) }, formatFlow(row.value, 1)),
+          h('td', null, row.value > 0 ? 'Inflow' : row.value < 0 ? 'Outflow' : 'Flat')
+        ))
+      )
+    )
   );
-  const currentMonth = getCurrentMonthKey();
-  const firstHistoryMonth = liveHistorical.length ? liveHistorical[0].date : '2015-01';
-  const dates = getTimeframeDates(timeframe, currentMonth, firstHistoryMonth);
-  const selectedFrequency = FREQUENCIES.find(freq => freq.id === frequencyId) || FREQUENCIES[1];
+}
 
-  const priceData = useMemo(
-    () => buildPriceData(growthModel, liveHistorical, currentBtcPrice, dates.endDate),
-    [growthModel, liveHistorical, currentBtcPrice, dates.endDate]
-  );
+globalThis.EtfFlowsPage = function EtfFlowsPage() {
+  const [range, setRange] = useState('1m');
+  const { data, lastUpdated, loading } = useLiveData(async () => {
+    const flows = await fetchBitcoinEtfFlows();
+    return { flows };
+  }, 300000);
 
-  const results = useMemo(
-    () => calculateDca(priceData, amount, selectedFrequency, dates.startDate, dates.endDate, currentBtcPrice),
-    [priceData, amount, selectedFrequency, dates.startDate, dates.endDate, currentBtcPrice]
-  );
+  const flows = data && data.flows;
+  const windowRows = useMemo(() => filterRowsForRange(flows?.rows || [], range), [flows, range]);
+  const chartRows = useMemo(() => downsampleSeries(windowRows.map(row => [row.timestamp, row.total]), range === 'max' ? 360 : 180), [windowRows, range]);
+  const visibleNet = windowRows.reduce((sum, row) => sum + (Number(row.total) || 0), 0);
+  const visibleInflowDays = windowRows.filter(row => row.total > 0).length;
+  const visibleOutflowDays = windowRows.filter(row => row.total < 0).length;
+  const latest = flows?.latest;
+  const previous = flows?.previous;
+  const dayDelta = latest && previous ? latest.total - previous.total : null;
+  const biggestRecent = windowRows.length
+    ? windowRows.slice().sort((a, b) => Math.abs(b.total) - Math.abs(a.total))[0]
+    : null;
 
-  const historySource = Array.isArray(liveHistorical) && liveHistorical.length >= 24
-    ? ((liveDcaData && liveDcaData.marketChart && liveDcaData.marketChart.source) ? liveDcaData.marketChart.source : 'live history')
-    : 'fallback history';
-
-  const labels = results ? results.dataPoints.map(point => formatMonth(point.date)) : [];
-  const selectedModel = projectionModels[growthModel];
-  const isFuture = dates.projection || (results && results.hasProjectedData);
-
-  return h('div', { className: 'page-enter dca-page' },
+  return h('div', { className: 'page-enter charts-page etf-flows-page' },
     h(PageHeader, {
-      title: 'DCA Calculator',
-      description: 'Quickly estimate how much BTC you could accumulate by buying a fixed dollar amount over different Bitcoin timeframes.',
+      title: 'Bitcoin ETF Flows',
+      description: 'Track daily U.S. spot Bitcoin ETF inflows and outflows to see institutional demand pressure behind BTC.',
+      badge: 'Daily live data',
     }),
-
-    h('div', { className: 'dca-live-strip' },
-      h(LastUpdated, { lastUpdated, live: true }),
-      currentBtcPrice && h('span', { className: 'tabular-nums' }, 'Live BTC: ' + formatUSD(currentBtcPrice, 0)),
-      h('span', null, 'History: ' + historySource),
+    h('div', { className: 'pulse-status-row' },
+      h(LastUpdated, { lastUpdated, live: !loading }),
+      h('span', null, 'Source: Farside Investors public ETF flow tables')
     ),
 
-    h('section', { className: 'card dca-builder' },
-      h('div', { className: 'dca-builder-header' },
-        h('div', null,
-          h('span', { className: 'charts-eyebrow' }, 'Simple setup'),
-          h('h2', null, 'Choose your DCA plan'),
-        ),
-        h('div', { className: 'dca-plan-pill tabular-nums' },
-          formatUSD(amount, 0) + ' / ' + selectedFrequency.short + ' for ' + dates.label
-        ),
+    h('section', { className: 'etf-hero-card' },
+      h('div', { className: 'etf-hero-main' },
+        h('span', { className: 'charts-eyebrow' }, 'Latest ETF demand'),
+        h('h2', { className: 'tabular-nums ' + flowTone(latest?.total) }, latest ? formatFlow(latest.total, 1) : 'Loading...'),
+        h('p', null, latest ? 'Net U.S. spot Bitcoin ETF flow for ' + latest.displayDate + '. Positive values imply net creation demand; negative values imply redemptions.' : 'Pulling the latest ETF flow row from public tables.'),
+        h('div', { className: 'etf-hero-pills' },
+          flows?.latestLeader && h('span', null, 'Largest latest move: ' + flows.latestLeader.ticker + ' ' + formatFlow(flows.latestLeader.value, 1)),
+          dayDelta !== null && h('span', { className: flowTone(dayDelta) }, 'Vs prior day: ' + formatFlow(dayDelta, 1))
+        )
       ),
-
-      h('div', { className: 'dca-form-grid' },
-        h('div', { className: 'dca-control-block' },
-          h('label', null, 'Buy amount'),
-          h(ButtonGrid, {
-            items: AMOUNT_PRESETS,
-            activeId: amount,
-            onSelect: value => setAmount(value),
-            compact: true,
-          }),
-          h('div', { className: 'dca-input-row' },
-            h('span', null, '$'),
-            h('input', {
-              type: 'number',
-              className: 'input',
-              min: 1,
-              step: 1,
-              value: amount,
-              onChange: event => setAmount(Math.max(1, Number(event.target.value) || 1)),
-            }),
-            h('em', null, 'per ' + selectedFrequency.short),
-          ),
+      h('div', { className: 'etf-range-card' },
+        h('div', { className: 'charts-panel-range' },
+          h('span', null, 'Timeframe'),
+          h(ChartRangeControls, { value: range, onChange: setRange, ranges: ETF_RANGES, label: 'ETF flow timeframe' })
         ),
-
-        h('div', { className: 'dca-control-block' },
-          h('label', null, 'Frequency'),
-          h(ButtonGrid, {
-            items: FREQUENCIES,
-            activeId: frequencyId,
-            onSelect: setFrequencyId,
-          }),
-          h('p', null, 'Uses monthly averaged BTC prices and converts your frequency into estimated buys per month.'),
-        ),
-      ),
-
-      h('div', { className: 'dca-control-block' },
-        h('label', null, 'Timeframe'),
-        h('div', { className: 'dca-timeframe-wrap' },
-          h('div', null,
-            h('span', null, 'Past performance'),
-            h(ButtonGrid, {
-              items: PAST_TIMEFRAMES,
-              activeId: timeframe,
-              onSelect: setTimeframe,
-              compact: true,
-            }),
-          ),
-          h('div', null,
-            h('span', null, 'Future potential'),
-            h(ButtonGrid, {
-              items: FUTURE_TIMEFRAMES,
-              activeId: timeframe,
-              onSelect: setTimeframe,
-              compact: true,
-            }),
-          ),
-        ),
-      ),
-
-      h('div', { className: 'dca-control-block dca-model-block' },
-        h('label', null, 'Projection model'),
-        h('div', { className: 'dca-model-grid' },
-          Object.entries(projectionModels).map(([key, model]) => h('button', {
-            key,
-            type: 'button',
-            className: 'dca-model-button' + (growthModel === key ? ' active' : ''),
-            style: {
-              borderColor: growthModel === key ? model.color : 'var(--border-subtle)',
-              background: growthModel === key ? model.color + '18' : undefined,
-            },
-            onClick: () => setGrowthModel(key),
-          },
-            h('strong', { style: { color: model.color } }, model.label),
-            h('span', null, model.description),
-          ))
-        ),
-        h('p', null, isFuture ? 'Projection model affects future timeframes only.' : 'Pick a future timeframe above to model possible long-term BTC value.'),
-      ),
+        h('div', { className: 'etf-range-net ' + flowTone(visibleNet) },
+          h('span', null, 'Selected range net'),
+          h('strong', { className: 'tabular-nums' }, formatFlow(visibleNet, 1)),
+          h('em', null, formatNumber(windowRows.length, 0) + ' trading rows')
+        )
+      )
     ),
 
-    results && h('section', { className: 'dca-results' },
-      h('div', { className: 'dca-result-hero' },
-        h('div', null,
-          h('span', { className: 'charts-eyebrow' }, isFuture ? 'Projected outcome' : 'Historical outcome'),
-          h('h2', null, results.totalBTC.toFixed(6) + ' BTC'),
-          h('p', null,
-            'Estimated holdings from ' + results.startLabel + ' to ' + results.endLabel + '. ' +
-            (isFuture ? 'Future values use the ' + selectedModel.label + ' model.' : 'Historical value updates with the live BTC price.')
-          ),
-        ),
-        h('div', { className: 'dca-value-box' },
-          h('span', null, isFuture ? 'Projected Worth' : 'Current Worth'),
-          h('strong', { className: 'tabular-nums' }, formatUSD(results.currentValue, 0)),
-          h('em', { className: 'tabular-nums', style: { color: results.profit >= 0 ? 'var(--success)' : 'var(--error)' } },
-            (results.profit >= 0 ? '+' : '') + formatUSD(results.profit, 0) + ' / ' + (results.roi >= 0 ? '+' : '') + formatPercent(results.roi, 1)
-          ),
-        ),
-      ),
-
-      h('div', { className: 'dca-stat-grid stagger-children' },
-        h(StatCard, { label: 'Total Invested', value: formatUSD(results.totalInvested, 0), accent: 'var(--text-primary)' }),
-        h(StatCard, { label: 'BTC Accumulated', value: results.totalBTC.toFixed(6) + ' BTC', accent: 'var(--btc-orange)' }),
-        h(StatCard, { label: 'Avg Cost Basis', value: formatUSD(results.avgCostBasis, 0), subtext: 'per BTC', accent: 'var(--text-muted)' }),
-        h(StatCard, { label: 'End BTC Price', value: formatUSD(results.projectedEndPrice || results.latestPrice, 0), accent: isFuture ? selectedModel.color : 'var(--success)' }),
-        h(StatCard, { label: 'Estimated Buys', value: '~' + Math.round(results.estimatedPurchases), subtext: selectedFrequency.label.toLowerCase(), accent: 'var(--text-muted)' }),
-      ),
-
-      h('div', { className: 'card dca-chart-card' },
-        h('div', { className: 'dca-chart-heading' },
-          h('div', null,
-            h('h3', null, 'Portfolio value over time'),
-            h('p', null, isFuture ? 'Orange is known history. Purple is projected. Gray is your total invested.' : 'Orange tracks your historical DCA value. Gray is your total invested.')
-          ),
-          h('span', { className: 'dca-plan-pill tabular-nums' }, formatUSD(amount, 0) + ' / ' + selectedFrequency.short),
-        ),
-        h(ChartComponent, {
-          type: 'line',
-          height: 360,
-          data: {
-            labels,
-            datasets: [
-              {
-                label: 'Portfolio Value',
-                data: results.dataPoints.map(point => point.projected ? null : point.portfolioValue),
-                borderColor: chartColors.orange,
-                backgroundColor: 'rgba(247, 147, 26, 0.10)',
-                borderWidth: 2.7,
-                tension: 0.28,
-                fill: true,
-                pointRadius: 0,
-                pointHoverRadius: 5,
-                spanGaps: false,
-              },
-              ...(results.hasProjectedData ? [{
-                label: 'Projected Value',
-                data: results.dataPoints.map((point, index) => {
-                  if (!point.projected && results.dataPoints[index + 1] && results.dataPoints[index + 1].projected) return point.portfolioValue;
-                  return point.projected ? point.portfolioValue : null;
-                }),
-                borderColor: selectedModel.color,
-                backgroundColor: selectedModel.color + '18',
-                borderWidth: 2.5,
-                borderDash: [7, 5],
-                tension: 0.28,
-                fill: true,
-                pointRadius: 0,
-                pointHoverRadius: 5,
-                spanGaps: true,
-              }] : []),
-              {
-                label: 'Total Invested',
-                data: results.dataPoints.map(point => point.invested),
-                borderColor: 'rgba(255,255,255,0.28)',
-                backgroundColor: 'rgba(255,255,255,0.04)',
-                borderWidth: 2,
-                borderDash: [4, 4],
-                tension: 0,
-                fill: true,
-                pointRadius: 0,
-              },
-            ],
-          },
-          options: {
-            interaction: { mode: 'index', intersect: false },
-            plugins: {
-              legend: {
-                display: true,
-                position: 'bottom',
-                labels: { color: '#a0a0b8', font: { family: 'Inter', size: 11 }, boxWidth: 12, padding: 16 },
-              },
-              tooltip: {
-                backgroundColor: '#12121a',
-                borderColor: 'rgba(255,255,255,0.1)',
-                borderWidth: 1,
-                titleColor: '#fff',
-                bodyColor: '#a0a0b8',
-                padding: 14,
-                cornerRadius: 10,
-                callbacks: {
-                  label: function(ctx) {
-                    if (ctx.raw === null) return null;
-                    return ctx.dataset.label + ': ' + formatUSD(ctx.raw, 0);
-                  },
-                  afterBody: function(items) {
-                    const point = results.dataPoints[items[0].dataIndex];
-                    if (!point) return [];
-                    return [
-                      '',
-                      'BTC held: ' + point.btcAccumulated.toFixed(6),
-                      'BTC price: ' + formatUSD(point.price, 0),
-                      'Profit/loss: ' + (point.profit >= 0 ? '+' : '') + formatUSD(point.profit, 0),
-                    ];
-                  },
-                },
-              },
-            },
-            scales: {
-              y: {
-                grid: { color: 'rgba(255,255,255,0.04)', drawBorder: false },
-                ticks: {
-                  color: '#6b6b80',
-                  font: { family: 'Inter', size: 11 },
-                  callback: function(value) { return '$' + formatAbbrev(value); },
-                },
-                border: { display: false },
-              },
-              x: {
-                grid: { display: false },
-                ticks: { color: '#6b6b80', font: { family: 'Inter', size: 10 }, maxTicksLimit: 9 },
-                border: { display: false },
-              },
-            },
-          },
-        }),
-      ),
-
-      isFuture && h('div', { className: 'card dca-scenario-section' },
-        h('h3', null, 'Same DCA plan across projection models'),
-        h('p', null, 'This keeps your amount, frequency, and timeframe the same, then changes only the projected BTC path.'),
-        h(ProjectionScenarioCards, {
-          amount,
-          frequency: selectedFrequency,
-          timeframe,
-          currentMonth,
-          firstHistoryMonth,
-          currentPrice: currentBtcPrice,
-          liveHistorical,
-        }),
-      ),
-
-      h('div', { className: 'charts-source-note' },
-        'DCA uses free public BTC price history where available, live BTC price fallback feeds, and monthly averaged prices for simpler calculations. Future projection models are educational simulations, not predictions or financial advice.'
-      ),
+    h('div', { className: 'etf-metric-grid' },
+      h(EtfMetric, { label: '7-Day Net', value: flows ? formatFlow(flows.net7d, 1) : '—', subtext: 'Last 7 trading rows', tone: flowTone(flows?.net7d) }),
+      h(EtfMetric, { label: '30-Day Net', value: flows ? formatFlow(flows.net30d, 1) : '—', subtext: (flows ? flows.inflowDays30 + ' inflow days / ' + flows.outflowDays30 + ' outflow days' : 'Loading'), tone: flowTone(flows?.net30d) }),
+      h(EtfMetric, { label: 'Cumulative Net', value: flows ? formatFlow(flows.cumulativeNet, 0) : '—', subtext: 'Since U.S. spot ETF launch', tone: flowTone(flows?.cumulativeNet) }),
+      h(EtfMetric, { label: 'Biggest Range Day', value: biggestRecent ? formatFlow(biggestRecent.total, 1) : '—', subtext: biggestRecent ? biggestRecent.displayDate : 'Loading', tone: flowTone(biggestRecent?.total) })
     ),
+
+    h('section', { className: 'charts-panel charts-panel-full etf-chart-panel' },
+      h('div', { className: 'charts-panel-header' },
+        h('div', { className: 'charts-panel-heading' },
+          h('div', { className: 'charts-panel-title' }, 'ETF Inflows / Outflows'),
+          h('div', { className: 'charts-panel-subtitle' }, 'Daily net flows by selected timeframe, in US$ millions.')
+        ),
+        h('span', { className: 'charts-badge' }, flows?.unit || 'US$m')
+      ),
+      h('div', { className: 'charts-panel-body' },
+        h(BarChart, {
+          labels: chartRows.map(point => formatChartDateLabel(point[0], range === 'max' ? '5y' : range)),
+          datasets: [{
+            label: 'Net ETF Flow',
+            data: chartRows.map(point => point[1]),
+            backgroundColor: chartRows.map(point => point[1] >= 0 ? 'rgba(0,212,170,0.72)' : 'rgba(255,71,87,0.72)'),
+            borderColor: 'transparent',
+          }],
+          options: flowOptions(),
+          height: 300,
+        })
+      )
+    ),
+
+    h('div', { className: 'etf-detail-grid' },
+      h('section', { className: 'charts-panel' },
+        h('div', { className: 'charts-panel-header' },
+          h('div', { className: 'charts-panel-heading' },
+            h('div', { className: 'charts-panel-title' }, 'Latest Issuer Breakdown'),
+            h('div', { className: 'charts-panel-subtitle' }, latest ? latest.displayDate : 'Loading latest trading day')
+          )
+        ),
+        h('div', { className: 'charts-panel-body' },
+          h(LatestFundTable, { funds: flows?.latestFunds || [] })
+        )
+      ),
+      h('section', { className: 'charts-panel' },
+        h('div', { className: 'charts-panel-header' },
+          h('div', { className: 'charts-panel-heading' },
+            h('div', { className: 'charts-panel-title' }, 'Why ETF Flow Matters'),
+            h('div', { className: 'charts-panel-subtitle' }, 'A practical read on demand pressure')
+          )
+        ),
+        h('div', { className: 'charts-panel-body etf-explainer' },
+          h('p', null, 'Spot ETF inflows are a direct sign of regulated institutional and advisor demand. Sustained positive net flows can add buying pressure because ETF issuers generally need BTC exposure to match share creation.'),
+          h('p', null, 'Outflows do not always mean instant selling, but persistent redemptions can remove demand and often line up with weaker market momentum. Use this with price trend, valuation, liquidity, and macro context.'),
+          flows?.sourceUrl && h('a', { href: flows.sourceUrl, target: '_blank', rel: 'noopener noreferrer' }, 'Open Farside source →')
+        )
+      )
+    ),
+
+    h('div', { className: 'charts-source-note' },
+      'ETF data updates on trading days after issuers and data providers publish daily creations/redemptions. Values are shown in US$ millions from Farside Investors via Jina Reader, so they are near-live for ETF reporting rather than tick-by-tick market data.'
+    )
   );
 }
 
@@ -11890,7 +12080,8 @@ const routes = {
   strategy: { component: StrategyPage, title: 'MicroStrategy Bitcoin Holdings' },
   ownership: { component: OwnershipPage, title: 'Ownership Distribution' },
   supply: { component: SupplyPage, title: 'Supply Countdown' },
-  dca: { component: DCAPage, title: 'DCA Calculator' },
+  'price-tracker': { component: PriceTrackerPage, title: 'Bitcoin Price Tracker' },
+  'etf-flows': { component: EtfFlowsPage, title: 'Bitcoin ETF Flows' },
   whales: { component: WhalePage, title: 'Whale Tracker' },
   pyramid: { component: PyramidPage, title: 'Wealth Pyramid' },
   'available-supply': { component: AvailableSupplyPage, title: 'Available Supply' },
