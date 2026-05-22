@@ -40,6 +40,14 @@
 
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.js"></script>
+<script>
+  if (!window.Chart) {
+    var chartFallback = document.createElement('script');
+    chartFallback.src = 'https://unpkg.com/chart.js@4.4.7/dist/chart.umd.js';
+    chartFallback.crossOrigin = 'anonymous';
+    document.head.appendChild(chartFallback);
+  }
+</script>
 
 <!-- Custom Styles -->
 <style>
@@ -2321,7 +2329,7 @@ globalThis.formatChartDateLabel = function formatChartDateLabel(timestamp, range
 
 // Format as USD currency
 globalThis.formatUSD = function formatUSD(value, decimals = 2) {
-  if (value === null || value === undefined) return '—';
+  if (value === null || value === undefined) return '‚Äî';
   if (value >= 1e12) return '$' + (value / 1e12).toFixed(2) + 'T';
   if (value >= 1e9) return '$' + (value / 1e9).toFixed(2) + 'B';
   if (value >= 1e6) return '$' + (value / 1e6).toFixed(2) + 'M';
@@ -2331,7 +2339,7 @@ globalThis.formatUSD = function formatUSD(value, decimals = 2) {
 
 // Format BTC amount
 globalThis.formatBTC = function formatBTC(value, decimals = 8) {
-  if (value === null || value === undefined) return '—';
+  if (value === null || value === undefined) return '‚Äî';
   if (value >= 1e6) return (value / 1e6).toFixed(2) + 'M BTC';
   if (value >= 1e3) return value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' BTC';
   return value.toFixed(decimals) + ' BTC';
@@ -2339,7 +2347,7 @@ globalThis.formatBTC = function formatBTC(value, decimals = 8) {
 
 // Format large numbers with commas
 globalThis.formatNumber = function formatNumber(value, decimals = 0) {
-  if (value === null || value === undefined) return '—';
+  if (value === null || value === undefined) return '‚Äî';
   if (value >= 1e12) return (value / 1e12).toFixed(2) + 'T';
   if (value >= 1e9) return (value / 1e9).toFixed(2) + 'B';
   if (value >= 1e6) return (value / 1e6).toFixed(2) + 'M';
@@ -2349,20 +2357,20 @@ globalThis.formatNumber = function formatNumber(value, decimals = 0) {
 
 // Format compact number (no prefix)
 globalThis.formatCompact = function formatCompact(value) {
-  if (value === null || value === undefined) return '—';
+  if (value === null || value === undefined) return '‚Äî';
   return value.toLocaleString('en-US');
 }
 
 // Format date
 globalThis.formatDate = function formatDate(dateStr) {
-  if (!dateStr) return '—';
+  if (!dateStr) return '‚Äî';
   const d = new Date(dateStr);
   return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
 // Format date relative (e.g., "2h ago")
 globalThis.formatRelativeDate = function formatRelativeDate(dateStr) {
-  if (!dateStr) return '—';
+  if (!dateStr) return '‚Äî';
   const now = new Date();
   const d = new Date(dateStr);
   const diff = now - d;
@@ -2379,19 +2387,19 @@ globalThis.formatRelativeDate = function formatRelativeDate(dateStr) {
 
 // Format percentage
 globalThis.formatPercent = function formatPercent(value, decimals = 2) {
-  if (value === null || value === undefined) return '—';
+  if (value === null || value === undefined) return '‚Äî';
   return value.toFixed(decimals) + '%';
 }
 
 // Format sat/vB fee rate
 globalThis.formatFeeRate = function formatFeeRate(value) {
-  if (value === null || value === undefined) return '—';
+  if (value === null || value === undefined) return '‚Äî';
   return Math.round(value) + ' sat/vB';
 }
 
 // Format hashrate
 globalThis.formatHashrate = function formatHashrate(ehps) {
-  if (ehps === null || ehps === undefined) return '—';
+  if (ehps === null || ehps === undefined) return '‚Äî';
   return ehps.toFixed(1) + ' EH/s';
 }
 
@@ -2454,7 +2462,7 @@ function cacheGet(key, maxAgeMs = 300000) {
   return entry.value;
 }
 
-// Shared fetch with timeout — returns null on failure (never throws)
+// Shared fetch with timeout ‚Äî returns null on failure (never throws)
 globalThis.tryFetch = async function tryFetch(url, timeoutMs = 8000, options = {}) {
   try {
     const c = new AbortController();
@@ -2507,7 +2515,7 @@ globalThis.fetchWithFallback = async function fetchWithFallback(url, fallbackDat
 let _priceCache = null;
 
 globalThis.fetchBTCPrice = async function fetchBTCPrice() {
-  // Source 1: Kraken — rarely ad-blocked, returns rich data
+  // Source 1: Kraken ‚Äî rarely ad-blocked, returns rich data
   try {
     const d = await tryFetch('https://api.kraken.com/0/public/Ticker?pair=XBTUSD', 6000);
     if (d && d.result) {
@@ -2524,7 +2532,7 @@ globalThis.fetchBTCPrice = async function fetchBTCPrice() {
     }
   } catch { /* continue */ }
 
-  // Source 2: Gemini — rarely ad-blocked
+  // Source 2: Gemini ‚Äî rarely ad-blocked
   try {
     const d = await tryFetch('https://api.gemini.com/v1/pubticker/btcusd', 6000);
     if (d && d.last) {
@@ -2535,7 +2543,7 @@ globalThis.fetchBTCPrice = async function fetchBTCPrice() {
     }
   } catch { /* continue */ }
 
-  // Source 3: Bitstamp — rarely ad-blocked
+  // Source 3: Bitstamp ‚Äî rarely ad-blocked
   try {
     const d = await tryFetch('https://www.bitstamp.net/api/v2/ticker/btcusd/', 6000);
     if (d && d.last) {
@@ -2600,7 +2608,7 @@ globalThis.fetchBTCPrice = async function fetchBTCPrice() {
     }
   } catch { /* continue */ }
 
-  // All sources failed — return cached value if available
+  // All sources failed ‚Äî return cached value if available
   if (_priceCache) {
     console.warn('[Price] All sources blocked, using cached: $' + _priceCache.price);
     return { ..._priceCache, source: _priceCache.source + '-cached' };
@@ -2626,7 +2634,7 @@ globalThis.fetchNetworkData = async function fetchNetworkData() {
     fearGreed: null,
   };
 
-  // mempool.space — rarely blocked, Bitcoin infrastructure site
+  // mempool.space ‚Äî rarely blocked, Bitcoin infrastructure site
   const [heightRes, feeRes, mempoolRes, diffRes, hashrateRes] = await Promise.all([
     tryFetch('https://mempool.space/api/blocks/tip/height', 8000),
     tryFetch('https://mempool.space/api/v1/fees/recommended', 8000),
@@ -2657,7 +2665,7 @@ globalThis.fetchNetworkData = async function fetchNetworkData() {
     results.hashrate = hashrateRes.currentHashrate / 1e18;
   }
 
-  // Circulating supply — try mempool.space first, then blockchain.info
+  // Circulating supply ‚Äî try mempool.space first, then blockchain.info
   // blockchain.info/q/totalbc returns satoshis as plain text
   const supplyRes = await tryFetch('https://blockchain.info/q/totalbc', 8000);
   if (supplyRes !== null) {
@@ -3457,7 +3465,7 @@ globalThis.useLiveData = function useLiveData(fetchFn, intervalMs = 30000, deps 
 }
 
 /* ------------------------------------------
-   useBTCWebSocket — real-time BTC price via WebSocket
+   useBTCWebSocket ‚Äî real-time BTC price via WebSocket
    Uses Coinbase Exchange's public ticker channel as primary,
    falls back to REST polling via fetchBTCPrice.
    Caches last price in memory.
@@ -3485,13 +3493,45 @@ globalThis.useBTCWebSocket = function useBTCWebSocket() {
     let mounted = true;
     let reconnectTimer = null;
     let restInterval = null;
+    let emitTimer = null;
+    let pendingPrice = null;
+    let lastEmitAt = 0;
+
+    const emitPrice = (value, force = false) => {
+      const p = Number(value);
+      if (!Number.isFinite(p) || p <= 0) return;
+      wsCacheSet('ws_price', p);
+
+      const now = Date.now();
+      const elapsed = now - lastEmitAt;
+      const commit = () => {
+        emitTimer = null;
+        if (!mounted || !Number.isFinite(pendingPrice)) return;
+        setPrice(pendingPrice);
+        lastEmitAt = Date.now();
+        pendingPrice = null;
+      };
+
+      pendingPrice = p;
+      if (force || elapsed >= 1000) {
+        if (emitTimer) clearTimeout(emitTimer);
+        emitTimer = null;
+        setPrice(p);
+        lastEmitAt = now;
+        pendingPrice = null;
+        return;
+      }
+
+      if (!emitTimer) {
+        emitTimer = setTimeout(commit, Math.max(120, 1000 - elapsed));
+      }
+    };
 
     // REST polling fallback (every 20s)
     const pollRest = async () => {
       const result = await fetchBTCPrice();
       if (result && mounted) {
-        setPrice(result.price);
-        wsCacheSet('ws_price', result.price);
+        emitPrice(result.price, true);
       }
     };
 
@@ -3517,8 +3557,7 @@ globalThis.useBTCWebSocket = function useBTCWebSocket() {
             if (data.type === 'ticker' && data.product_id === 'BTC-USD' && data.price) {
               const p = parseFloat(data.price);
               if (p > 0 && mounted) {
-                setPrice(p);
-                wsCacheSet('ws_price', p);
+                emitPrice(p);
               }
             }
           } catch { /* malformed message */ }
@@ -3540,6 +3579,7 @@ globalThis.useBTCWebSocket = function useBTCWebSocket() {
       mounted = false;
       if (ws) { try { ws.close(); } catch { /* */ } }
       clearTimeout(reconnectTimer);
+      clearTimeout(emitTimer);
       clearInterval(restInterval);
     };
   }, []);
@@ -3548,7 +3588,7 @@ globalThis.useBTCWebSocket = function useBTCWebSocket() {
 }
 
 /* ------------------------------------------
-   useBlockHeight — cached block height polling
+   useBlockHeight ‚Äî cached block height polling
    ------------------------------------------ */
 globalThis.useBlockHeight = function useBlockHeight() {
   const [blockHeight, setBlockHeight] = useState(() => wsCacheGet('block_height') || null);
@@ -3636,21 +3676,44 @@ const { createElement: h, useEffect, useRef, useState } = React;
 globalThis.ChartComponent = function ChartComponent({ type, data, options, height = 300 }) {
   const canvasRef = useRef(null);
   const chartRef = useRef(null);
+  const [chartReady, setChartReady] = useState(() => !!window.Chart);
 
   useEffect(() => {
-    if (!canvasRef.current || !window.Chart) return;
-
-    // Destroy previous chart instance
-    if (chartRef.current) {
-      chartRef.current.destroy();
+    if (window.Chart) {
+      setChartReady(true);
+      return undefined;
     }
 
+    let attempts = 0;
+    const timer = setInterval(() => {
+      attempts += 1;
+      if (window.Chart || attempts > 80) {
+        clearInterval(timer);
+        setChartReady(!!window.Chart);
+      }
+    }, 250);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!canvasRef.current || !window.Chart || !chartReady) return;
     const ctx = canvasRef.current.getContext('2d');
-    const mergedOptions = mergeOptions(chartDefaults, options || {});
+    const mergedOptions = mergeOptions(chartDefaults, {
+      animation: false,
+      resizeDelay: 120,
+      transitions: {
+        active: { animation: { duration: 0 } },
+        resize: { animation: { duration: 0 } },
+        show: { animations: {} },
+        hide: { animations: {} },
+      },
+      ...(options || {}),
+    });
 
     chartRef.current = new window.Chart(ctx, {
       type: type,
-      data: data,
+      data: data || { labels: [], datasets: [] },
       options: mergedOptions,
     });
 
@@ -3660,7 +3723,27 @@ globalThis.ChartComponent = function ChartComponent({ type, data, options, heigh
         chartRef.current = null;
       }
     };
-  }, [type, JSON.stringify(data), JSON.stringify(options)]);
+  }, [type, chartReady]);
+
+  useEffect(() => {
+    const chart = chartRef.current;
+    if (!chart) return;
+
+    chart.data.labels = (data && data.labels) || [];
+    chart.data.datasets = (data && data.datasets) || [];
+    chart.options = mergeOptions(chartDefaults, {
+      animation: false,
+      resizeDelay: 120,
+      transitions: {
+        active: { animation: { duration: 0 } },
+        resize: { animation: { duration: 0 } },
+        show: { animations: {} },
+        hide: { animations: {} },
+      },
+      ...(options || {}),
+    });
+    chart.update('none');
+  }, [data, options]);
 
   return h('div', { className: 'chart-container', style: { height: height + 'px' } },
     h('canvas', { ref: canvasRef })
@@ -3896,7 +3979,7 @@ globalThis.KPICard = function KPICard({ label, value, delta, deltaLabel, prefix,
     delta !== undefined && h('div', {
       className: 'kpi-delta ' + (isPositive ? 'positive' : isNegative ? 'negative' : ''),
     },
-      h('span', null, isPositive ? '▲' : isNegative ? '▼' : '●'),
+      h('span', null, isPositive ? '‚ñ≤' : isNegative ? '‚ñº' : '‚óè'),
       ' ',
       formatPercent(Math.abs(delta)),
       deltaLabel && h('span', { style: { color: 'var(--text-faint)', fontWeight: 400, marginLeft: '4px' } }, deltaLabel)
@@ -4028,7 +4111,7 @@ globalThis.ChartRangeControls = function ChartRangeControls({ value, onChange, r
    ------------------------------------------ */
 globalThis.ErrorDisplay = function ErrorDisplay({ message, onRetry }) {
   return h('div', { className: 'card', style: { textAlign: 'center', padding: '48px 24px' } },
-    h('div', { style: { fontSize: '48px', marginBottom: '16px', opacity: 0.4 } }, '⚠'),
+    h('div', { style: { fontSize: '48px', marginBottom: '16px', opacity: 0.4 } }, '‚ö†'),
     h('div', { style: { fontSize: 'var(--text-lg)', fontWeight: 600, marginBottom: '8px' } }, 'Something went wrong'),
     h('div', { style: { fontSize: 'var(--text-sm)', color: 'var(--text-muted)', marginBottom: '24px' } }, message || 'Failed to load data. Using fallback data.'),
     onRetry && h('button', { className: 'btn btn-secondary', onClick: onRetry }, 'Retry')
@@ -4153,7 +4236,7 @@ globalThis.PlaceholderPage = function PlaceholderPage({ title, description, icon
   return h('div', { className: 'page-enter' },
     h(PageHeader, { title, description, badge: 'Coming Soon' }),
     h('div', { className: 'card', style: { textAlign: 'center', padding: '80px 24px' } },
-      h('div', { style: { fontSize: '64px', marginBottom: '24px', opacity: 0.15 } }, '🔧'),
+      h('div', { style: { fontSize: '64px', marginBottom: '24px', opacity: 0.15 } }, 'üîß'),
       h('div', { style: { fontSize: 'var(--text-xl)', fontWeight: 600, marginBottom: '8px', color: 'var(--text-muted)' } }, 'Under Construction'),
       h('div', { style: { fontSize: 'var(--text-sm)', color: 'var(--text-faint)', maxWidth: '480px', margin: '0 auto', lineHeight: 1.7 } },
         'This tool is being built and will be available soon. Check back for real-time ', title.toLowerCase(), ' data and interactive visualizations.'
@@ -4436,7 +4519,7 @@ globalThis.HomePage = function HomePage({ onNavigate }) {
     return () => clearInterval(iv);
   }, []);
 
-  // Live price + network data polling every 15s — ad-blocker resilient
+  // Live price + network data polling every 15s ‚Äî ad-blocker resilient
   const { data: liveHome, lastUpdated } = useLiveData(async () => {
     const [priceResult, networkData, binanceTicker] = await Promise.all([
       fetchBTCPrice(),
@@ -4676,7 +4759,7 @@ globalThis.DashboardPage = function DashboardPage({ onNavigate }) {
     return () => clearInterval(iv);
   }, []);
 
-  // Live data polling every 15s — ad-blocker resilient
+  // Live data polling every 15s ‚Äî ad-blocker resilient
   const { data: liveData, lastUpdated } = useLiveData(async () => {
     const [priceResult, networkData, binanceTicker, marketChart, ownershipSnapshot, strategySnapshot] = await Promise.all([
       fetchBTCPrice(),
@@ -4764,7 +4847,7 @@ globalThis.DashboardPage = function DashboardPage({ onNavigate }) {
       }),
       h(KPICard, {
         label: '24h Volume',
-        value: volume24h ? formatUSD(volume24h) : '—',
+        value: volume24h ? formatUSD(volume24h) : '‚Äî',
       }),
       h(KPICard, {
         label: 'Circulating Supply',
@@ -4777,7 +4860,7 @@ globalThis.DashboardPage = function DashboardPage({ onNavigate }) {
       }),
       h(KPICard, {
         label: 'Network Hashrate',
-        value: hashrate ? formatHashrate(hashrate) : '—',
+        value: hashrate ? formatHashrate(hashrate) : '‚Äî',
       }),
       h(KPICard, {
         label: 'Strategy Holdings',
@@ -4919,7 +5002,7 @@ globalThis.DashboardPage = function DashboardPage({ onNavigate }) {
           },
         }),
         h('div', { style: { textAlign: 'center', marginTop: '8px', fontSize: 'var(--text-xs)', color: 'var(--text-faint)' } },
-          ownershipSnapshot.source ? ownershipSnapshot.source + (ownershipSnapshot.date ? ' · ' + ownershipSnapshot.date : '') : 'Fallback ownership model'
+          ownershipSnapshot.source ? ownershipSnapshot.source + (ownershipSnapshot.date ? ' ¬∑ ' + ownershipSnapshot.date : '') : 'Fallback ownership model'
         ),
         h('div', { style: { display: 'flex', justifyContent: 'center', gap: '24px', marginTop: '16px' } },
           h('div', { style: { textAlign: 'center' } },
@@ -4927,7 +5010,7 @@ globalThis.DashboardPage = function DashboardPage({ onNavigate }) {
             h('div', { style: { fontSize: 'var(--text-xs)', color: 'var(--text-faint)' } }, 'Total Addresses'),
           ),
           h('div', { style: { textAlign: 'center' } },
-            h('div', { className: 'tabular-nums', style: { fontSize: 'var(--text-lg)', fontWeight: 700 } }, ownershipSnapshot.giniCoefficient !== null && ownershipSnapshot.giniCoefficient !== undefined ? ownershipSnapshot.giniCoefficient.toFixed(4) : '—'),
+            h('div', { className: 'tabular-nums', style: { fontSize: 'var(--text-lg)', fontWeight: 700 } }, ownershipSnapshot.giniCoefficient !== null && ownershipSnapshot.giniCoefficient !== undefined ? ownershipSnapshot.giniCoefficient.toFixed(4) : '‚Äî'),
             h('div', { style: { fontSize: 'var(--text-xs)', color: 'var(--text-faint)' } }, 'Gini Coefficient'),
           ),
         ),
@@ -5393,7 +5476,7 @@ globalThis.StrategyPage = function StrategyPage() {
       ),
       h('div', { style: { fontSize: 'var(--text-xs)', color: 'var(--text-faint)', textAlign: 'right' } },
         'Treasury date: ', latestTreasuryDate ? formatLocalDate(latestTreasuryDate) : 'Loading',
-        latestPurchaseUrl && h('span', null, ' · ', h('a', { href: latestPurchaseUrl, target: '_blank', rel: 'noopener noreferrer', style: { color: 'var(--btc-orange)', textDecoration: 'none' } }, 'latest filing'))
+        latestPurchaseUrl && h('span', null, ' ¬∑ ', h('a', { href: latestPurchaseUrl, target: '_blank', rel: 'noopener noreferrer', style: { color: 'var(--btc-orange)', textDecoration: 'none' } }, 'latest filing'))
       )
     ),
 
@@ -5633,7 +5716,7 @@ globalThis.OwnershipPage = function OwnershipPage() {
       className: 'stagger-children',
     },
       h(StatCard, { label: 'Total Addresses', value: formatNumber(data.totalWallets), subtext: liveOwnership ? 'latest public snapshot' : 'fallback estimate', accent: 'var(--btc-orange)' }),
-      h(StatCard, { label: 'Gini Coefficient', value: data.giniCoefficient !== null && data.giniCoefficient !== undefined ? data.giniCoefficient.toFixed(4) : '—', subtext: 'estimated from balance buckets', accent: 'var(--error)' }),
+      h(StatCard, { label: 'Gini Coefficient', value: data.giniCoefficient !== null && data.giniCoefficient !== undefined ? data.giniCoefficient.toFixed(4) : '‚Äî', subtext: 'estimated from balance buckets', accent: 'var(--error)' }),
       h(StatCard, { label: 'Top 1% Owns', value: formatPercent(data.top1Percent, 1), accent: 'var(--btc-orange)' }),
       h(StatCard, { label: 'Top 5% Owns', value: formatPercent(data.top5Percent, 1), accent: 'var(--btc-orange)' }),
       h(StatCard, { label: 'Top 10% Owns', value: formatPercent(data.top10Percent, 1), accent: 'var(--btc-orange)' }),
@@ -5877,7 +5960,7 @@ function LorenzCurveView({ data, lorenzPoints }) {
         lineHeight: 1.7,
       }
     },
-      h('strong', { style: { color: 'var(--text-primary)' } }, 'Gini Coefficient: ' + (data.giniCoefficient !== null && data.giniCoefficient !== undefined ? data.giniCoefficient.toFixed(4) : '—')),
+      h('strong', { style: { color: 'var(--text-primary)' } }, 'Gini Coefficient: ' + (data.giniCoefficient !== null && data.giniCoefficient !== undefined ? data.giniCoefficient.toFixed(4) : '‚Äî')),
       ' \u2014 A value close to 1 indicates extreme inequality. This is an address-level distribution, not a person-level distribution. Many large addresses belong to exchanges, ETFs, custodians, and institutions holding BTC on behalf of many users.'
     ),
   );
@@ -5972,7 +6055,7 @@ globalThis.SupplyPage = function SupplyPage() {
       h(StatCard, { label: 'Block Height', value: formatNumber(blockHeight, 0), accent: 'var(--text-primary)' }),
       h(StatCard, { label: 'Block Reward', value: supplyStats.currentReward + ' BTC', subtext: 'per block', accent: 'var(--btc-orange)' }),
       h(StatCard, { label: 'Daily Issuance', value: '~' + formatNumber(supplyStats.dailyIssuance || 450, 0), subtext: 'BTC/day', accent: 'var(--text-primary)' }),
-      h(StatCard, { label: 'Inflation Rate', value: supplyStats.inflationRate !== null ? formatPercent(supplyStats.inflationRate, 2) : '—', subtext: 'annual', accent: 'var(--success)' }),
+      h(StatCard, { label: 'Inflation Rate', value: supplyStats.inflationRate !== null ? formatPercent(supplyStats.inflationRate, 2) : '‚Äî', subtext: 'annual', accent: 'var(--success)' }),
     ),
 
     // Halving Countdown
@@ -6005,7 +6088,7 @@ globalThis.SupplyPage = function SupplyPage() {
         ))
       ),
       h('div', { style: { textAlign: 'center', fontSize: 'var(--text-xs)', color: 'var(--text-faint)', marginBottom: '20px' } },
-        countdown.estimatedDate ? 'Estimated: ' + countdown.estimatedDate.toLocaleString('en-US', { month: 'long', year: 'numeric' }) + ' · live block clock' : 'Waiting for block height'
+        countdown.estimatedDate ? 'Estimated: ' + countdown.estimatedDate.toLocaleString('en-US', { month: 'long', year: 'numeric' }) + ' ¬∑ live block clock' : 'Waiting for block height'
       ),
       h('div', { style: { marginTop: '24px', maxWidth: '500px', marginLeft: 'auto', marginRight: 'auto' } },
         h(LabeledProgress, {
@@ -6888,7 +6971,7 @@ globalThis.WhalePage = function WhalePage() {
       h(StatCard, { label: 'Recent Window Volume', value: formatBTC(totalWindow, 4), subtext: btcPrice ? formatUSD(totalWindow * btcPrice) : 'Live mempool sample', accent: 'var(--btc-orange)' }),
       h(StatCard, { label: 'Largest Recent TX', value: formatBTC(largestTransfer, 4), subtext: btcPrice ? formatUSD(largestTransfer * btcPrice) : 'Awaiting price', accent: 'var(--error)' }),
       h(StatCard, { label: 'Recent Transactions', value: formatNumber(transfers.length, 0), subtext: 'Latest mempool feed', accent: 'var(--text-primary)' }),
-      h(StatCard, { label: 'Median Fee Rate', value: medianFeeRate ? medianFeeRate.toFixed(1) + ' sat/vB' : '—', subtext: 'Among recent sample', accent: 'var(--success)' }),
+      h(StatCard, { label: 'Median Fee Rate', value: medianFeeRate ? medianFeeRate.toFixed(1) + ' sat/vB' : '‚Äî', subtext: 'Among recent sample', accent: 'var(--success)' }),
     ),
 
     h('div', { className: 'card', style: { marginBottom: '24px' } },
@@ -6935,7 +7018,7 @@ globalThis.WhalePage = function WhalePage() {
               h('tr', { key: tx.id },
                 h('td', { style: { fontSize: 'var(--text-xs)', color: 'var(--text-faint)', whiteSpace: 'nowrap' } }, formatTimeAgo(tx.timestamp, tick)),
                 h('td', { className: 'tabular-nums', style: { textAlign: 'right', fontWeight: 600, color: tx.amount >= 1 ? 'var(--error)' : 'var(--btc-orange)' } }, formatBTC(tx.amount, 4)),
-                h('td', { className: 'tabular-nums', style: { textAlign: 'right', fontSize: 'var(--text-sm)', color: 'var(--text-muted)' } }, btcPrice ? formatUSD(tx.amount * btcPrice) : '—'),
+                h('td', { className: 'tabular-nums', style: { textAlign: 'right', fontSize: 'var(--text-sm)', color: 'var(--text-muted)' } }, btcPrice ? formatUSD(tx.amount * btcPrice) : '‚Äî'),
                 h('td', null,
                   h('span', { style: { fontSize: 'var(--text-xs)', fontFamily: 'monospace', color: 'var(--text-faint)' } }, truncateAddress(tx.from)),
                 ),
@@ -6947,7 +7030,7 @@ globalThis.WhalePage = function WhalePage() {
                     style: { fontSize: 'var(--text-xs)', fontFamily: 'monospace', color: 'var(--btc-orange)', textDecoration: 'none' },
                   }, truncateAddress(tx.to)),
                 ),
-                h('td', { className: 'tabular-nums', style: { textAlign: 'right', color: 'var(--text-muted)' } }, tx.feeRate ? tx.feeRate.toFixed(1) + ' sat/vB' : '—'),
+                h('td', { className: 'tabular-nums', style: { textAlign: 'right', color: 'var(--text-muted)' } }, tx.feeRate ? tx.feeRate.toFixed(1) + ' sat/vB' : '‚Äî'),
               ),
             ),
           ),
@@ -7567,18 +7650,18 @@ const SUPPLY_ESTIMATES = {
    Format exact BTC number (no rounding to K/M)
    ------------------------------------------ */
 function formatExactBTC(value) {
-  if (value === null || value === undefined || value === 0) return '—';
+  if (value === null || value === undefined || value === 0) return '‚Äî';
   // Show full number with 2 decimal places and commas
   return value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 function formatExactInt(value) {
-  if (value === null || value === undefined || value === 0) return '—';
+  if (value === null || value === undefined || value === 0) return '‚Äî';
   return value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 }
 
 function formatExactBTCFull(value) {
-  if (value === null || value === undefined || value === 0) return '—';
+  if (value === null || value === undefined || value === 0) return '‚Äî';
   // Show up to 8 decimal places (satoshi precision) for circulating supply
   return value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 8 });
 }
@@ -7629,7 +7712,7 @@ globalThis.AvailableSupplyPage = function AvailableSupplyPage() {
   const [reserveMetric, setReserveMetric] = useState('balance');
   // Live data: circulating supply, price, all exchange data (ad-blocker resilient)
   const { data: liveData, lastUpdated } = useLiveData(async () => {
-    // Fetch everything in parallel — all functions return null on failure
+    // Fetch everything in parallel ‚Äî all functions return null on failure
     const [networkData, priceResult, reserveSnapshot, geckoExchanges, ...exchangeResults] = await Promise.all([
       fetchNetworkData(),
       fetchBTCPrice(),
@@ -8462,6 +8545,40 @@ function latestFinite(values) {
   return null;
 }
 
+function firstFinite(values) {
+  for (let i = 0; i < values.length; i += 1) {
+    if (Number.isFinite(values[i])) return values[i];
+  }
+  return null;
+}
+
+function seriesStats(values) {
+  const valid = (values || []).filter(Number.isFinite);
+  const first = firstFinite(values || []);
+  const latest = latestFinite(values || []);
+  const change = Number.isFinite(first) && Number.isFinite(latest) ? latest - first : null;
+  const changePercent = Number.isFinite(change) && first !== 0 ? (change / Math.abs(first)) * 100 : null;
+  return {
+    first,
+    latest,
+    change,
+    changePercent,
+    min: valid.length ? Math.min(...valid) : null,
+    max: valid.length ? Math.max(...valid) : null,
+  };
+}
+
+function rangeName(range) {
+  const found = VALUATION_RANGES.find(item => item.id === range);
+  return found ? found.label : String(range || '').toUpperCase();
+}
+
+function signedNumber(value, decimals = 2, suffix = '') {
+  if (!Number.isFinite(value)) return '...';
+  const sign = value > 0 ? '+' : '';
+  return sign + value.toFixed(decimals) + suffix;
+}
+
 function appendLivePrice(points, livePrice) {
   if (!Array.isArray(points) || !points.length) return livePrice ? [[Date.now(), livePrice]] : [];
   if (!livePrice) return points;
@@ -8653,6 +8770,64 @@ function buildDailyPriceMap(pricePoints) {
   return map;
 }
 
+function buildPriceMetricRows(rows, pricePoints, referencePricePoints, livePrice) {
+  const sortedRows = Array.isArray(rows)
+    ? rows.filter(row => row && Number.isFinite(row.ts) && Number.isFinite(row.marketCap) && Number.isFinite(row.realizedCap)).sort((a, b) => a.ts - b.ts)
+    : [];
+  const sourcePoints = Array.isArray(pricePoints)
+    ? pricePoints.filter(point => Array.isArray(point) && Number.isFinite(point[0]) && Number.isFinite(point[1]) && point[1] > 0).sort((a, b) => a[0] - b[0])
+    : [];
+
+  if (!sortedRows.length || !sourcePoints.length) return [];
+
+  const reference = appendLivePrice(
+    Array.isArray(referencePricePoints) && referencePricePoints.length ? referencePricePoints : sourcePoints,
+    livePrice
+  );
+  const dailyPriceMap = buildDailyPriceMap(reference);
+  const capStddev = stddev(sortedRows.map(row => row.marketCap));
+  let rowIndex = 0;
+
+  return sourcePoints.map(point => {
+    while (rowIndex < sortedRows.length - 1 && sortedRows[rowIndex + 1].ts <= point[0]) {
+      rowIndex += 1;
+    }
+
+    const row = sortedRows[rowIndex];
+    const rowDate = new Date(row.ts).toISOString().slice(0, 10);
+    const rowPrice = row.live && Number.isFinite(livePrice) && livePrice > 0
+      ? livePrice
+      : dailyPriceMap.get(rowDate);
+    const supply = Number.isFinite(rowPrice) && rowPrice > 0
+      ? row.marketCap / rowPrice
+      : row.marketCap / point[1];
+    const marketCap = Number.isFinite(supply) && supply > 0 ? point[1] * supply : row.marketCap;
+    const mvrv = row.realizedCap > 0 ? marketCap / row.realizedCap : null;
+    const mvrvZ = capStddev ? (marketCap - row.realizedCap) / capStddev : null;
+
+    return {
+      ts: point[0],
+      price: point[1],
+      marketCap,
+      realizedCap: row.realizedCap,
+      mvrv,
+      mvrvZ,
+    };
+  });
+}
+
+function buildMetricWindowFromPricePoints(rows, pricePoints, referencePricePoints, livePrice, range, key) {
+  const metrics = buildPriceMetricRows(rows, pricePoints, referencePricePoints, livePrice);
+  const points = metrics
+    .map(row => [row.ts, row[key]])
+    .filter(point => Number.isFinite(point[1]));
+  return {
+    points,
+    labels: points.map(point => formatChartDateLabel(point[0], range)),
+    values: points.map(point => point[1]),
+  };
+}
+
 function applyLiveMvrv(rows, pricePoints, livePrice) {
   if (!Array.isArray(rows) || !rows.length) return [];
   if (!Number.isFinite(livePrice) || livePrice <= 0) return rows;
@@ -8692,29 +8867,23 @@ function buildMetricWindow(rows, range, key, maxPoints = 240) {
   return getRangeWindow(points, range, maxPoints);
 }
 
-function buildCompositeSeries(rows, pricePoints, range, livePrice) {
-  const priceMap = buildDailyPriceMap(pricePoints);
-  const drawdownMap = new Map();
+function buildCompositeSeries(rows, pricePoints, range, livePrice, referencePricePoints) {
   const priceWindow = appendLivePrice(pricePoints, livePrice);
   const drawdowns = calcDrawdown(priceWindow.map(point => point[1]));
-  priceWindow.forEach((point, index) => {
-    drawdownMap.set(new Date(point[0]).toISOString().slice(0, 10), drawdowns[index]);
-  });
+  const metrics = buildPriceMetricRows(rows, priceWindow, referencePricePoints || priceWindow, livePrice);
 
-  const points = rows.map(row => {
-    const dateKey = new Date(row.ts).toISOString().slice(0, 10);
-    const price = row.live && Number.isFinite(livePrice) ? livePrice : priceMap.get(dateKey);
+  const points = metrics.map((row, index) => {
     const components = [];
 
     if (Number.isFinite(row.mvrv)) components.push(clamp((row.mvrv - 1.65) * 36, -55, 70));
     if (Number.isFinite(row.mvrvZ)) components.push(clamp((row.mvrvZ - 1.5) * 18, -55, 70));
-    if (Number.isFinite(price)) {
-      const position = powerLawPosition(price, row.ts);
+    if (Number.isFinite(row.price)) {
+      const position = powerLawPosition(row.price, row.ts);
       if (Number.isFinite(position)) components.push((position - 50) * 1.18);
-      const band = getRainbowBand(price, row.ts);
+      const band = getRainbowBand(row.price, row.ts);
       components.push(band.score);
     }
-    const drawdown = row.live ? latestFinite(drawdowns) : drawdownMap.get(dateKey);
+    const drawdown = drawdowns[index];
     if (Number.isFinite(drawdown)) components.push(drawdown <= -55 ? -42 : drawdown <= -35 ? -26 : drawdown <= -15 ? -10 : 12);
 
     if (!components.length) return null;
@@ -8815,20 +8984,15 @@ function ValuationMeter({ score, signal }) {
 globalThis.ValuationPage = function ValuationPage() {
   const { price: streamedPrice } = useBTCWebSocket();
   const [ranges, setRanges] = useState(DEFAULT_RANGES);
-  const rangeKey = Object.values(ranges).join('|');
 
   const setRange = useCallback((key, value) => {
     setRanges(prev => ({ ...prev, [key]: value }));
   }, []);
 
   const { data: liveData, lastUpdated } = useLiveData(async () => {
-    const neededRanges = Array.from(new Set([
-      ranges.composite,
-      ranges.powerLaw,
-      ranges.rainbow,
-      ranges.piCycle,
-      ranges.drawdown,
-    ]));
+    const neededRanges = VALUATION_RANGES
+      .map(range => range.id)
+      .filter(range => range !== 'max');
 
     const rangeEntriesPromise = Promise.all(neededRanges.map(async (range) => {
       const chart = await fetchMarketChart(getRangeDays(range));
@@ -8849,7 +9013,7 @@ globalThis.ValuationPage = function ValuationPage() {
       longSource: longMarketChart && longMarketChart.source,
       marketByRange: Object.fromEntries(rangeEntries),
     };
-  }, 30000, [rangeKey]);
+  }, 30000, []);
 
   const btcPrice = streamedPrice || liveData?.priceResult?.price || 0;
   const rawLongPrices = liveData?.longPrices || [];
@@ -8866,23 +9030,32 @@ globalThis.ValuationPage = function ValuationPage() {
     return getRangeWindow(appendLivePrice(sourcePoints, btcPrice), range, range === '1d' ? 288 : 260);
   }, [liveData?.marketByRange, rawLongPrices, btcPrice]);
 
-  const currentRow = valuationRows[valuationRows.length - 1] || {};
-  const currentMvrv = currentRow.mvrv;
-  const currentZ = currentRow.mvrvZ;
-  const currentBand = btcPrice ? getRainbowBand(btcPrice, Date.now()) : RAINBOW_BANDS[4];
-  const currentPowerPosition = btcPrice ? powerLawPosition(btcPrice, Date.now()) : null;
-  const currentPowerFair = powerLawValue(daysSinceGenesisAt(Date.now()));
-  const currentPowerSupport = currentPowerFair / 3;
-  const currentPowerResistance = currentPowerFair * 10;
-
-  const compositeWindow = useMemo(() => buildCompositeSeries(valuationRows, longPrices, ranges.composite, btcPrice), [valuationRows, longPrices, ranges.composite, btcPrice]);
-  const currentScore = latestFinite(compositeWindow.values);
+  const compositePriceWindow = useMemo(() => getPriceWindow(ranges.composite), [getPriceWindow, ranges.composite]);
+  const compositeWindow = useMemo(
+    () => buildCompositeSeries(valuationRows, compositePriceWindow.points, ranges.composite, btcPrice, longPrices),
+    [valuationRows, compositePriceWindow, ranges.composite, btcPrice, longPrices]
+  );
+  const scoreStats = useMemo(() => seriesStats(compositeWindow.values), [compositeWindow.values]);
+  const currentScore = scoreStats.latest;
   const scoreSignal = valuationSignal(currentScore);
-  const currentMvrvSignal = mvrvSignal(currentMvrv);
-  const currentZSignal = zSignal(currentZ);
 
-  const mvrvWindow = useMemo(() => buildMetricWindow(valuationRows, ranges.mvrv, 'mvrv', 260), [valuationRows, ranges.mvrv]);
-  const mvrvZWindow = useMemo(() => buildMetricWindow(valuationRows, ranges.mvrvZ, 'mvrvZ', 260), [valuationRows, ranges.mvrvZ]);
+  const mvrvPriceWindow = useMemo(() => getPriceWindow(ranges.mvrv), [getPriceWindow, ranges.mvrv]);
+  const mvrvWindow = useMemo(
+    () => buildMetricWindowFromPricePoints(valuationRows, mvrvPriceWindow.points, longPrices, btcPrice, ranges.mvrv, 'mvrv'),
+    [valuationRows, mvrvPriceWindow, longPrices, btcPrice, ranges.mvrv]
+  );
+  const mvrvStats = useMemo(() => seriesStats(mvrvWindow.values), [mvrvWindow.values]);
+  const currentMvrv = mvrvStats.latest;
+  const currentMvrvSignal = mvrvSignal(currentMvrv);
+
+  const mvrvZPriceWindow = useMemo(() => getPriceWindow(ranges.mvrvZ), [getPriceWindow, ranges.mvrvZ]);
+  const mvrvZWindow = useMemo(
+    () => buildMetricWindowFromPricePoints(valuationRows, mvrvZPriceWindow.points, longPrices, btcPrice, ranges.mvrvZ, 'mvrvZ'),
+    [valuationRows, mvrvZPriceWindow, longPrices, btcPrice, ranges.mvrvZ]
+  );
+  const mvrvZStats = useMemo(() => seriesStats(mvrvZWindow.values), [mvrvZWindow.values]);
+  const currentZ = mvrvZStats.latest;
+  const currentZSignal = zSignal(currentZ);
 
   const powerWindow = useMemo(() => {
     const window = getPriceWindow(ranges.powerLaw);
@@ -8891,8 +9064,14 @@ globalThis.ValuationPage = function ValuationPage() {
       fair: window.points.map(point => powerLawValue(daysSinceGenesisAt(point[0]))),
       support: window.points.map(point => powerLawValue(daysSinceGenesisAt(point[0])) / 3),
       resistance: window.points.map(point => powerLawValue(daysSinceGenesisAt(point[0])) * 10),
+      position: window.points.map(point => powerLawPosition(point[1], point[0])),
     };
   }, [getPriceWindow, ranges.powerLaw]);
+  const powerStats = useMemo(() => seriesStats(powerWindow.position), [powerWindow.position]);
+  const currentPowerPosition = powerStats.latest;
+  const currentPowerFair = latestFinite(powerWindow.fair);
+  const currentPowerSupport = latestFinite(powerWindow.support);
+  const currentPowerResistance = latestFinite(powerWindow.resistance);
 
   const rainbowWindow = useMemo(() => {
     const window = getPriceWindow(ranges.rainbow);
@@ -8902,8 +9081,10 @@ globalThis.ValuationPage = function ValuationPage() {
         ...band,
         data: window.points.map(point => rainbowBandValue(point[0], band.coeff, band.offset)),
       })),
+      bandHistory: window.points.map(point => getRainbowBand(point[1], point[0])),
     };
   }, [getPriceWindow, ranges.rainbow]);
+  const currentBand = rainbowWindow.bandHistory.length ? rainbowWindow.bandHistory[rainbowWindow.bandHistory.length - 1] : RAINBOW_BANDS[4];
 
   const piWindow = useMemo(() => {
     const longValues = longPrices.map(point => point[1]);
@@ -8920,12 +9101,18 @@ globalThis.ValuationPage = function ValuationPage() {
       price: visible.map(point => point[1].price),
       sma111: visible.map(point => point[1].sma111),
       sma350x2: visible.map(point => point[1].sma350x2),
-      latest111: latestFinite(sma111),
-      latest350x2: latestFinite(sma350x2),
+      gap: visible.map(point => {
+        const latest111 = point[1].sma111;
+        const latest350x2 = point[1].sma350x2;
+        return latest111 && latest350x2 ? ((latest350x2 - latest111) / latest350x2) * 100 : null;
+      }),
     };
   }, [longPrices, ranges.piCycle]);
 
-  const piGap = piWindow.latest111 && piWindow.latest350x2 ? ((piWindow.latest350x2 - piWindow.latest111) / piWindow.latest350x2) * 100 : null;
+  const piStats = useMemo(() => seriesStats(piWindow.gap), [piWindow.gap]);
+  const piGap = piStats.latest;
+  const latestPi111 = latestFinite(piWindow.sma111);
+  const latestPi350x2 = latestFinite(piWindow.sma350x2);
 
   const drawdownWindow = useMemo(() => {
     const window = getPriceWindow(ranges.drawdown);
@@ -8933,6 +9120,7 @@ globalThis.ValuationPage = function ValuationPage() {
   }, [getPriceWindow, ranges.drawdown]);
 
   const drawdownCurrent = latestFinite(drawdownWindow.drawdown || []);
+  const drawdownStats = useMemo(() => seriesStats(drawdownWindow.drawdown || []), [drawdownWindow.drawdown]);
   const rangeHigh = drawdownWindow.values.length ? Math.max(...drawdownWindow.values) : null;
   const latestDate = liveData?.coinMetrics?.latestDate || 'loading';
   const marketSource = liveData?.longSource || liveData?.marketByRange?.[ranges.drawdown]?.source || 'loading';
@@ -8957,7 +9145,7 @@ globalThis.ValuationPage = function ValuationPage() {
         h('div', { className: 'charts-eyebrow' }, 'Composite signal'),
         h('div', { className: 'valuation-score tabular-nums', style: { color: scoreSignal.color } }, Number.isFinite(currentScore) ? currentScore.toFixed(0) : '...'),
         h('div', { className: 'valuation-score-label', style: { color: scoreSignal.color } }, scoreSignal.label),
-        h('p', null, 'Scores below zero lean undervalued. Scores above zero lean overvalued. The current reading updates with the live BTC tick; MVRV history refreshes from CoinMetrics daily community data.'),
+        h('p', null, 'Scores below zero lean undervalued. Scores above zero lean overvalued. Selected ' + rangeName(ranges.composite) + ' move: ' + signedNumber(scoreStats.change, 1, ' pts') + '. The current chart point updates with the live BTC tick.'),
       ),
       h('div', { className: 'valuation-score-side' },
         h(ValuationMeter, { score: currentScore, signal: scoreSignal }),
@@ -9024,7 +9212,7 @@ globalThis.ValuationPage = function ValuationPage() {
           value: Number.isFinite(currentMvrv) ? currentMvrv.toFixed(3) + 'x' : '...',
           label: currentMvrvSignal.label,
           color: currentMvrvSignal.color,
-          subvalue: 'Below 1.0x means price is below realized value.',
+          subvalue: rangeName(ranges.mvrv) + ' change: ' + signedNumber(mvrvStats.changePercent, 2, '%') + ' from first visible point.',
         }),
         mvrvWindow.values.length > 1 && h(ChartComponent, {
           type: 'line',
@@ -9040,9 +9228,9 @@ globalThis.ValuationPage = function ValuationPage() {
           options: chartOptions({ mode: 'ratio', suggestedMin: 0.5, suggestedMax: 3.5, legend: true }),
         }),
         h(StatGrid, { rows: [
+          { label: 'First Visible', value: Number.isFinite(mvrvStats.first) ? mvrvStats.first.toFixed(3) + 'x' : '...' },
+          { label: 'Range Change', value: signedNumber(mvrvStats.changePercent, 2, '%'), color: Number.isFinite(mvrvStats.change) && mvrvStats.change < 0 ? '#00d4aa' : '#ff8c00' },
           { label: 'Undervalued', value: '< 1.5x', color: '#00d4aa' },
-          { label: 'Fair', value: '1.5 - 2.4x', color: '#ffd43b' },
-          { label: 'Overvalued', value: '> 2.4x', color: '#ff8c00' },
           { label: 'Source', value: liveData?.coinMetrics?.source || 'loading' },
         ] }),
       ),
@@ -9059,7 +9247,7 @@ globalThis.ValuationPage = function ValuationPage() {
           value: Number.isFinite(currentZ) ? currentZ.toFixed(3) : '...',
           label: currentZSignal.label,
           color: currentZSignal.color,
-          subvalue: 'Derived from CoinMetrics MVRV and market cap community feeds.',
+          subvalue: rangeName(ranges.mvrvZ) + ' change: ' + signedNumber(mvrvZStats.change, 2, ' pts') + ' from first visible point.',
         }),
         mvrvZWindow.values.length > 1 && h(ChartComponent, {
           type: 'line',
@@ -9075,9 +9263,9 @@ globalThis.ValuationPage = function ValuationPage() {
           options: chartOptions({ suggestedMin: -1, suggestedMax: 5, legend: true }),
         }),
         h(StatGrid, { rows: [
-          { label: 'Discounted', value: '< 0', color: '#00d4aa' },
-          { label: 'Fair', value: '0 - 2', color: '#ffd43b' },
-          { label: 'Hot', value: '2 - 4', color: '#ff8c00' },
+          { label: 'First Visible', value: Number.isFinite(mvrvZStats.first) ? mvrvZStats.first.toFixed(3) : '...' },
+          { label: 'Range Change', value: signedNumber(mvrvZStats.change, 2, ' pts'), color: Number.isFinite(mvrvZStats.change) && mvrvZStats.change < 0 ? '#00d4aa' : '#ff8c00' },
+          { label: 'Range Low', value: Number.isFinite(mvrvZStats.min) ? mvrvZStats.min.toFixed(2) : '...', color: '#00d4aa' },
           { label: 'Overheated', value: '> 4', color: '#ff4757' },
         ] }),
       ),
@@ -9096,7 +9284,7 @@ globalThis.ValuationPage = function ValuationPage() {
             value: Number.isFinite(currentPowerPosition) ? formatPercent(currentPowerPosition, 1) : '...',
             label: 'Position Within Power Law Range',
             color: Number.isFinite(currentPowerPosition) && currentPowerPosition < 30 ? '#00d4aa' : Number.isFinite(currentPowerPosition) && currentPowerPosition < 70 ? '#ffd43b' : '#ff4757',
-            subvalue: 'Lower means closer to support; higher means closer to resistance.',
+            subvalue: rangeName(ranges.powerLaw) + ' position change: ' + signedNumber(powerStats.change, 1, ' pts') + '. Lower means closer to support.',
           }),
           h(StatGrid, { rows: [
             { label: 'Current Price', value: btcPrice ? formatUSD(btcPrice, 0) : '...', color: 'var(--btc-orange)', emphasis: true },
@@ -9135,12 +9323,13 @@ globalThis.ValuationPage = function ValuationPage() {
             value: currentBand.label,
             label: 'Current Rainbow Band',
             color: currentBand.color,
-            subvalue: btcPrice ? 'BTC ' + formatUSD(btcPrice, 0) : 'Loading price',
+            subvalue: 'Latest point in selected ' + rangeName(ranges.rainbow) + ' chart.',
           }),
           h(StatGrid, { rows: [
-            { label: 'Top Band Today', value: formatUSD(rainbowBandValue(Date.now(), RAINBOW_BANDS[0].coeff, RAINBOW_BANDS[0].offset), 0), color: RAINBOW_BANDS[0].color },
-            { label: 'Middle Band Today', value: formatUSD(rainbowBandValue(Date.now(), RAINBOW_BANDS[4].coeff, RAINBOW_BANDS[4].offset), 0), color: RAINBOW_BANDS[4].color },
-            { label: 'Bottom Band Today', value: formatUSD(rainbowBandValue(Date.now(), RAINBOW_BANDS[8].coeff, RAINBOW_BANDS[8].offset), 0), color: RAINBOW_BANDS[8].color },
+            { label: 'BTC Latest', value: rainbowWindow.values.length ? formatUSD(rainbowWindow.values[rainbowWindow.values.length - 1], 0) : '...', color: 'var(--btc-orange)' },
+            { label: 'Top Band Latest', value: rainbowWindow.bands?.[0]?.data?.length ? formatUSD(rainbowWindow.bands[0].data[rainbowWindow.bands[0].data.length - 1], 0) : '...', color: RAINBOW_BANDS[0].color },
+            { label: 'Middle Band Latest', value: rainbowWindow.bands?.[4]?.data?.length ? formatUSD(rainbowWindow.bands[4].data[rainbowWindow.bands[4].data.length - 1], 0) : '...', color: RAINBOW_BANDS[4].color },
+            { label: 'Bottom Band Latest', value: rainbowWindow.bands?.[8]?.data?.length ? formatUSD(rainbowWindow.bands[8].data[rainbowWindow.bands[8].data.length - 1], 0) : '...', color: RAINBOW_BANDS[8].color },
           ] }),
         ),
         rainbowWindow.values.length > 1 && h(ChartComponent, {
@@ -9169,7 +9358,7 @@ globalThis.ValuationPage = function ValuationPage() {
           value: Number.isFinite(piGap) ? formatPercent(piGap, 2) : '...',
           label: Number.isFinite(piGap) && piGap < 5 ? 'Near Crossover' : Number.isFinite(piGap) && piGap < 15 ? 'Converging' : 'No Top Signal',
           color: Number.isFinite(piGap) && piGap < 5 ? '#ff4757' : Number.isFinite(piGap) && piGap < 15 ? '#ffd43b' : '#00d4aa',
-          subvalue: 'Top risk rises as the 111DMA approaches 350DMA x2.',
+          subvalue: rangeName(ranges.piCycle) + ' gap change: ' + signedNumber(piStats.change, 2, ' pts') + '. Top risk rises as the averages converge.',
         }),
         piWindow.price.length > 1 && h(ChartComponent, {
           type: 'line',
@@ -9185,10 +9374,10 @@ globalThis.ValuationPage = function ValuationPage() {
           options: chartOptions({ yType: 'logarithmic', mode: 'currency', legend: true }),
         }),
         h(StatGrid, { rows: [
-          { label: '111DMA', value: piWindow.latest111 ? formatUSD(piWindow.latest111, 0) : '...', color: '#f7931a' },
-          { label: '350DMA x2', value: piWindow.latest350x2 ? formatUSD(piWindow.latest350x2, 0) : '...', color: '#00d4aa' },
+          { label: '111DMA', value: latestPi111 ? formatUSD(latestPi111, 0) : '...', color: '#f7931a' },
+          { label: '350DMA x2', value: latestPi350x2 ? formatUSD(latestPi350x2, 0) : '...', color: '#00d4aa' },
           { label: 'Gap', value: Number.isFinite(piGap) ? formatPercent(piGap, 2) : '...' },
-          { label: 'Model', value: 'Philip Swift' },
+          { label: 'Range Change', value: signedNumber(piStats.change, 2, ' pts'), color: Number.isFinite(piStats.change) && piStats.change < 0 ? '#ff8c00' : '#00d4aa' },
         ] }),
       ),
 
@@ -9204,7 +9393,7 @@ globalThis.ValuationPage = function ValuationPage() {
           value: Number.isFinite(drawdownCurrent) ? drawdownCurrent.toFixed(2) + '%' : '...',
           label: 'From Range High',
           color: Number.isFinite(drawdownCurrent) && drawdownCurrent < -35 ? '#ff4757' : Number.isFinite(drawdownCurrent) && drawdownCurrent < -15 ? '#ff8c00' : '#00d4aa',
-          subvalue: 'Deep drawdowns often overlap with undervaluation regimes.',
+          subvalue: rangeName(ranges.drawdown) + ' drawdown change: ' + signedNumber(drawdownStats.change, 2, ' pts') + '.',
         }),
         drawdownWindow.drawdown && drawdownWindow.drawdown.length > 1 && h(ChartComponent, {
           type: 'line',
