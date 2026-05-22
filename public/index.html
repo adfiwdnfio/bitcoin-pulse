@@ -1878,12 +1878,14 @@ body {
    ============================================ */
 
 .price-tracker-page,
-.etf-flows-page {
+.etf-flows-page,
+.dominance-page {
   max-width: 100%;
 }
 
 .price-tracker-hero,
-.etf-hero-card {
+.etf-hero-card,
+.dominance-hero-card {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
   gap: 18px;
@@ -1900,7 +1902,8 @@ body {
 }
 
 .price-main-panel,
-.etf-hero-main {
+.etf-hero-main,
+.dominance-hero-main {
   min-width: 0;
   display: grid;
   align-content: center;
@@ -1908,7 +1911,8 @@ body {
 }
 
 .price-main-panel h2,
-.etf-hero-main h2 {
+.etf-hero-main h2,
+.dominance-hero-main h2 {
   margin: 0;
   font-size: clamp(3rem, 10vw, 7rem);
   line-height: 0.86;
@@ -1916,12 +1920,14 @@ body {
   letter-spacing: -0.09em;
 }
 
-.etf-hero-main h2 {
+.etf-hero-main h2,
+.dominance-hero-main h2 {
   font-size: clamp(2.8rem, 8vw, 6rem);
 }
 
 .price-main-panel p,
-.etf-hero-main p {
+.etf-hero-main p,
+.dominance-hero-main p {
   max-width: 680px;
   margin: 0;
   color: var(--text-muted);
@@ -1930,7 +1936,8 @@ body {
 }
 
 .price-live-row,
-.etf-hero-pills {
+.etf-hero-pills,
+.dominance-hero-pills {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -1976,7 +1983,8 @@ body {
 }
 
 .price-tracker-page .chart-range-controls,
-.etf-flows-page .chart-range-controls {
+.etf-flows-page .chart-range-controls,
+.dominance-page .chart-range-controls {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -1986,7 +1994,8 @@ body {
 }
 
 .price-tracker-page .chart-range-controls .tab-btn,
-.etf-flows-page .chart-range-controls .tab-btn {
+.etf-flows-page .chart-range-controls .tab-btn,
+.dominance-page .chart-range-controls .tab-btn {
   flex: 1 1 calc(11.111% - 3px);
   min-width: 0;
   padding-left: 6px;
@@ -2098,7 +2107,8 @@ body {
 }
 
 .price-stat-grid,
-.etf-metric-grid {
+.etf-metric-grid,
+.dominance-metric-grid {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 12px;
@@ -2106,7 +2116,8 @@ body {
 }
 
 .price-stat-card,
-.etf-metric-card {
+.etf-metric-card,
+.dominance-metric-card {
   min-width: 0;
   display: grid;
   gap: 6px;
@@ -2117,19 +2128,22 @@ body {
 }
 
 .price-stat-card.positive,
-.etf-metric-card.positive {
+.etf-metric-card.positive,
+.dominance-metric-card.positive {
   border-color: rgba(0, 212, 170, 0.22);
   background: rgba(0, 212, 170, 0.055);
 }
 
 .price-stat-card.negative,
-.etf-metric-card.negative {
+.etf-metric-card.negative,
+.dominance-metric-card.negative {
   border-color: rgba(255, 71, 87, 0.20);
   background: rgba(255, 71, 87, 0.045);
 }
 
 .price-stat-card span,
-.etf-metric-card span {
+.etf-metric-card span,
+.dominance-metric-card span {
   color: var(--text-faint);
   font-size: 0.68rem;
   font-weight: 800;
@@ -2138,7 +2152,8 @@ body {
 }
 
 .price-stat-card strong,
-.etf-metric-card strong {
+.etf-metric-card strong,
+.dominance-metric-card strong {
   min-width: 0;
   overflow-wrap: anywhere;
   color: var(--text-primary);
@@ -2149,7 +2164,8 @@ body {
 }
 
 .price-stat-card em,
-.etf-metric-card em {
+.etf-metric-card em,
+.dominance-metric-card em {
   color: var(--text-muted);
   font-size: var(--text-xs);
   font-style: normal;
@@ -2198,12 +2214,179 @@ body {
   text-transform: uppercase;
 }
 
+.dominance-hero-card.strong {
+  border-color: rgba(247,147,26,0.28);
+}
+
+.dominance-hero-card.balanced {
+  border-color: rgba(255,183,77,0.18);
+}
+
+.dominance-hero-card.alt-season {
+  border-color: rgba(139,92,246,0.28);
+}
+
+.dominance-meter-card {
+  min-width: 0;
+  display: grid;
+  place-items: center;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid rgba(255, 183, 77, 0.12);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 50% 16%, rgba(247,147,26,0.13), transparent 42%),
+    rgba(0, 0, 0, 0.26);
+}
+
+.dominance-ring {
+  --dominance-angle: 0deg;
+  width: min(270px, 68vw);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    conic-gradient(from -90deg, #f7931a 0deg var(--dominance-angle), rgba(139,92,246,0.58) var(--dominance-angle) 360deg);
+  box-shadow:
+    inset 0 0 34px rgba(0,0,0,0.55),
+    0 0 48px rgba(247,147,26,0.13);
+}
+
+.dominance-ring::before {
+  content: "";
+  position: absolute;
+}
+
+.dominance-ring-core {
+  width: 70%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 5px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.08);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(247,147,26,0.16), transparent 42%),
+    #080604;
+}
+
+.dominance-ring-core span {
+  color: var(--text-faint);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.dominance-ring-core strong {
+  color: #fff3df;
+  font-size: clamp(2rem, 6vw, 3rem);
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -0.08em;
+}
+
+.dominance-meter-legend {
+  width: 100%;
+  display: grid;
+  gap: 8px;
+}
+
+.dominance-meter-legend div {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 9px;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}
+
+.dominance-meter-legend strong {
+  color: var(--text-primary);
+  font-weight: 800;
+}
+
+.dominance-meter-legend em {
+  color: var(--text-muted);
+  font-style: normal;
+}
+
+.dominance-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+.dominance-dot.btc {
+  background: #f7931a;
+  box-shadow: 0 0 10px rgba(247,147,26,0.45);
+}
+
+.dominance-dot.alts {
+  background: #8b5cf6;
+  box-shadow: 0 0 10px rgba(139,92,246,0.45);
+}
+
+.dominance-chart-panel {
+  margin-bottom: 18px;
+}
+
+.dominance-trend-empty {
+  min-height: 300px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  text-align: center;
+  padding: 24px;
+  border: 1px dashed rgba(247,147,26,0.20);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(247,147,26,0.12), transparent 36%),
+    rgba(0,0,0,0.18);
+}
+
+.dominance-trend-empty strong {
+  color: var(--btc-orange);
+  font-size: clamp(2rem, 8vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.08em;
+}
+
+.dominance-trend-empty span {
+  max-width: 520px;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.dominance-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 18px;
+}
+
+.dominance-split-body {
+  display: grid;
+  gap: 12px;
+}
+
+.dominance-split-body p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.65;
+}
+
 @media (max-width: 1180px) {
   .price-stat-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .etf-metric-grid {
+  .etf-metric-grid,
+  .dominance-metric-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -2211,7 +2394,9 @@ body {
 @media (max-width: 860px) {
   .price-tracker-hero,
   .etf-hero-card,
-  .etf-detail-grid {
+  .dominance-hero-card,
+  .etf-detail-grid,
+  .dominance-detail-grid {
     grid-template-columns: 1fr;
   }
 
@@ -2222,13 +2407,15 @@ body {
 
 @media (max-width: 640px) {
   .price-tracker-hero,
-  .etf-hero-card {
+  .etf-hero-card,
+  .dominance-hero-card {
     border-radius: 22px;
     padding: 16px;
   }
 
   .price-main-panel h2,
-  .etf-hero-main h2 {
+  .etf-hero-main h2,
+  .dominance-hero-main h2 {
     font-size: clamp(2.5rem, 16vw, 4rem);
   }
 
@@ -2246,8 +2433,13 @@ body {
   }
 
   .price-stat-grid,
-  .etf-metric-grid {
+  .etf-metric-grid,
+  .dominance-metric-grid {
     grid-template-columns: 1fr;
+  }
+
+  .dominance-ring {
+    width: min(235px, 72vw);
   }
 
   .price-chart-card {
@@ -2850,6 +3042,13 @@ globalThis.features = [
     title: 'Charts',
     description: 'Live MVRV Z-Score, Power Law, Rainbow Chart, RSI, Fear & Greed, and Pi Cycle Top indicators.',
     icon: 'line-chart',
+  },
+  {
+    id: 'dominance',
+    hash: '#dominance',
+    title: 'Bitcoin Dominance',
+    description: 'Track BTC market share versus the rest of crypto using live no-key global market data and source cross-checks.',
+    icon: 'pie-chart',
   },
   {
     id: 'market-pulse',
@@ -4251,6 +4450,194 @@ globalThis.fetchBitcoinEtfFlows = async function fetchBitcoinEtfFlows() {
 }
 
 /* ------------------------------------------
+   Bitcoin Dominance data layer
+   Free no-key global-market feeds:
+   - CoinGecko primary global market snapshot
+   - CoinPaprika and CoinLore cross-check fallbacks
+   Historical global market-cap charts are usually paid, so the site
+   stores a rolling browser history of live dominance observations.
+   ------------------------------------------ */
+const DOMINANCE_HISTORY_KEY = 'bitcoin-pulse-dominance-history-v1';
+
+function parseApiNumber(value) {
+  if (value === null || value === undefined) return null;
+  const n = Number(String(value).replace(/[$,%\s]/g, ''));
+  return Number.isFinite(n) ? n : null;
+}
+
+function normalizeDominanceSource(source) {
+  if (!source || !Number.isFinite(source.dominance) || source.dominance <= 0 || source.dominance >= 100) return null;
+  return {
+    name: source.name,
+    dominance: source.dominance,
+    totalMarketCap: Number.isFinite(source.totalMarketCap) ? source.totalMarketCap : null,
+    totalVolume: Number.isFinite(source.totalVolume) ? source.totalVolume : null,
+    marketCapChange24h: Number.isFinite(source.marketCapChange24h) ? source.marketCapChange24h : null,
+    activeCryptocurrencies: Number.isFinite(source.activeCryptocurrencies) ? source.activeCryptocurrencies : null,
+    markets: Number.isFinite(source.markets) ? source.markets : null,
+    updatedAt: source.updatedAt || null,
+    url: source.url,
+  };
+}
+
+function medianValue(values) {
+  const clean = values.map(Number).filter(Number.isFinite).sort((a, b) => a - b);
+  if (!clean.length) return null;
+  const mid = Math.floor(clean.length / 2);
+  return clean.length % 2 ? clean[mid] : (clean[mid - 1] + clean[mid]) / 2;
+}
+
+function readDominanceHistory() {
+  if (typeof window === 'undefined' || !window.localStorage) return [];
+  try {
+    const raw = window.localStorage.getItem(DOMINANCE_HISTORY_KEY);
+    const rows = raw ? JSON.parse(raw) : [];
+    return Array.isArray(rows)
+      ? rows
+          .map(row => ({
+            ts: Number(row.ts),
+            dominance: Number(row.dominance),
+            totalMarketCap: parseApiNumber(row.totalMarketCap),
+            sourceCount: parseApiNumber(row.sourceCount),
+          }))
+          .filter(row => Number.isFinite(row.ts) && Number.isFinite(row.dominance))
+          .sort((a, b) => a.ts - b.ts)
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveDominanceHistorySample(sample) {
+  const latest = {
+    ts: sample.updatedAt ? new Date(sample.updatedAt).getTime() : Date.now(),
+    dominance: sample.dominance,
+    totalMarketCap: sample.totalMarketCap,
+    sourceCount: sample.sourceCount,
+  };
+  if (!Number.isFinite(latest.ts) || !Number.isFinite(latest.dominance)) return [];
+  if (typeof window === 'undefined' || !window.localStorage) return [latest];
+
+  const history = readDominanceHistory();
+  const last = history[history.length - 1];
+  if (!last || Math.abs(last.ts - latest.ts) > 60000 || Math.abs(last.dominance - latest.dominance) > 0.01) {
+    history.push(latest);
+  } else {
+    history[history.length - 1] = latest;
+  }
+
+  const fiveYearsAgo = Date.now() - 1825 * 86400000;
+  const pruned = history
+    .filter(row => row.ts >= fiveYearsAgo)
+    .slice(-12000);
+  try {
+    window.localStorage.setItem(DOMINANCE_HISTORY_KEY, JSON.stringify(pruned));
+  } catch {
+    // Private browsing or full storage should not break live data.
+  }
+  return pruned;
+}
+
+globalThis.fetchBitcoinDominanceSnapshot = async function fetchBitcoinDominanceSnapshot() {
+  const cached = cacheGet('bitcoin-dominance-snapshot', 55000);
+  if (cached) {
+    return {
+      ...cached,
+      history: readDominanceHistory(),
+    };
+  }
+
+  const [coinGecko, coinPaprika, coinLore] = await Promise.all([
+    tryFetch('https://api.coingecko.com/api/v3/global', 10000, { cache: 'no-store' }),
+    tryFetch('https://api.coinpaprika.com/v1/global', 10000, { cache: 'no-store' }),
+    tryFetch('https://api.coinlore.net/api/global/', 10000, { cache: 'no-store' }),
+  ]);
+
+  const cgData = coinGecko && coinGecko.data ? coinGecko.data : null;
+  const cgDominance = cgData && cgData.market_cap_percentage ? parseApiNumber(cgData.market_cap_percentage.btc) : null;
+  const cgTotalMarketCap = cgData && cgData.total_market_cap ? parseApiNumber(cgData.total_market_cap.usd) : null;
+  const cgTotalVolume = cgData && cgData.total_volume ? parseApiNumber(cgData.total_volume.usd) : null;
+
+  const sources = [
+    normalizeDominanceSource({
+      name: 'CoinGecko',
+      dominance: cgDominance,
+      totalMarketCap: cgTotalMarketCap,
+      totalVolume: cgTotalVolume,
+      marketCapChange24h: cgData ? parseApiNumber(cgData.market_cap_change_percentage_24h_usd) : null,
+      activeCryptocurrencies: cgData ? parseApiNumber(cgData.active_cryptocurrencies) : null,
+      markets: cgData ? parseApiNumber(cgData.markets) : null,
+      updatedAt: cgData && cgData.updated_at ? new Date(cgData.updated_at * 1000).toISOString() : null,
+      url: 'https://api.coingecko.com/api/v3/global',
+    }),
+    normalizeDominanceSource({
+      name: 'CoinPaprika',
+      dominance: coinPaprika ? parseApiNumber(coinPaprika.bitcoin_dominance_percentage) : null,
+      totalMarketCap: coinPaprika ? parseApiNumber(coinPaprika.market_cap_usd) : null,
+      totalVolume: coinPaprika ? parseApiNumber(coinPaprika.volume_24h_usd) : null,
+      marketCapChange24h: coinPaprika ? parseApiNumber(coinPaprika.market_cap_change_24h) : null,
+      activeCryptocurrencies: coinPaprika ? parseApiNumber(coinPaprika.cryptocurrencies_number) : null,
+      markets: null,
+      updatedAt: coinPaprika && coinPaprika.last_updated ? new Date(coinPaprika.last_updated * 1000).toISOString() : null,
+      url: 'https://api.coinpaprika.com/v1/global',
+    }),
+    normalizeDominanceSource({
+      name: 'CoinLore',
+      dominance: Array.isArray(coinLore) && coinLore[0] ? parseApiNumber(coinLore[0].btc_d) : null,
+      totalMarketCap: Array.isArray(coinLore) && coinLore[0] ? parseApiNumber(coinLore[0].total_mcap) : null,
+      totalVolume: Array.isArray(coinLore) && coinLore[0] ? parseApiNumber(coinLore[0].total_volume) : null,
+      marketCapChange24h: Array.isArray(coinLore) && coinLore[0] ? parseApiNumber(coinLore[0].mcap_change) : null,
+      activeCryptocurrencies: Array.isArray(coinLore) && coinLore[0] ? parseApiNumber(coinLore[0].coins_count) : null,
+      markets: Array.isArray(coinLore) && coinLore[0] ? parseApiNumber(coinLore[0].active_markets) : null,
+      updatedAt: new Date().toISOString(),
+      url: 'https://api.coinlore.net/api/global/',
+    }),
+  ].filter(Boolean);
+
+  const prior = cacheGet('bitcoin-dominance-last-good', 86400000);
+  if (!sources.length) return prior || null;
+
+  const primary = sources.find(source => source.name === 'CoinGecko') || sources[0];
+  const consensus = medianValue(sources.map(source => source.dominance));
+  const dominance = Number.isFinite(primary.dominance) ? primary.dominance : consensus;
+  const totalMarketCap = primary.totalMarketCap || medianValue(sources.map(source => source.totalMarketCap));
+  const totalVolume = primary.totalVolume || medianValue(sources.map(source => source.totalVolume));
+  const marketCapChange24h = primary.marketCapChange24h ?? medianValue(sources.map(source => source.marketCapChange24h));
+  const activeCryptocurrencies = primary.activeCryptocurrencies || medianValue(sources.map(source => source.activeCryptocurrencies));
+  const markets = primary.markets || medianValue(sources.map(source => source.markets));
+  const maxDominance = Math.max(...sources.map(source => source.dominance));
+  const minDominance = Math.min(...sources.map(source => source.dominance));
+  const sourceSpread = sources.length > 1 ? maxDominance - minDominance : 0;
+  const btcMarketCapEstimate = totalMarketCap && dominance ? totalMarketCap * (dominance / 100) : null;
+  const altcoinMarketCapEstimate = totalMarketCap && dominance ? totalMarketCap * (1 - dominance / 100) : null;
+
+  const snapshot = {
+    dominance,
+    consensusDominance: consensus,
+    altcoinDominance: 100 - dominance,
+    totalMarketCap,
+    btcMarketCapEstimate,
+    altcoinMarketCapEstimate,
+    totalVolume,
+    marketCapChange24h,
+    activeCryptocurrencies,
+    markets,
+    source: primary.name,
+    sourceUrl: primary.url,
+    sourceCount: sources.length,
+    sourceSpread,
+    sources,
+    updatedAt: primary.updatedAt || new Date().toISOString(),
+    fetchedAt: new Date().toISOString(),
+  };
+
+  snapshot.history = saveDominanceHistorySample(snapshot);
+  cacheSet('bitcoin-dominance-snapshot', snapshot);
+  cacheSet('bitcoin-dominance-last-good', snapshot);
+  return snapshot;
+}
+
+/* ------------------------------------------
    StrategyTracker / SaylorTracker data layer
    Free public JSON feeds, CORS-enabled.
    - latest.json updates about every minute
@@ -5576,6 +5963,7 @@ const navItems = [
   { section: 'Charts & Indicators' },
   { id: 'valuation', label: 'Valuation', icon: 'line-chart' },
   { id: 'charts', label: 'Charts', icon: 'line-chart' },
+  { id: 'dominance', label: 'BTC Dominance', icon: 'pie-chart' },
   { id: 'market-pulse', label: 'Market Pulse', icon: 'newspaper' },
   { id: 'etf-flows', label: 'ETF Flows', icon: 'bar-chart-2' },
   { section: 'Analytics Tools' },
@@ -5954,15 +6342,16 @@ globalThis.DashboardPage = function DashboardPage({ onNavigate }) {
 
   // Live data polling every 15s — ad-blocker resilient
   const { data: liveData, lastUpdated } = useLiveData(async () => {
-    const [priceResult, networkData, binanceTicker, marketChart, ownershipSnapshot, strategySnapshot] = await Promise.all([
+    const [priceResult, networkData, binanceTicker, marketChart, ownershipSnapshot, strategySnapshot, dominanceSnapshot] = await Promise.all([
       fetchBTCPrice(),
       fetchNetworkData(),
       fetchBinanceTicker(),
       fetchMarketChart(getRangeDays(priceRange)),
       fetchOwnershipDistributionSnapshot(),
       fetchStrategyTrackerSnapshot(),
+      fetchBitcoinDominanceSnapshot(),
     ]);
-    return { priceResult, networkData, binanceTicker, marketChart, ownershipSnapshot, strategySnapshot };
+    return { priceResult, networkData, binanceTicker, marketChart, ownershipSnapshot, strategySnapshot, dominanceSnapshot };
   }, 15000, [priceRange]);
 
   // Extract live values with sensible fallbacks
@@ -5987,6 +6376,7 @@ globalThis.DashboardPage = function DashboardPage({ onNavigate }) {
   const marketChart = (liveData && liveData.marketChart) || { prices: [] };
   const ownershipSnapshot = (liveData && liveData.ownershipSnapshot) || ownershipData;
   const strategySnapshot = liveData && liveData.strategySnapshot;
+  const dominanceSnapshot = liveData && liveData.dominanceSnapshot;
   const pricePoints = useMemo(() => {
     const points = marketChart.prices && marketChart.prices.length ? marketChart.prices.slice() : [];
     if (price) {
@@ -6061,6 +6451,11 @@ globalThis.DashboardPage = function DashboardPage({ onNavigate }) {
         label: 'Fear & Greed',
         value: fearGreed ? fearGreed.value + ' / 100' : 'Loading...',
         deltaLabel: fearGreed ? fearGreed.label : undefined,
+      }),
+      h(KPICard, {
+        label: 'BTC Dominance',
+        value: dominanceSnapshot && Number.isFinite(dominanceSnapshot.dominance) ? formatPercent(dominanceSnapshot.dominance, 2) : 'Loading...',
+        deltaLabel: dominanceSnapshot ? dominanceSnapshot.source + ' source' : undefined,
       }),
       h(KPICard, {
         label: 'Difficulty Adjust.',
@@ -8016,6 +8411,315 @@ globalThis.EtfFlowsPage = function EtfFlowsPage() {
 
     h('div', { className: 'charts-source-note' },
       'ETF data updates on trading days after issuers and data providers publish daily creations/redemptions. Values are shown in US$ millions from Farside Investors via Jina Reader, so they are near-live for ETF reporting rather than tick-by-tick market data.'
+    )
+  );
+}
+
+})();
+
+/* ===== pages/dominance.js ===== */
+(() => {
+/* ============================================
+   Bitcoin Dominance
+   Live BTC market share versus the rest of crypto
+   ============================================ */
+
+const React = window.React;
+const { createElement: h, useMemo, useState } = React;
+
+const DOMINANCE_RANGES = [
+  { id: '1d', label: 'D', days: 1, description: 'Live day' },
+  { id: '1w', label: '1W', days: 7, description: 'Past week' },
+  { id: '1m', label: '1M', days: 30, description: 'Past month' },
+  { id: '3m', label: '3M', days: 90, description: 'Past 3 months' },
+  { id: '6m', label: '6M', days: 180, description: 'Past 6 months' },
+  { id: '1y', label: '1Y', days: 365, description: 'Past year' },
+  { id: '3y', label: '3Y', days: 1095, description: 'Past 3 years' },
+  { id: '5y', label: '5Y', days: 1825, description: 'Past 5 years' },
+  { id: 'max', label: 'MAX', days: 'max', description: 'All saved live readings' },
+];
+
+function getDominanceRangeDays(range) {
+  const found = DOMINANCE_RANGES.find(item => item.id === range);
+  return found ? found.days : 30;
+}
+
+function filterDominanceHistory(rows, range) {
+  const clean = (Array.isArray(rows) ? rows : [])
+    .map(row => [Number(row.ts), Number(row.dominance)])
+    .filter(row => Number.isFinite(row[0]) && Number.isFinite(row[1]))
+    .sort((a, b) => a[0] - b[0]);
+  const days = getDominanceRangeDays(range);
+  if (days === 'max' || !clean.length) return clean;
+  const cutoff = Date.now() - Number(days) * 86400000;
+  const filtered = clean.filter(row => row[0] >= cutoff);
+  return filtered.length ? filtered : clean;
+}
+
+function dominanceTone(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return 'neutral';
+  if (n >= 60) return 'strong';
+  if (n >= 50) return 'balanced';
+  return 'alt-season';
+}
+
+function sourceQualityLabel(spread, sourceCount) {
+  if (!sourceCount) return 'Waiting for sources';
+  if (sourceCount < 2) return 'Single-source live';
+  if (spread <= 0.75) return 'Sources aligned';
+  if (spread <= 2) return 'Normal source spread';
+  return 'Wide source spread';
+}
+
+function DominanceMetric({ label, value, subtext, tone }) {
+  return h('div', { className: 'dominance-metric-card ' + (tone || '') },
+    h('span', null, label),
+    h('strong', { className: 'tabular-nums' }, value),
+    subtext && h('em', null, subtext)
+  );
+}
+
+function DominanceMeter({ dominance }) {
+  const value = Number.isFinite(Number(dominance)) ? Math.max(0, Math.min(100, Number(dominance))) : 0;
+  const altShare = Math.max(0, 100 - value);
+  return h('div', { className: 'dominance-meter-card' },
+    h('div', {
+      className: 'dominance-ring',
+      style: { '--dominance-angle': (value * 3.6) + 'deg' },
+      role: 'img',
+      'aria-label': 'Bitcoin dominance meter showing ' + value.toFixed(2) + ' percent',
+    },
+      h('div', { className: 'dominance-ring-core' },
+        h('span', null, 'BTC'),
+        h('strong', { className: 'tabular-nums' }, value ? value.toFixed(2) + '%' : '...')
+      )
+    ),
+    h('div', { className: 'dominance-meter-legend' },
+      h('div', null,
+        h('span', { className: 'dominance-dot btc' }),
+        h('strong', null, 'Bitcoin'),
+        h('em', { className: 'tabular-nums' }, value ? value.toFixed(2) + '%' : '—')
+      ),
+      h('div', null,
+        h('span', { className: 'dominance-dot alts' }),
+        h('strong', null, 'Rest of Crypto'),
+        h('em', { className: 'tabular-nums' }, value ? altShare.toFixed(2) + '%' : '—')
+      )
+    )
+  );
+}
+
+function dominanceLineOptions() {
+  return {
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) { return 'BTC dominance: ' + formatPercent(ctx.raw, 2); },
+        },
+      },
+    },
+    scales: {
+      y: {
+        grid: { color: 'rgba(255,183,77,0.06)', drawBorder: false },
+        ticks: {
+          color: '#806f62',
+          font: { family: 'Inter', size: 11 },
+          callback: function(value) { return Number(value).toFixed(1) + '%'; },
+        },
+        border: { display: false },
+      },
+      x: {
+        grid: { display: false },
+        ticks: { color: '#806f62', font: { family: 'Inter', size: 10 }, maxTicksLimit: 7 },
+        border: { display: false },
+      },
+    },
+  };
+}
+
+function sourceBarOptions() {
+  return {
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) { return formatPercent(ctx.raw, 2); },
+        },
+      },
+    },
+    scales: {
+      x: {
+        grid: { color: 'rgba(255,183,77,0.06)', drawBorder: false },
+        ticks: {
+          color: '#806f62',
+          font: { family: 'Inter', size: 11 },
+          callback: function(value) { return Number(value).toFixed(0) + '%'; },
+        },
+        border: { display: false },
+      },
+      y: {
+        grid: { display: false },
+        ticks: { color: '#b49c85', font: { family: 'Inter', size: 11, weight: 800 } },
+        border: { display: false },
+      },
+    },
+  };
+}
+
+globalThis.DominancePage = function DominancePage() {
+  const [range, setRange] = useState('1d');
+  const { data, lastUpdated, loading } = useLiveData(async () => {
+    const snapshot = await fetchBitcoinDominanceSnapshot();
+    return { snapshot };
+  }, 60000);
+
+  const snapshot = data && data.snapshot;
+  const dominance = snapshot ? snapshot.dominance : null;
+  const tone = dominanceTone(dominance);
+  const sources = snapshot?.sources || [];
+  const trendRows = useMemo(() => {
+    const windowRows = filterDominanceHistory(snapshot?.history || [], range);
+    return downsampleSeries(windowRows, range === '1d' ? 288 : range === 'max' ? 520 : 320);
+  }, [snapshot, range]);
+  const sourceValues = sources.map(source => source.dominance);
+  const sourceColors = sources.map((source, index) => index === 0 ? 'rgba(247,147,26,0.78)' : index === 1 ? 'rgba(139,92,246,0.72)' : 'rgba(0,212,170,0.68)');
+  const quality = sourceQualityLabel(snapshot?.sourceSpread, snapshot?.sourceCount);
+  const enoughTrend = trendRows.length > 1;
+
+  return h('div', { className: 'page-enter charts-page dominance-page' },
+    h(PageHeader, {
+      title: 'Bitcoin Dominance',
+      description: 'Track BTC market share versus the rest of crypto, similar to the CoinMarketCap dominance readout, using live no-key global market data.',
+      badge: 'Live market share',
+    }),
+    h('div', { className: 'pulse-status-row' },
+      h(LastUpdated, { lastUpdated, live: !loading }),
+      h('span', null, snapshot ? 'Primary source: ' + snapshot.source + ' · ' + quality : 'Connecting to global market feeds')
+    ),
+
+    h('section', { className: 'dominance-hero-card ' + tone },
+      h('div', { className: 'dominance-hero-main' },
+        h('span', { className: 'charts-eyebrow' }, 'BTC market share'),
+        h('h2', { className: 'tabular-nums' }, Number.isFinite(dominance) ? formatPercent(dominance, 2) : 'Loading...'),
+        h('p', null, 'Bitcoin dominance is BTC market cap divided by total crypto market cap. Rising dominance usually means capital is concentrating in BTC; falling dominance can mean altcoins are outperforming.'),
+        h('div', { className: 'dominance-hero-pills' },
+          snapshot?.sourceCount && h('span', null, snapshot.sourceCount + ' live sources checked'),
+          Number.isFinite(snapshot?.sourceSpread) && h('span', null, 'Source spread ' + formatPercent(snapshot.sourceSpread, 2)),
+          snapshot?.updatedAt && h('span', null, 'Feed timestamp ' + new Date(snapshot.updatedAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }))
+        )
+      ),
+      h(DominanceMeter, { dominance })
+    ),
+
+    h('div', { className: 'dominance-metric-grid' },
+      h(DominanceMetric, {
+        label: 'Total Crypto Cap',
+        value: snapshot?.totalMarketCap ? formatUSD(snapshot.totalMarketCap, 2) : 'Loading...',
+        subtext: Number.isFinite(snapshot?.marketCapChange24h) ? '24h total market cap ' + (snapshot.marketCapChange24h >= 0 ? '+' : '') + formatPercent(snapshot.marketCapChange24h, 2) : 'Global market cap',
+        tone: Number(snapshot?.marketCapChange24h) >= 0 ? 'positive' : Number(snapshot?.marketCapChange24h) < 0 ? 'negative' : '',
+      }),
+      h(DominanceMetric, {
+        label: 'BTC Cap Estimate',
+        value: snapshot?.btcMarketCapEstimate ? formatUSD(snapshot.btcMarketCapEstimate, 2) : 'Loading...',
+        subtext: 'Dominance × total crypto cap',
+      }),
+      h(DominanceMetric, {
+        label: 'Altcoin Cap Estimate',
+        value: snapshot?.altcoinMarketCapEstimate ? formatUSD(snapshot.altcoinMarketCapEstimate, 2) : 'Loading...',
+        subtext: Number.isFinite(snapshot?.altcoinDominance) ? formatPercent(snapshot.altcoinDominance, 2) + ' non-BTC share' : 'Rest of market',
+      }),
+      h(DominanceMetric, {
+        label: '24h Crypto Volume',
+        value: snapshot?.totalVolume ? formatUSD(snapshot.totalVolume, 2) : 'Loading...',
+        subtext: 'All crypto market volume',
+      }),
+      h(DominanceMetric, {
+        label: 'Tracked Assets',
+        value: snapshot?.activeCryptocurrencies ? formatNumber(snapshot.activeCryptocurrencies, 0) : '—',
+        subtext: snapshot?.markets ? formatNumber(snapshot.markets, 0) + ' active markets' : 'Active cryptocurrencies',
+      }),
+      h(DominanceMetric, {
+        label: 'Source Quality',
+        value: quality,
+        subtext: Number.isFinite(snapshot?.sourceSpread) ? formatPercent(snapshot.sourceSpread, 2) + ' max/min spread' : 'Waiting for feeds',
+      })
+    ),
+
+    h('section', { className: 'charts-panel charts-panel-full dominance-chart-panel' },
+      h('div', { className: 'charts-panel-header' },
+        h('div', { className: 'charts-panel-heading' },
+          h('div', { className: 'charts-panel-title' }, 'Bitcoin Dominance Trend'),
+          h('div', { className: 'charts-panel-subtitle' }, enoughTrend ? 'Rolling live readings saved in this browser for the selected timeframe.' : 'The trend begins collecting live readings from this browser now; source comparison is live immediately.')
+        ),
+        h(ChartRangeControls, { value: range, onChange: setRange, ranges: DOMINANCE_RANGES, label: 'Bitcoin dominance timeframe' })
+      ),
+      h('div', { className: 'charts-panel-body' },
+        enoughTrend
+          ? h(LineChart, {
+              labels: trendRows.map(point => formatChartDateLabel(point[0], range === 'max' ? '5y' : range)),
+              datasets: [{
+                label: 'BTC Dominance',
+                data: trendRows.map(point => point[1]),
+                borderColor: '#f7931a',
+                backgroundColor: 'rgba(247,147,26,0.16)',
+              }],
+              options: dominanceLineOptions(),
+              height: 300,
+              fill: true,
+            })
+          : h('div', { className: 'dominance-trend-empty' },
+              h('strong', null, Number.isFinite(dominance) ? formatPercent(dominance, 2) : 'Connecting...'),
+              h('span', null, 'Live trend chart will draw after the next saved update. This avoids fake historical dominance data from paid-only endpoints.')
+            )
+      )
+    ),
+
+    h('div', { className: 'dominance-detail-grid' },
+      h('section', { className: 'charts-panel' },
+        h('div', { className: 'charts-panel-header' },
+          h('div', { className: 'charts-panel-heading' },
+            h('div', { className: 'charts-panel-title' }, 'Live Source Comparison'),
+            h('div', { className: 'charts-panel-subtitle' }, 'Cross-checking public global-market feeds')
+          )
+        ),
+        h('div', { className: 'charts-panel-body' },
+          h(BarChart, {
+            labels: sources.map(source => source.name),
+            datasets: [{
+              label: 'BTC dominance',
+              data: sourceValues,
+              backgroundColor: sourceColors,
+              borderColor: 'transparent',
+            }],
+            options: sourceBarOptions(),
+            height: 260,
+            horizontal: true,
+          })
+        )
+      ),
+      h('section', { className: 'charts-panel' },
+        h('div', { className: 'charts-panel-header' },
+          h('div', { className: 'charts-panel-heading' },
+            h('div', { className: 'charts-panel-title' }, 'Market Split'),
+            h('div', { className: 'charts-panel-subtitle' }, 'BTC versus the rest of crypto')
+          )
+        ),
+        h('div', { className: 'charts-panel-body dominance-split-body' },
+          h(DoughnutChart, {
+            labels: ['Bitcoin', 'Rest of Crypto'],
+            data: [Number(dominance) || 0, Math.max(0, 100 - (Number(dominance) || 0))],
+            colors: ['#f7931a', 'rgba(139,92,246,0.72)'],
+            height: 235,
+          }),
+          h('p', null, 'Use dominance alongside ETF flows, price trend, valuation, and liquidity. A rising dominance line can be healthy risk-off BTC strength, but it can also show weakness outside BTC.')
+        )
+      )
+    ),
+
+    h('div', { className: 'charts-source-note' },
+      'Dominance data is pulled from CoinGecko Global, CoinPaprika Global, and CoinLore Global with no API keys. Current dominance is live; the trend chart is a rolling browser-saved history because free public APIs generally do not expose long historical total-crypto-market-cap data without a paid key.'
     )
   );
 }
@@ -12082,6 +12786,7 @@ const routes = {
   supply: { component: SupplyPage, title: 'Supply Countdown' },
   'price-tracker': { component: PriceTrackerPage, title: 'Bitcoin Price Tracker' },
   'etf-flows': { component: EtfFlowsPage, title: 'Bitcoin ETF Flows' },
+  dominance: { component: DominancePage, title: 'Bitcoin Dominance' },
   whales: { component: WhalePage, title: 'Whale Tracker' },
   pyramid: { component: PyramidPage, title: 'Wealth Pyramid' },
   'available-supply': { component: AvailableSupplyPage, title: 'Available Supply' },
