@@ -5466,8 +5466,10 @@ globalThis.fetchBitcoinDominanceSnapshot = async function fetchBitcoinDominanceS
    Public no-key ranking via 8MarketCap/Jina Reader.
    Bitcoin market cap is refreshed from this app's live BTC feeds.
    ------------------------------------------ */
-const GLOBAL_ASSETS_READER_URL = 'https://r.jina.ai/http://r.jina.ai/http://8marketcap.com/';
+const GLOBAL_ASSETS_READER_URL = 'https://r.jina.ai/http://8marketcap.com/';
 const GLOBAL_ASSETS_SOURCE_URL = 'https://8marketcap.com/';
+const GLOBAL_ASSETS_DEFAULT_DISPLAY_RANKS = 15;
+const GLOBAL_ASSETS_MAX_CONTIGUOUS_DISPLAY_RANKS = 30;
 
 const GLOBAL_ASSETS_FALLBACK_ROWS = [
   { rank: 1, name: 'Gold', symbol: 'GOLD', marketCap: 31.451e12, price: 4523, change24h: -0.42, change7d: -0.44 },
@@ -5615,6 +5617,23 @@ function enrichGlobalAssetRows(rows, btcMarketCap) {
   return sorted;
 }
 
+function buildGlobalAssetDisplayRows(sortedAssets, bitcoin, sp500Proxy) {
+  if (!Array.isArray(sortedAssets) || !sortedAssets.length) return [];
+
+  const requiredRanks = [GLOBAL_ASSETS_DEFAULT_DISPLAY_RANKS];
+  if (bitcoin?.rank) requiredRanks.push(bitcoin.rank);
+  if (sp500Proxy?.rank && sp500Proxy.rank <= GLOBAL_ASSETS_MAX_CONTIGUOUS_DISPLAY_RANKS) {
+    requiredRanks.push(sp500Proxy.rank);
+  }
+
+  const cutoff = Math.min(
+    sortedAssets.length,
+    Math.max(...requiredRanks.map(rank => Math.min(rank, GLOBAL_ASSETS_MAX_CONTIGUOUS_DISPLAY_RANKS)))
+  );
+
+  return sortedAssets.slice(0, cutoff);
+}
+
 globalThis.fetchGlobalAssetComparisonSnapshot = async function fetchGlobalAssetComparisonSnapshot() {
   const cached = cacheGet('global-assets-comparison-snapshot', 55000);
   if (cached) return cached;
@@ -5658,11 +5677,7 @@ globalThis.fetchGlobalAssetComparisonSnapshot = async function fetchGlobalAssetC
   const nextAbove = bitcoinIndex > 0 ? sortedAssets[bitcoinIndex - 1] : null;
   const nextBelow = bitcoinIndex >= 0 && bitcoinIndex < sortedAssets.length - 1 ? sortedAssets[bitcoinIndex + 1] : null;
 
-  const displayMap = new Map();
-  [...sortedAssets.slice(0, 10), bitcoin, sp500Proxy]
-    .filter(Boolean)
-    .forEach(row => displayMap.set((row.symbol || row.name) + ':' + row.name, row));
-  const displayAssets = Array.from(displayMap.values()).sort((a, b) => a.rank - b.rank);
+  const displayAssets = buildGlobalAssetDisplayRows(sortedAssets, bitcoin, sp500Proxy);
 
   const snapshot = {
     source: assetFeed?.source || '8MarketCap',
@@ -5683,6 +5698,7 @@ globalThis.fetchGlobalAssetComparisonSnapshot = async function fetchGlobalAssetC
     nextAbove,
     nextBelow,
     displayAssets,
+    displayRankCutoff: displayAssets.length ? displayAssets[displayAssets.length - 1].rank : null,
     allAssets: sortedAssets,
     bitcoinShareOfGold: gold && btcMarketCap ? (btcMarketCap / gold.marketCap) * 100 : null,
     bitcoinShareOfSilver: silver && btcMarketCap ? (btcMarketCap / silver.marketCap) * 100 : null,
@@ -10219,7 +10235,7 @@ globalThis.GlobalAssetsPage = function GlobalAssetsPage() {
       h('div', { className: 'charts-panel-header' },
         h('div', { className: 'charts-panel-heading' },
           h('div', { className: 'charts-panel-title' }, 'Largest Assets vs Bitcoin'),
-          h('div', { className: 'charts-panel-subtitle' }, 'Top 10 global market-cap assets, plus Bitcoin and the largest S&P 500 ETF proxy when outside the top 10.')
+          h('div', { className: 'charts-panel-subtitle' }, snapshot?.displayRankCutoff ? 'Global market-cap ranks #1 through #' + snapshot.displayRankCutoff + ', kept contiguous so the ranking never skips numbers.' : 'Global market-cap ranks kept contiguous so the ranking never skips numbers.')
         ),
         h('span', { className: 'charts-badge' }, snapshot?.delayed ? 'near-live public feed' : 'live')
       ),
