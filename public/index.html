@@ -3880,6 +3880,105 @@ globalThis.LastUpdated = function LastUpdated({ lastUpdated, live = false }) {
 const React = window.React;
 const { createElement: h, useEffect, useRef, useState } = React;
 
+function getNumericDatasetValues(dataset) {
+  return (dataset?.data || []).map(value => Number(value)).filter(Number.isFinite);
+}
+
+function FallbackChart({ type, data, height = 300 }) {
+  const labels = data?.labels || [];
+  const datasets = (data?.datasets || []).filter(ds => getNumericDatasetValues(ds).length > 1);
+  if (!datasets.length) {
+    return h('div', {
+      className: 'chart-container',
+      style: { height: height + 'px', display: 'grid', placeItems: 'center', color: 'var(--text-faint)', fontSize: 'var(--text-xs)' },
+    }, 'Chart data loading...');
+  }
+
+  const width = 640;
+  const svgHeight = 220;
+  const pad = 22;
+  const allValues = datasets.flatMap(getNumericDatasetValues);
+  let min = Math.min(...allValues);
+  let max = Math.max(...allValues);
+  if (min === max) {
+    min -= 1;
+    max += 1;
+  }
+  const yFor = value => pad + (1 - ((Number(value) - min) / (max - min))) * (svgHeight - pad * 2);
+  const xFor = (index, count) => pad + (index / Math.max(1, count - 1)) * (width - pad * 2);
+
+  const chartBody = type === 'bar'
+    ? (() => {
+        const values = datasets[0].data.map(Number).filter(Number.isFinite);
+        const barWidth = Math.max(3, (width - pad * 2) / Math.max(1, values.length) * 0.72);
+        return values.map((value, index) => {
+          const x = xFor(index, values.length) - barWidth / 2;
+          const y = Math.min(yFor(value), yFor(0));
+          const barHeight = Math.max(1, Math.abs(yFor(value) - yFor(0)));
+          return h('rect', {
+            key: index,
+            x,
+            y,
+            width: barWidth,
+            height: barHeight,
+            rx: 3,
+            fill: datasets[0].backgroundColor?.[index] || datasets[0].borderColor || chartColors.orange,
+            opacity: 0.82,
+          });
+        });
+      })()
+    : datasets.slice(0, 6).map((dataset, datasetIndex) => {
+        const values = dataset.data.map(Number);
+        const points = values
+          .map((value, index) => Number.isFinite(value) ? [xFor(index, values.length), yFor(value)] : null)
+          .filter(Boolean);
+        if (points.length < 2) return null;
+        const path = points.map((point, index) => (index ? 'L' : 'M') + point[0].toFixed(1) + ' ' + point[1].toFixed(1)).join(' ');
+        return h('path', {
+          key: datasetIndex,
+          d: path,
+          fill: 'none',
+          stroke: dataset.borderColor || chartColors.orange,
+          strokeWidth: dataset.borderWidth || 2,
+          strokeDasharray: Array.isArray(dataset.borderDash) ? dataset.borderDash.join(' ') : undefined,
+          opacity: datasetIndex === 0 ? 1 : 0.72,
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round',
+        });
+      });
+
+  return h('div', { className: 'chart-container', style: { height: height + 'px' } },
+    h('svg', {
+      viewBox: '0 0 ' + width + ' ' + svgHeight,
+      width: '100%',
+      height: '100%',
+      preserveAspectRatio: 'none',
+      role: 'img',
+      'aria-label': 'Live chart fallback',
+    },
+      h('defs', null,
+        h('linearGradient', { id: 'fallbackGrid', x1: '0', y1: '0', x2: '0', y2: '1' },
+          h('stop', { offset: '0%', stopColor: 'rgba(247,147,26,0.08)' }),
+          h('stop', { offset: '100%', stopColor: 'rgba(139,92,246,0.05)' })
+        )
+      ),
+      h('rect', { x: 0, y: 0, width, height: svgHeight, rx: 16, fill: 'url(#fallbackGrid)' }),
+      [0.25, 0.5, 0.75].map(line => h('line', {
+        key: line,
+        x1: pad,
+        x2: width - pad,
+        y1: pad + line * (svgHeight - pad * 2),
+        y2: pad + line * (svgHeight - pad * 2),
+        stroke: 'rgba(247,147,26,0.10)',
+        strokeWidth: 1,
+      })),
+      chartBody,
+      labels.length > 1 && h('text', { x: pad, y: svgHeight - 6, fill: 'var(--text-faint)', fontSize: 10 }, labels[0]),
+      labels.length > 1 && h('text', { x: width - pad, y: svgHeight - 6, fill: 'var(--text-faint)', fontSize: 10, textAnchor: 'end' }, labels[labels.length - 1])
+    )
+  );
+}
+
 /* ------------------------------------------
    Base Chart.js Wrapper
    ------------------------------------------ */
@@ -3954,6 +4053,10 @@ globalThis.ChartComponent = function ChartComponent({ type, data, options, heigh
     });
     chart.update('none');
   }, [data, options]);
+
+  if (!chartReady || !window.Chart) {
+    return h(FallbackChart, { type, data, height });
+  }
 
   return h('div', { className: 'chart-container', style: { height: height + 'px' } },
     h('canvas', { ref: canvasRef })
@@ -8730,7 +8833,7 @@ const RAINBOW_BANDS = [
 const RAINBOW_INTERCEPT = -19.463;
 const POWER_LAW_SLOPE = 5.71;
 const POWER_LAW_INTERCEPT = -38.16;
-const COINMETRICS_URL = 'https://community-api.coinmetrics.io/v4/timeseries/asset-metrics?assets=btc&metrics=CapMVRVCur,CapMrktCurUSD&frequency=1d&start_time=2010-07-18&page_size=10000';
+const COINMETRICS_URL = 'https://community-api.coinmetrics.io/v4/timeseries/asset-metrics?assets=btc&metrics=PriceUSD,CapMVRVCur,CapMrktCurUSD&frequency=1d&start_time=2010-07-18&page_size=10000';
 
 let coinMetricsCache = null;
 let coinMetricsCacheAt = 0;
@@ -8792,14 +8895,59 @@ function seriesStats(values) {
   const latest = latestFinite(values || []);
   const change = Number.isFinite(first) && Number.isFinite(latest) ? latest - first : null;
   const changePercent = Number.isFinite(change) && first !== 0 ? (change / Math.abs(first)) * 100 : null;
+  const average = valid.length ? valid.reduce((sum, value) => sum + value, 0) / valid.length : null;
   return {
     first,
     latest,
+    average,
     change,
     changePercent,
     min: valid.length ? Math.min(...valid) : null,
     max: valid.length ? Math.max(...valid) : null,
   };
+}
+
+function spanDays(points) {
+  if (!Array.isArray(points) || points.length < 2) return 0;
+  const first = points[0]?.[0];
+  const last = points[points.length - 1]?.[0];
+  if (!Number.isFinite(first) || !Number.isFinite(last) || last <= first) return 0;
+  return (last - first) / DAY_MS;
+}
+
+function hasEnoughRange(points, range) {
+  const days = getRangeDays(range);
+  if (days === 'max') return Array.isArray(points) && points.length > 365;
+  const numericDays = Number(days);
+  if (!Number.isFinite(numericDays)) return false;
+  return spanDays(points) >= numericDays * 0.88;
+}
+
+function pickBestPriceSource({ range, rangePoints, longPoints, coinMetricPoints }) {
+  const candidates = [
+    { points: rangePoints, label: 'range feed' },
+    { points: longPoints, label: 'market history' },
+    { points: coinMetricPoints, label: 'CoinMetrics PriceUSD' },
+  ].filter(candidate => Array.isArray(candidate.points) && candidate.points.length > 1);
+
+  const enough = candidates.find(candidate => hasEnoughRange(candidate.points, range));
+  if (enough) return enough;
+
+  const longest = candidates.sort((a, b) => spanDays(b.points) - spanDays(a.points))[0];
+  return longest || { points: [], label: 'unavailable' };
+}
+
+function formatRangeAverage(value, mode) {
+  if (!Number.isFinite(value)) return '...';
+  if (mode === 'ratio') return value.toFixed(3) + 'x';
+  if (mode === 'score') return value.toFixed(0);
+  if (mode === 'percent') return formatPercent(value, Math.abs(value) < 10 ? 1 : 0);
+  if (mode === 'currency') return formatUSD(value, 0);
+  return value.toFixed(Math.abs(value) < 10 ? 2 : 1);
+}
+
+function rangeSignalDescription(range, metricName) {
+  return rangeName(range) + ' range ' + metricName + ' from visible chart points';
 }
 
 function rangeName(range) {
@@ -8969,10 +9117,11 @@ function normalizeCoinMetrics(data) {
   if (!data || !Array.isArray(data.data)) return [];
   return data.data.map(row => {
     const ts = new Date(row.time).getTime();
+    const priceUSD = parseFloat(row.PriceUSD);
     const mvrv = parseFloat(row.CapMVRVCur);
     const marketCap = parseFloat(row.CapMrktCurUSD);
     const realizedCap = Number.isFinite(mvrv) && mvrv > 0 && Number.isFinite(marketCap) ? marketCap / mvrv : null;
-    return { ts, mvrv, marketCap, realizedCap };
+    return { ts, priceUSD, mvrv, marketCap, realizedCap };
   }).filter(row => Number.isFinite(row.ts) && Number.isFinite(row.mvrv) && Number.isFinite(row.marketCap) && Number.isFinite(row.realizedCap));
 }
 
@@ -8985,6 +9134,9 @@ async function fetchCoinMetricsValuation() {
   if (rows.length) {
     coinMetricsCache = {
       rows,
+      pricePoints: rows
+        .filter(row => Number.isFinite(row.priceUSD) && row.priceUSD > 0)
+        .map(row => [row.ts, row.priceUSD]),
       source: 'CoinMetrics Community API',
       latestDate: new Date(rows[rows.length - 1].ts).toISOString().slice(0, 10),
     };
@@ -9099,6 +9251,18 @@ function addMvrvZ(rows) {
 function buildMetricWindow(rows, range, key, maxPoints = 240) {
   const points = rows.map(row => [row.ts, row[key]]).filter(point => Number.isFinite(point[1]));
   return getRangeWindow(points, range, maxPoints);
+}
+
+function dominantRainbowBand(bands) {
+  if (!Array.isArray(bands) || !bands.length) return null;
+  const counts = new Map();
+  for (const band of bands) {
+    if (!band || !band.label) continue;
+    const entry = counts.get(band.label) || { band, count: 0 };
+    entry.count += 1;
+    counts.set(band.label, entry);
+  }
+  return Array.from(counts.values()).sort((a, b) => b.count - a.count)[0]?.band || bands[bands.length - 1] || null;
 }
 
 function buildCompositeSeries(rows, pricePoints, range, livePrice, referencePricePoints) {
@@ -9243,6 +9407,7 @@ globalThis.ValuationPage = function ValuationPage() {
     return {
       priceResult,
       coinMetrics,
+      coinMetricPrices: coinMetrics?.pricePoints || [],
       longPrices: (longMarketChart && longMarketChart.prices) || [],
       longSource: longMarketChart && longMarketChart.source,
       marketByRange: Object.fromEntries(rangeEntries),
@@ -9251,18 +9416,35 @@ globalThis.ValuationPage = function ValuationPage() {
 
   const btcPrice = streamedPrice || liveData?.priceResult?.price || 0;
   const rawLongPrices = liveData?.longPrices || [];
-  const longPrices = useMemo(() => appendLivePrice(rawLongPrices, btcPrice), [rawLongPrices, btcPrice]);
+  const coinMetricPrices = liveData?.coinMetricPrices || [];
+  const analysisLongRaw = useMemo(() => (
+    hasEnoughRange(rawLongPrices, '5y') ? rawLongPrices : (coinMetricPrices.length ? coinMetricPrices : rawLongPrices)
+  ), [rawLongPrices, coinMetricPrices]);
+  const longPrices = useMemo(() => appendLivePrice(analysisLongRaw, btcPrice), [analysisLongRaw, btcPrice]);
   const valuationRows = useMemo(() => {
     const rows = liveData?.coinMetrics?.rows || [];
-    return addMvrvZ(applyLiveMvrv(rows, rawLongPrices, btcPrice));
-  }, [liveData?.coinMetrics, rawLongPrices, btcPrice]);
+    return addMvrvZ(applyLiveMvrv(rows, coinMetricPrices.length ? coinMetricPrices : rawLongPrices, btcPrice));
+  }, [liveData?.coinMetrics, coinMetricPrices, rawLongPrices, btcPrice]);
 
   const getPriceWindow = useCallback((range) => {
     const rangeChart = liveData?.marketByRange?.[range];
     const fallback = trimSeriesToDays(rawLongPrices, getRangeDays(range));
-    const sourcePoints = rangeChart && rangeChart.prices && rangeChart.prices.length ? rangeChart.prices : fallback;
-    return getRangeWindow(appendLivePrice(sourcePoints, btcPrice), range, range === '1d' ? 288 : 260);
-  }, [liveData?.marketByRange, rawLongPrices, btcPrice]);
+    const cmFallback = trimSeriesToDays(coinMetricPrices, getRangeDays(range));
+    const best = pickBestPriceSource({
+      range,
+      rangePoints: rangeChart?.prices || [],
+      longPoints: fallback,
+      coinMetricPoints: cmFallback,
+    });
+    const window = getRangeWindow(appendLivePrice(best.points, btcPrice), range, range === '1d' ? 288 : 260);
+    return {
+      ...window,
+      source: rangeChart?.prices?.length && best.label === 'range feed'
+        ? rangeChart.source
+        : best.label,
+      spanDays: spanDays(best.points),
+    };
+  }, [liveData?.marketByRange, rawLongPrices, coinMetricPrices, btcPrice]);
 
   const compositePriceWindow = useMemo(() => getPriceWindow(ranges.composite), [getPriceWindow, ranges.composite]);
   const compositeWindow = useMemo(
@@ -9270,8 +9452,9 @@ globalThis.ValuationPage = function ValuationPage() {
     [valuationRows, compositePriceWindow, ranges.composite, btcPrice, longPrices]
   );
   const scoreStats = useMemo(() => seriesStats(compositeWindow.values), [compositeWindow.values]);
-  const currentScore = scoreStats.latest;
-  const scoreSignal = valuationSignal(currentScore);
+  const liveScore = scoreStats.latest;
+  const selectedScore = scoreStats.average;
+  const scoreSignal = valuationSignal(selectedScore);
 
   const mvrvPriceWindow = useMemo(() => getPriceWindow(ranges.mvrv), [getPriceWindow, ranges.mvrv]);
   const mvrvWindow = useMemo(
@@ -9279,8 +9462,10 @@ globalThis.ValuationPage = function ValuationPage() {
     [valuationRows, mvrvPriceWindow, longPrices, btcPrice, ranges.mvrv]
   );
   const mvrvStats = useMemo(() => seriesStats(mvrvWindow.values), [mvrvWindow.values]);
-  const currentMvrv = mvrvStats.latest;
-  const currentMvrvSignal = mvrvSignal(currentMvrv);
+  const liveMvrv = mvrvStats.latest;
+  const selectedMvrv = mvrvStats.average;
+  const selectedMvrvSignal = mvrvSignal(selectedMvrv);
+  const liveMvrvSignal = mvrvSignal(liveMvrv);
 
   const mvrvZPriceWindow = useMemo(() => getPriceWindow(ranges.mvrvZ), [getPriceWindow, ranges.mvrvZ]);
   const mvrvZWindow = useMemo(
@@ -9288,8 +9473,10 @@ globalThis.ValuationPage = function ValuationPage() {
     [valuationRows, mvrvZPriceWindow, longPrices, btcPrice, ranges.mvrvZ]
   );
   const mvrvZStats = useMemo(() => seriesStats(mvrvZWindow.values), [mvrvZWindow.values]);
-  const currentZ = mvrvZStats.latest;
-  const currentZSignal = zSignal(currentZ);
+  const liveZ = mvrvZStats.latest;
+  const selectedZ = mvrvZStats.average;
+  const selectedZSignal = zSignal(selectedZ);
+  const liveZSignal = zSignal(liveZ);
 
   const powerWindow = useMemo(() => {
     const window = getPriceWindow(ranges.powerLaw);
@@ -9302,7 +9489,8 @@ globalThis.ValuationPage = function ValuationPage() {
     };
   }, [getPriceWindow, ranges.powerLaw]);
   const powerStats = useMemo(() => seriesStats(powerWindow.position), [powerWindow.position]);
-  const currentPowerPosition = powerStats.latest;
+  const livePowerPosition = powerStats.latest;
+  const selectedPowerPosition = powerStats.average;
   const currentPowerFair = latestFinite(powerWindow.fair);
   const currentPowerSupport = latestFinite(powerWindow.support);
   const currentPowerResistance = latestFinite(powerWindow.resistance);
@@ -9318,7 +9506,8 @@ globalThis.ValuationPage = function ValuationPage() {
       bandHistory: window.points.map(point => getRainbowBand(point[1], point[0])),
     };
   }, [getPriceWindow, ranges.rainbow]);
-  const currentBand = rainbowWindow.bandHistory.length ? rainbowWindow.bandHistory[rainbowWindow.bandHistory.length - 1] : RAINBOW_BANDS[4];
+  const liveBand = rainbowWindow.bandHistory.length ? rainbowWindow.bandHistory[rainbowWindow.bandHistory.length - 1] : RAINBOW_BANDS[4];
+  const selectedBand = dominantRainbowBand(rainbowWindow.bandHistory) || liveBand;
 
   const piWindow = useMemo(() => {
     const longValues = longPrices.map(point => point[1]);
@@ -9344,9 +9533,14 @@ globalThis.ValuationPage = function ValuationPage() {
   }, [longPrices, ranges.piCycle]);
 
   const piStats = useMemo(() => seriesStats(piWindow.gap), [piWindow.gap]);
-  const piGap = piStats.latest;
+  const livePiGap = piStats.latest;
+  const selectedPiGap = piStats.average;
   const latestPi111 = latestFinite(piWindow.sma111);
   const latestPi350x2 = latestFinite(piWindow.sma350x2);
+  const selectedPowerColor = Number.isFinite(selectedPowerPosition) && selectedPowerPosition < 30 ? '#00d4aa' : Number.isFinite(selectedPowerPosition) && selectedPowerPosition < 70 ? '#ffd43b' : '#ff4757';
+  const livePowerColor = Number.isFinite(livePowerPosition) && livePowerPosition < 30 ? '#00d4aa' : Number.isFinite(livePowerPosition) && livePowerPosition < 70 ? '#ffd43b' : '#ff4757';
+  const selectedPiColor = Number.isFinite(selectedPiGap) && selectedPiGap < 5 ? '#ff4757' : Number.isFinite(selectedPiGap) && selectedPiGap < 15 ? '#ffd43b' : '#00d4aa';
+  const selectedPiLabel = Number.isFinite(selectedPiGap) && selectedPiGap < 5 ? 'Near Crossover' : Number.isFinite(selectedPiGap) && selectedPiGap < 15 ? 'Converging' : 'No Top Signal';
 
   const drawdownWindow = useMemo(() => {
     const window = getPriceWindow(ranges.drawdown);
@@ -9376,33 +9570,34 @@ globalThis.ValuationPage = function ValuationPage() {
 
     h('section', { className: 'valuation-score-card' },
       h('div', { className: 'valuation-score-main' },
-        h('div', { className: 'charts-eyebrow' }, 'Composite signal'),
-        h('div', { className: 'valuation-score tabular-nums', style: { color: scoreSignal.color } }, Number.isFinite(currentScore) ? currentScore.toFixed(0) : '...'),
+        h('div', { className: 'charts-eyebrow' }, 'Composite range signal'),
+        h('div', { className: 'valuation-score tabular-nums', style: { color: scoreSignal.color } }, Number.isFinite(selectedScore) ? selectedScore.toFixed(0) : '...'),
         h('div', { className: 'valuation-score-label', style: { color: scoreSignal.color } }, scoreSignal.label),
-        h('p', null, 'Scores below zero lean undervalued. Scores above zero lean overvalued. Selected ' + rangeName(ranges.composite) + ' move: ' + signedNumber(scoreStats.change, 1, ' pts') + '. The current chart point updates with the live BTC tick.'),
+        h('p', null, 'Scores below zero lean undervalued. Scores above zero lean overvalued. This is the ' + rangeName(ranges.composite) + ' average from the visible chart, with the latest live point shown separately. Range move: ' + signedNumber(scoreStats.change, 1, ' pts') + '.'),
+        h(ChartRangeControls, { value: ranges.composite, onChange: range => setRange('composite', range), ranges: VALUATION_RANGES, label: 'Composite score timeframe' }),
       ),
       h('div', { className: 'valuation-score-side' },
-        h(ValuationMeter, { score: currentScore, signal: scoreSignal }),
+        h(ValuationMeter, { score: selectedScore, signal: scoreSignal }),
         h('div', { className: 'valuation-summary-grid' },
           h('div', { className: 'valuation-mini-card' },
-            h('span', null, 'MVRV'),
-            h('strong', { className: 'tabular-nums', style: { color: currentMvrvSignal.color } }, Number.isFinite(currentMvrv) ? currentMvrv.toFixed(3) + 'x' : '...'),
-            h('em', null, currentMvrvSignal.label),
+            h('span', null, rangeName(ranges.mvrv) + ' MVRV avg'),
+            h('strong', { className: 'tabular-nums', style: { color: selectedMvrvSignal.color } }, formatRangeAverage(selectedMvrv, 'ratio')),
+            h('em', null, selectedMvrvSignal.label + ' · live ' + formatRangeAverage(liveMvrv, 'ratio')),
           ),
           h('div', { className: 'valuation-mini-card' },
-            h('span', null, 'MVRV Z'),
-            h('strong', { className: 'tabular-nums', style: { color: currentZSignal.color } }, Number.isFinite(currentZ) ? currentZ.toFixed(2) : '...'),
-            h('em', null, currentZSignal.label),
+            h('span', null, rangeName(ranges.mvrvZ) + ' MVRV Z avg'),
+            h('strong', { className: 'tabular-nums', style: { color: selectedZSignal.color } }, formatRangeAverage(selectedZ, 'number')),
+            h('em', null, selectedZSignal.label + ' · live ' + formatRangeAverage(liveZ, 'number')),
           ),
           h('div', { className: 'valuation-mini-card' },
-            h('span', null, 'Power Law'),
-            h('strong', { className: 'tabular-nums', style: { color: Number.isFinite(currentPowerPosition) && currentPowerPosition < 30 ? '#00d4aa' : Number.isFinite(currentPowerPosition) && currentPowerPosition < 70 ? '#ffd43b' : '#ff4757' } }, Number.isFinite(currentPowerPosition) ? formatPercent(currentPowerPosition, 0) : '...'),
-            h('em', null, 'Range position'),
+            h('span', null, rangeName(ranges.powerLaw) + ' Power avg'),
+            h('strong', { className: 'tabular-nums', style: { color: selectedPowerColor } }, Number.isFinite(selectedPowerPosition) ? formatPercent(selectedPowerPosition, 0) : '...'),
+            h('em', null, 'Live ' + (Number.isFinite(livePowerPosition) ? formatPercent(livePowerPosition, 0) : '...')),
           ),
           h('div', { className: 'valuation-mini-card' },
-            h('span', null, 'Rainbow'),
-            h('strong', { style: { color: currentBand.color } }, currentBand.label),
-            h('em', null, 'Current band'),
+            h('span', null, rangeName(ranges.rainbow) + ' Rainbow'),
+            h('strong', { style: { color: selectedBand.color } }, selectedBand.label),
+            h('em', null, 'Live ' + liveBand.label),
           ),
         ),
       ),
@@ -9419,6 +9614,7 @@ globalThis.ValuationPage = function ValuationPage() {
         fullWidth: true,
       },
         compositeWindow.values.length > 1 && h(ChartComponent, {
+          key: 'composite-' + ranges.composite,
           type: 'line',
           height: 280,
           data: {
@@ -9437,18 +9633,19 @@ globalThis.ValuationPage = function ValuationPage() {
       h(ChartPanel, {
         title: 'MVRV Ratio',
         subtitle: 'CoinMetrics market cap / realized cap, live-scaled by current BTC price',
-        badge: Number.isFinite(currentMvrv) ? currentMvrv.toFixed(2) + 'x' : '...',
-        badgeColor: currentMvrvSignal.color,
+        badge: Number.isFinite(selectedMvrv) ? rangeName(ranges.mvrv) + ' avg ' + selectedMvrv.toFixed(2) + 'x' : '...',
+        badgeColor: selectedMvrvSignal.color,
         range: ranges.mvrv,
         onRangeChange: range => setRange('mvrv', range),
       },
         h(IndicatorHero, {
-          value: Number.isFinite(currentMvrv) ? currentMvrv.toFixed(3) + 'x' : '...',
-          label: currentMvrvSignal.label,
-          color: currentMvrvSignal.color,
-          subvalue: rangeName(ranges.mvrv) + ' change: ' + signedNumber(mvrvStats.changePercent, 2, '%') + ' from first visible point.',
+          value: formatRangeAverage(selectedMvrv, 'ratio'),
+          label: rangeName(ranges.mvrv) + ' Average: ' + selectedMvrvSignal.label,
+          color: selectedMvrvSignal.color,
+          subvalue: rangeSignalDescription(ranges.mvrv, 'average') + '. Live latest: ' + formatRangeAverage(liveMvrv, 'ratio') + ' (' + liveMvrvSignal.label + ').',
         }),
         mvrvWindow.values.length > 1 && h(ChartComponent, {
+          key: 'mvrv-' + ranges.mvrv,
           type: 'line',
           height: 190,
           data: {
@@ -9462,28 +9659,30 @@ globalThis.ValuationPage = function ValuationPage() {
           options: chartOptions({ mode: 'ratio', suggestedMin: 0.5, suggestedMax: 3.5, legend: true }),
         }),
         h(StatGrid, { rows: [
+          { label: 'Range Average', value: formatRangeAverage(selectedMvrv, 'ratio'), color: selectedMvrvSignal.color, emphasis: true },
+          { label: 'Live Latest', value: formatRangeAverage(liveMvrv, 'ratio'), color: liveMvrvSignal.color },
           { label: 'First Visible', value: Number.isFinite(mvrvStats.first) ? mvrvStats.first.toFixed(3) + 'x' : '...' },
           { label: 'Range Change', value: signedNumber(mvrvStats.changePercent, 2, '%'), color: Number.isFinite(mvrvStats.change) && mvrvStats.change < 0 ? '#00d4aa' : '#ff8c00' },
           { label: 'Undervalued', value: '< 1.5x', color: '#00d4aa' },
-          { label: 'Source', value: liveData?.coinMetrics?.source || 'loading' },
         ] }),
       ),
 
       h(ChartPanel, {
         title: 'MVRV Z-Score',
         subtitle: 'Traditional market cap minus realized cap divided by market-cap standard deviation',
-        badge: Number.isFinite(currentZ) ? currentZ.toFixed(2) : '...',
-        badgeColor: currentZSignal.color,
+        badge: Number.isFinite(selectedZ) ? rangeName(ranges.mvrvZ) + ' avg ' + selectedZ.toFixed(2) : '...',
+        badgeColor: selectedZSignal.color,
         range: ranges.mvrvZ,
         onRangeChange: range => setRange('mvrvZ', range),
       },
         h(IndicatorHero, {
-          value: Number.isFinite(currentZ) ? currentZ.toFixed(3) : '...',
-          label: currentZSignal.label,
-          color: currentZSignal.color,
-          subvalue: rangeName(ranges.mvrvZ) + ' change: ' + signedNumber(mvrvZStats.change, 2, ' pts') + ' from first visible point.',
+          value: formatRangeAverage(selectedZ, 'number'),
+          label: rangeName(ranges.mvrvZ) + ' Average: ' + selectedZSignal.label,
+          color: selectedZSignal.color,
+          subvalue: rangeSignalDescription(ranges.mvrvZ, 'average') + '. Live latest: ' + formatRangeAverage(liveZ, 'number') + ' (' + liveZSignal.label + ').',
         }),
         mvrvZWindow.values.length > 1 && h(ChartComponent, {
+          key: 'mvrvz-' + ranges.mvrvZ,
           type: 'line',
           height: 190,
           data: {
@@ -9497,37 +9696,39 @@ globalThis.ValuationPage = function ValuationPage() {
           options: chartOptions({ suggestedMin: -1, suggestedMax: 5, legend: true }),
         }),
         h(StatGrid, { rows: [
+          { label: 'Range Average', value: formatRangeAverage(selectedZ, 'number'), color: selectedZSignal.color, emphasis: true },
+          { label: 'Live Latest', value: formatRangeAverage(liveZ, 'number'), color: liveZSignal.color },
           { label: 'First Visible', value: Number.isFinite(mvrvZStats.first) ? mvrvZStats.first.toFixed(3) : '...' },
           { label: 'Range Change', value: signedNumber(mvrvZStats.change, 2, ' pts'), color: Number.isFinite(mvrvZStats.change) && mvrvZStats.change < 0 ? '#00d4aa' : '#ff8c00' },
-          { label: 'Range Low', value: Number.isFinite(mvrvZStats.min) ? mvrvZStats.min.toFixed(2) : '...', color: '#00d4aa' },
-          { label: 'Overheated', value: '> 4', color: '#ff4757' },
         ] }),
       ),
 
       h(ChartPanel, {
         title: 'Power Law Valuation',
         subtitle: 'BTC price versus long-term support, fair value, and resistance bands',
-        badge: Number.isFinite(currentPowerPosition) ? formatPercent(currentPowerPosition, 0) + ' range' : '...',
-        badgeColor: Number.isFinite(currentPowerPosition) && currentPowerPosition < 30 ? '#00d4aa' : Number.isFinite(currentPowerPosition) && currentPowerPosition < 70 ? '#ffd43b' : '#ff4757',
+        badge: Number.isFinite(selectedPowerPosition) ? rangeName(ranges.powerLaw) + ' avg ' + formatPercent(selectedPowerPosition, 0) : '...',
+        badgeColor: selectedPowerColor,
         range: ranges.powerLaw,
         onRangeChange: range => setRange('powerLaw', range),
         fullWidth: true,
       },
         h('div', { className: 'chart-split-header' },
           h(IndicatorHero, {
-            value: Number.isFinite(currentPowerPosition) ? formatPercent(currentPowerPosition, 1) : '...',
-            label: 'Position Within Power Law Range',
-            color: Number.isFinite(currentPowerPosition) && currentPowerPosition < 30 ? '#00d4aa' : Number.isFinite(currentPowerPosition) && currentPowerPosition < 70 ? '#ffd43b' : '#ff4757',
-            subvalue: rangeName(ranges.powerLaw) + ' position change: ' + signedNumber(powerStats.change, 1, ' pts') + '. Lower means closer to support.',
+            value: Number.isFinite(selectedPowerPosition) ? formatPercent(selectedPowerPosition, 1) : '...',
+            label: rangeName(ranges.powerLaw) + ' Average Position',
+            color: selectedPowerColor,
+            subvalue: 'Live latest: ' + (Number.isFinite(livePowerPosition) ? formatPercent(livePowerPosition, 1) : '...') + '. Range position change: ' + signedNumber(powerStats.change, 1, ' pts') + '. Lower means closer to support.',
           }),
           h(StatGrid, { rows: [
+            { label: 'Range Average', value: Number.isFinite(selectedPowerPosition) ? formatPercent(selectedPowerPosition, 1) : '...', color: selectedPowerColor, emphasis: true },
+            { label: 'Live Latest', value: Number.isFinite(livePowerPosition) ? formatPercent(livePowerPosition, 1) : '...', color: livePowerColor },
             { label: 'Current Price', value: btcPrice ? formatUSD(btcPrice, 0) : '...', color: 'var(--btc-orange)', emphasis: true },
             { label: 'Support Band', value: formatUSD(currentPowerSupport, 0), color: '#00d4aa' },
             { label: 'Fair Value', value: formatUSD(currentPowerFair, 0), color: '#ffd43b' },
-            { label: 'Resistance Band', value: formatUSD(currentPowerResistance, 0), color: '#ff4757' },
           ] }),
         ),
         powerWindow.values.length > 1 && h(ChartComponent, {
+          key: 'power-' + ranges.powerLaw,
           type: 'line',
           height: 310,
           data: {
@@ -9546,27 +9747,29 @@ globalThis.ValuationPage = function ValuationPage() {
       h(ChartPanel, {
         title: 'Rainbow Valuation Bands',
         subtitle: 'Logarithmic color bands with live BTC price overlay',
-        badge: currentBand.label,
-        badgeColor: currentBand.color,
+        badge: rangeName(ranges.rainbow) + ' mode: ' + selectedBand.label,
+        badgeColor: selectedBand.color,
         range: ranges.rainbow,
         onRangeChange: range => setRange('rainbow', range),
         fullWidth: true,
       },
         h('div', { className: 'chart-split-header' },
           h(IndicatorHero, {
-            value: currentBand.label,
-            label: 'Current Rainbow Band',
-            color: currentBand.color,
-            subvalue: 'Latest point in selected ' + rangeName(ranges.rainbow) + ' chart.',
+            value: selectedBand.label,
+            label: rangeName(ranges.rainbow) + ' Dominant Band',
+            color: selectedBand.color,
+            subvalue: 'Most common band across the selected visible chart. Live latest: ' + liveBand.label + '.',
           }),
           h(StatGrid, { rows: [
+            { label: 'Range Dominant', value: selectedBand.label, color: selectedBand.color, emphasis: true },
+            { label: 'Live Latest Band', value: liveBand.label, color: liveBand.color },
             { label: 'BTC Latest', value: rainbowWindow.values.length ? formatUSD(rainbowWindow.values[rainbowWindow.values.length - 1], 0) : '...', color: 'var(--btc-orange)' },
             { label: 'Top Band Latest', value: rainbowWindow.bands?.[0]?.data?.length ? formatUSD(rainbowWindow.bands[0].data[rainbowWindow.bands[0].data.length - 1], 0) : '...', color: RAINBOW_BANDS[0].color },
-            { label: 'Middle Band Latest', value: rainbowWindow.bands?.[4]?.data?.length ? formatUSD(rainbowWindow.bands[4].data[rainbowWindow.bands[4].data.length - 1], 0) : '...', color: RAINBOW_BANDS[4].color },
             { label: 'Bottom Band Latest', value: rainbowWindow.bands?.[8]?.data?.length ? formatUSD(rainbowWindow.bands[8].data[rainbowWindow.bands[8].data.length - 1], 0) : '...', color: RAINBOW_BANDS[8].color },
           ] }),
         ),
         rainbowWindow.values.length > 1 && h(ChartComponent, {
+          key: 'rainbow-' + ranges.rainbow,
           type: 'line',
           height: 320,
           data: {
@@ -9583,18 +9786,19 @@ globalThis.ValuationPage = function ValuationPage() {
       h(ChartPanel, {
         title: 'Pi Cycle Top Risk',
         subtitle: '111DMA versus 350DMA x2 top-signal distance',
-        badge: Number.isFinite(piGap) ? formatPercent(piGap, 1) + ' gap' : '...',
-        badgeColor: Number.isFinite(piGap) && piGap < 5 ? '#ff4757' : Number.isFinite(piGap) && piGap < 15 ? '#ffd43b' : '#00d4aa',
+        badge: Number.isFinite(selectedPiGap) ? rangeName(ranges.piCycle) + ' avg ' + formatPercent(selectedPiGap, 1) + ' gap' : '...',
+        badgeColor: selectedPiColor,
         range: ranges.piCycle,
         onRangeChange: range => setRange('piCycle', range),
       },
         h(IndicatorHero, {
-          value: Number.isFinite(piGap) ? formatPercent(piGap, 2) : '...',
-          label: Number.isFinite(piGap) && piGap < 5 ? 'Near Crossover' : Number.isFinite(piGap) && piGap < 15 ? 'Converging' : 'No Top Signal',
-          color: Number.isFinite(piGap) && piGap < 5 ? '#ff4757' : Number.isFinite(piGap) && piGap < 15 ? '#ffd43b' : '#00d4aa',
-          subvalue: rangeName(ranges.piCycle) + ' gap change: ' + signedNumber(piStats.change, 2, ' pts') + '. Top risk rises as the averages converge.',
+          value: Number.isFinite(selectedPiGap) ? formatPercent(selectedPiGap, 2) : '...',
+          label: rangeName(ranges.piCycle) + ' Average: ' + selectedPiLabel,
+          color: selectedPiColor,
+          subvalue: 'Live latest: ' + (Number.isFinite(livePiGap) ? formatPercent(livePiGap, 2) : '...') + '. Range gap change: ' + signedNumber(piStats.change, 2, ' pts') + '. Top risk rises as the averages converge.',
         }),
         piWindow.price.length > 1 && h(ChartComponent, {
+          key: 'pi-' + ranges.piCycle,
           type: 'line',
           height: 215,
           data: {
@@ -9608,9 +9812,10 @@ globalThis.ValuationPage = function ValuationPage() {
           options: chartOptions({ yType: 'logarithmic', mode: 'currency', legend: true }),
         }),
         h(StatGrid, { rows: [
+          { label: 'Range Average Gap', value: Number.isFinite(selectedPiGap) ? formatPercent(selectedPiGap, 2) : '...', color: selectedPiColor, emphasis: true },
+          { label: 'Live Latest Gap', value: Number.isFinite(livePiGap) ? formatPercent(livePiGap, 2) : '...' },
           { label: '111DMA', value: latestPi111 ? formatUSD(latestPi111, 0) : '...', color: '#f7931a' },
           { label: '350DMA x2', value: latestPi350x2 ? formatUSD(latestPi350x2, 0) : '...', color: '#00d4aa' },
-          { label: 'Gap', value: Number.isFinite(piGap) ? formatPercent(piGap, 2) : '...' },
           { label: 'Range Change', value: signedNumber(piStats.change, 2, ' pts'), color: Number.isFinite(piStats.change) && piStats.change < 0 ? '#ff8c00' : '#00d4aa' },
         ] }),
       ),
@@ -9630,6 +9835,7 @@ globalThis.ValuationPage = function ValuationPage() {
           subvalue: rangeName(ranges.drawdown) + ' drawdown change: ' + signedNumber(drawdownStats.change, 2, ' pts') + '.',
         }),
         drawdownWindow.drawdown && drawdownWindow.drawdown.length > 1 && h(ChartComponent, {
+          key: 'drawdown-' + ranges.drawdown,
           type: 'line',
           height: 215,
           data: {
