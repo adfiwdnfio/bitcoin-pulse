@@ -1970,6 +1970,10 @@ body {
   color: var(--error) !important;
 }
 
+.muted-flow {
+  color: var(--text-faint) !important;
+}
+
 .price-range-panel,
 .etf-range-card {
   min-width: 0;
@@ -2176,6 +2180,29 @@ body {
   margin-bottom: 18px;
 }
 
+.etf-breakdown-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 20px 12px;
+  margin-top: -6px;
+}
+
+.etf-breakdown-summary span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 5px 9px;
+  border: 1px solid rgba(255,183,77,0.10);
+  border-radius: 999px;
+  background: rgba(0,0,0,0.20);
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .etf-detail-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
@@ -2191,6 +2218,39 @@ body {
 .etf-flow-table td:first-child {
   color: var(--text-primary);
   font-weight: 900;
+}
+
+.etf-matrix-card {
+  margin-top: 18px;
+  margin-bottom: 18px;
+}
+
+.etf-matrix-wrap {
+  max-height: 520px;
+}
+
+.etf-matrix-table {
+  min-width: 980px;
+}
+
+.etf-matrix-table th,
+.etf-matrix-table td {
+  white-space: nowrap;
+  text-align: right;
+}
+
+.etf-matrix-table th:first-child,
+.etf-matrix-table td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  min-width: 118px;
+  text-align: left;
+  background: rgba(10, 7, 6, 0.96);
+}
+
+.etf-matrix-table th:first-child {
+  z-index: 2;
 }
 
 .etf-explainer {
@@ -4229,7 +4289,7 @@ function parseEtfMarkdownCells(line) {
 
 function parseEtfFlowValue(value) {
   const raw = String(value || '').trim();
-  if (!raw || raw === '-' || raw === '—') return 0;
+  if (!raw || raw === '-' || raw === '—') return null;
   const isNegative = raw.startsWith('(') && raw.endsWith(')');
   const cleaned = raw
     .replace(/\[[^\]]+\]\([^)]+\)/g, '')
@@ -4237,7 +4297,7 @@ function parseEtfFlowValue(value) {
     .replace(/[()]/g, '')
     .trim();
   const parsed = parseFloat(cleaned);
-  if (!Number.isFinite(parsed)) return 0;
+  if (!Number.isFinite(parsed)) return null;
   return isNegative ? -parsed : parsed;
 }
 
@@ -4257,6 +4317,38 @@ function formatEtfDateLabel(timestamp) {
 
 function sumEtfRows(rows) {
   return rows.reduce((sum, row) => sum + (Number(row.total) || 0), 0);
+}
+
+function buildEtfFlowRow(dateLabel, tickers, values) {
+  const timestamp = parseEtfDateLabel(dateLabel);
+  if (!timestamp || !Array.isArray(values) || values.length < tickers.length + 1) return null;
+
+  const funds = {};
+  let reportedFundCount = 0;
+  tickers.forEach((ticker, index) => {
+    const value = parseEtfFlowValue(values[index]);
+    funds[ticker] = value;
+    if (Number.isFinite(value)) reportedFundCount += 1;
+  });
+
+  const parsedTotal = parseEtfFlowValue(values[tickers.length]);
+  const total = Number.isFinite(parsedTotal)
+    ? parsedTotal
+    : Object.values(funds).reduce((sum, value) => sum + (Number.isFinite(value) ? value : 0), 0);
+
+  // Farside uses dash-only rows for market holidays. Those should not appear
+  // as false zero-flow trading days.
+  if (!reportedFundCount && (!Number.isFinite(parsedTotal) || parsedTotal === 0)) return null;
+
+  return {
+    dateLabel,
+    displayDate: formatEtfDateLabel(timestamp),
+    timestamp,
+    funds,
+    total,
+    reportedFundCount,
+    missingFundCount: tickers.length - reportedFundCount,
+  };
 }
 
 function parseFarsidePipeEtfFlows(markdown) {
@@ -4295,17 +4387,8 @@ function parseFarsidePipeEtfFlows(markdown) {
     const timestamp = parseEtfDateLabel(first);
     if (!timestamp) continue;
 
-    const funds = {};
-    tickers.forEach((ticker, index) => {
-      funds[ticker] = parseEtfFlowValue(cells[index + 1]);
-    });
-    rows.push({
-      dateLabel: first,
-      displayDate: formatEtfDateLabel(timestamp),
-      timestamp,
-      funds,
-      total: parseEtfFlowValue(cells[tickers.length + 1]),
-    });
+    const row = buildEtfFlowRow(first, tickers, cells.slice(1, tickers.length + 2));
+    if (row) rows.push(row);
   }
 
   const sortedRows = rows
@@ -4349,17 +4432,8 @@ function parseFarsidePlainEtfFlows(text) {
         j += 1;
       }
       if (values.length >= tickers.length + 1) {
-        const funds = {};
-        tickers.forEach((ticker, index) => {
-          funds[ticker] = parseEtfFlowValue(values[index]);
-        });
-        rows.push({
-          dateLabel: line,
-          displayDate: formatEtfDateLabel(timestamp),
-          timestamp,
-          funds,
-          total: parseEtfFlowValue(values[tickers.length]),
-        });
+        const row = buildEtfFlowRow(line, tickers, values);
+        if (row) rows.push(row);
         i = j - 1;
       }
       continue;
@@ -4401,10 +4475,24 @@ function buildEtfFlowSnapshot(parsed, sourceUrl, fetchedAt) {
   const recent30 = rows.slice(-30);
   const inflowDays30 = recent30.filter(row => row.total > 0).length;
   const outflowDays30 = recent30.filter(row => row.total < 0).length;
-  const latestFunds = Object.entries(latest.funds || {})
-    .map(([ticker, value]) => ({ ticker, value }))
-    .sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
-  const leader = latestFunds[0] || null;
+  const latestFunds = parsed.tickers
+    .map(ticker => {
+      const value = latest.funds ? latest.funds[ticker] : null;
+      return { ticker, value, reported: Number.isFinite(value) };
+    })
+    .sort((a, b) => {
+      if (a.reported !== b.reported) return a.reported ? -1 : 1;
+      return Math.abs(Number(b.value) || 0) - Math.abs(Number(a.value) || 0);
+    });
+  const leader = latestFunds.find(fund => Number.isFinite(fund.value) && fund.value !== 0)
+    || latestFunds.find(fund => fund.reported)
+    || null;
+  const latestSummary = {
+    inflows: latestFunds.filter(fund => fund.value > 0).length,
+    outflows: latestFunds.filter(fund => fund.value < 0).length,
+    noFlow: latestFunds.filter(fund => fund.reported && fund.value === 0).length,
+    notReported: latestFunds.filter(fund => !fund.reported).length,
+  };
   const cumulativeFromRows = sumEtfRows(rows);
   const cumulative = parsed.totalByFund && Number.isFinite(parsed.totalByFund.Total)
     ? parsed.totalByFund.Total
@@ -4421,6 +4509,7 @@ function buildEtfFlowSnapshot(parsed, sourceUrl, fetchedAt) {
     previous,
     latestFunds,
     latestLeader: leader,
+    latestSummary,
     net7d: sumEtfRows(recent7),
     net30d: sumEtfRows(recent30),
     cumulativeNet: cumulative,
@@ -8212,6 +8301,7 @@ function getEtfRangeDays(range) {
 }
 
 function formatFlow(value, decimals = 1) {
+  if (value === null || value === undefined) return '—';
   const n = Number(value);
   if (!Number.isFinite(n)) return '—';
   const sign = n > 0 ? '+' : n < 0 ? '-' : '';
@@ -8221,10 +8311,18 @@ function formatFlow(value, decimals = 1) {
 }
 
 function flowTone(value) {
+  if (value === null || value === undefined) return 'muted-flow';
   const n = Number(value);
   if (n > 0) return 'positive';
   if (n < 0) return 'negative';
   return '';
+}
+
+function flowDirection(value) {
+  if (value === null || value === undefined || !Number.isFinite(Number(value))) return 'Not reported';
+  if (value > 0) return 'Inflow';
+  if (value < 0) return 'Outflow';
+  return 'No net flow';
 }
 
 function filterRowsForRange(rows, range) {
@@ -8291,7 +8389,33 @@ function LatestFundTable({ funds }) {
         rows.map(row => h('tr', { key: row.ticker },
           h('td', null, row.ticker),
           h('td', { className: 'tabular-nums ' + flowTone(row.value) }, formatFlow(row.value, 1)),
-          h('td', null, row.value > 0 ? 'Inflow' : row.value < 0 ? 'Outflow' : 'Flat')
+          h('td', { className: flowTone(row.value) }, flowDirection(row.value))
+        ))
+      )
+    )
+  );
+}
+
+function RecentFlowMatrix({ rows, tickers }) {
+  const visibleRows = (Array.isArray(rows) ? rows : []).slice(-14).reverse();
+  const columns = Array.isArray(tickers) ? tickers : [];
+  return h('div', { className: 'etf-table-wrap etf-matrix-wrap' },
+    h('table', { className: 'data-table etf-flow-table etf-matrix-table' },
+      h('thead', null,
+        h('tr', null,
+          h('th', null, 'Date'),
+          h('th', null, 'Total'),
+          columns.map(ticker => h('th', { key: ticker }, ticker))
+        )
+      ),
+      h('tbody', null,
+        visibleRows.map(row => h('tr', { key: row.dateLabel },
+          h('td', null, row.displayDate),
+          h('td', { className: 'tabular-nums ' + flowTone(row.total) }, formatFlow(row.total, 1)),
+          columns.map(ticker => h('td', {
+            key: ticker,
+            className: 'tabular-nums ' + flowTone(row.funds ? row.funds[ticker] : null),
+          }, formatFlow(row.funds ? row.funds[ticker] : null, 1)))
         ))
       )
     )
@@ -8336,7 +8460,8 @@ globalThis.EtfFlowsPage = function EtfFlowsPage() {
         h('p', null, latest ? 'Net U.S. spot Bitcoin ETF flow for ' + latest.displayDate + '. Positive values imply net creation demand; negative values imply redemptions.' : 'Pulling the latest ETF flow row from public tables.'),
         h('div', { className: 'etf-hero-pills' },
           flows?.latestLeader && h('span', null, 'Largest latest move: ' + flows.latestLeader.ticker + ' ' + formatFlow(flows.latestLeader.value, 1)),
-          dayDelta !== null && h('span', { className: flowTone(dayDelta) }, 'Vs prior day: ' + formatFlow(dayDelta, 1))
+          dayDelta !== null && h('span', { className: flowTone(dayDelta) }, 'Vs prior day: ' + formatFlow(dayDelta, 1)),
+          flows?.latestSummary && h('span', null, flows.latestSummary.inflows + ' inflow / ' + flows.latestSummary.outflows + ' outflow / ' + flows.latestSummary.noFlow + ' no-flow ETFs')
         )
       ),
       h('div', { className: 'etf-range-card' },
@@ -8388,7 +8513,16 @@ globalThis.EtfFlowsPage = function EtfFlowsPage() {
           h('div', { className: 'charts-panel-heading' },
             h('div', { className: 'charts-panel-title' }, 'Latest Issuer Breakdown'),
             h('div', { className: 'charts-panel-subtitle' }, latest ? latest.displayDate : 'Loading latest trading day')
+          ),
+          flows?.latestSummary && h('span', { className: 'charts-badge' },
+            flows.latestSummary.notReported ? flows.latestSummary.notReported + ' N/R' : 'All reported'
           )
+        ),
+        flows?.latestSummary && h('div', { className: 'etf-breakdown-summary' },
+          h('span', { className: 'positive' }, flows.latestSummary.inflows + ' inflow'),
+          h('span', { className: 'negative' }, flows.latestSummary.outflows + ' outflow'),
+          h('span', null, flows.latestSummary.noFlow + ' no net flow'),
+          flows.latestSummary.notReported > 0 && h('span', { className: 'muted-flow' }, flows.latestSummary.notReported + ' not reported')
         ),
         h('div', { className: 'charts-panel-body' },
           h(LatestFundTable, { funds: flows?.latestFunds || [] })
@@ -8409,8 +8543,21 @@ globalThis.EtfFlowsPage = function EtfFlowsPage() {
       )
     ),
 
+    h('section', { className: 'charts-panel charts-panel-full etf-matrix-card' },
+      h('div', { className: 'charts-panel-header' },
+        h('div', { className: 'charts-panel-heading' },
+          h('div', { className: 'charts-panel-title' }, 'Recent Issuer Flow Matrix'),
+          h('div', { className: 'charts-panel-subtitle' }, 'Latest 14 reported Farside rows. Dash means Farside has no reported issuer value; true 0.0 remains $0.0M.')
+        ),
+        h('span', { className: 'charts-badge' }, 'US$m')
+      ),
+      h('div', { className: 'charts-panel-body' },
+        h(RecentFlowMatrix, { rows: flows?.rows || [], tickers: flows?.tickers || [] })
+      )
+    ),
+
     h('div', { className: 'charts-source-note' },
-      'ETF data updates on trading days after issuers and data providers publish daily creations/redemptions. Values are shown in US$ millions from Farside Investors via Jina Reader, so they are near-live for ETF reporting rather than tick-by-tick market data.'
+      'ETF data updates on trading days after issuers and data providers publish daily creations/redemptions. Values are shown in US$ millions from Farside Investors via Jina Reader. Blank or dash cells are treated as not reported, while explicit 0.0 values are shown as true no-flow readings.'
     )
   );
 }
